@@ -89,8 +89,13 @@ class GameController {
         `;
 
         document.getElementById('start-training').addEventListener('click', () => {
+            // تفعيل نظام الصوت عند أول تفاعل
+            audioManager.enableAudio();
             audioManager.playClickSound();
-            // Start training without voice - challenges will announce themselves
+            
+            console.log('🎮 Starting visual training...');
+            
+            // Start training - challenges will announce themselves
             this.startVisualTraining();
         });
     }
@@ -221,7 +226,6 @@ class GameController {
         `;
 
         audioManager.playRewardSound();
-        audioManager.playSectionCompleteVoice(); // Arabic: "أحسنت! أكملت القسم"
 
         document.getElementById('continue-btn').addEventListener('click', () => {
             audioManager.playClickSound();
@@ -352,7 +356,8 @@ class GameController {
             // تشغيل الملف الصوتي للحوار إذا كان موجوداً
             if (line.audio) {
                 setTimeout(() => {
-                    audioManager.playVoiceFile(line.audio);
+                    audioManager.enableAudio();
+                    audioManager.playVoiceFile('audio/' + line.audio);
                 }, 300);
             }
             
@@ -362,6 +367,7 @@ class GameController {
         showNextDialogue();
 
         document.getElementById('continue-dialogue').addEventListener('click', () => {
+            audioManager.enableAudio();
             audioManager.playClickSound();
             showNextDialogue();
         });
@@ -408,7 +414,6 @@ class GameController {
         `;
 
         audioManager.playRewardSound();
-        audioManager.playGameCompleteVoice(); // Arabic: "مبروك! أكملت جميع التحديات"
 
         document.getElementById('play-again').addEventListener('click', () => {
             audioManager.playClickSound();

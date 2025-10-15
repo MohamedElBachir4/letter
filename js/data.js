@@ -33,13 +33,11 @@ const challengesData = {
             points: 10,
             question: 'ما هو الظل الصحيح؟',
             image: '✈️',
-            // Shadow image options
             shadowOptions: [
-                { id: 1, image: 'del.png', correct: true, alt: 'ظل الطائرة' },
-                { id: 2, image: 'shadows/shadow_wrong1.svg', correct: false, alt: 'ظل السيارة' },
-                { id: 3, image: 'shadows/shadow_wrong2.svg', correct: false, alt: 'ظل القارب' }
-            ],
-            // successAudio: تم تعطيل التسجيلات الصوتية
+                { id: 1, image: 'del.png', correct: true, alt: 'ظل الطائرة', useEmoji: false },
+                { id: 2, useEmoji: true, emoji: '🚗', correct: false, alt: 'ظل السيارة' },
+                { id: 3, useEmoji: true, emoji: '🚢', correct: false, alt: 'ظل الباخرة' }
+            ]
         },
         {
             id: 'pen-hold',

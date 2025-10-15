@@ -14,35 +14,58 @@ class ChallengeManager {
     startChallenge(challenge) {
         this.currentChallenge = challenge;
         
+        console.log('🎯 Starting challenge:', challenge.id);
+        
         // تشغيل صوت التحدي (بعد تفاعل المستخدم)
         setTimeout(() => {
-            // تشغيل ملف صوتي خاص لتحدي الكلمة المختلفة
-            if (challenge.id === 'baa-different-word' || challenge.id === 'jeem-different-word') {
-                audioManager.playVoiceFile('mokh.mp3');
+            console.log('🔊 Playing audio for challenge:', challenge.id);
+            
+            // تفعيل الصوت
+            audioManager.enableAudio();
+            
+            // تشغيل ملف صوتي خاص لكل تحدي
+            if (challenge.id === 'fish-game') {
+                console.log('🐟 Fish game audio - samaka.mp3');
+                audioManager.playVoiceFile('audio/samaka.mp3');
             }
-            // تشغيل ملف صوتي خاص لتحدي استبدال المقطع
+            else if (challenge.id === 'animal-matching') {
+                console.log('🦁 Animal matching audio - rabt.mp3');
+                audioManager.playVoiceFile('audio/rabt.mp3');
+            }
+            else if (challenge.id === 'shadows') {
+                console.log('✈️ Shadows audio - dell.mp3');
+                audioManager.playVoiceFile('audio/dell.mp3');
+            }
+            else if (challenge.id === 'pen-hold') {
+                console.log('✏️ Pen hold audio - kalm.mp3');
+                audioManager.playVoiceFile('audio/kalm.mp3');
+            }
+            // تحديات حرف الباء والجيم
+            else if (challenge.id === 'baa-different-word' || challenge.id === 'jeem-different-word') {
+                console.log('📝 Different word audio');
+                audioManager.playVoiceFile('audio/mokh.mp3');
+            }
             else if (challenge.id === 'baa-replace-syllable' || challenge.id === 'jeem-replace-syllable') {
-                audioManager.playVoiceFile('mak.mp3');
+                console.log('🔄 Replace syllable audio');
+                audioManager.playVoiceFile('audio/mak.mp3');
             }
-            // تشغيل ملف صوتي خاص لتحدي الموضع
             else if (challenge.id === 'baa-position' || challenge.id === 'jeem-position') {
-                audioManager.playVoiceFile('mawdii.mp3');
+                console.log('📍 Position audio');
+                audioManager.playVoiceFile('audio/mawdii.mp3');
             }
-            // تشغيل ملف صوتي خاص لتحدي حذف المقطع
             else if (challenge.id === 'baa-delete-syllable' || challenge.id === 'jeem-delete-syllable') {
-                audioManager.playVoiceFile('hadf.mp3');
+                console.log('❌ Delete syllable audio');
+                audioManager.playVoiceFile('audio/hadf.mp3');
             }
-            // تشغيل ملف صوتي خاص لتحدي تكوين الكلمات
             else if (challenge.id === 'baa-build-words' || challenge.id === 'jeem-build-words') {
-                audioManager.playVoiceFile('kaw.mp3');
+                console.log('🏗️ Build words audio');
+                audioManager.playVoiceFile('audio/kaw.mp3');
             }
-            // تشغيل ملف صوتي خاص لتحدي املأ الفراغ
             else if (challenge.id === 'baa-fill-blank' || challenge.id === 'jeem-fill-blank') {
-                audioManager.playVoiceFile('faragh.mp3');
-            } else {
-                audioManager.playChallengeVoice(challenge.id);
+                console.log('📝 Fill blank audio');
+                audioManager.playVoiceFile('audio/faragh.mp3');
             }
-        }, 300);
+        }, 500);
         
         this.renderChallenge();
     }
@@ -86,8 +109,7 @@ class ChallengeManager {
                 console.warn('نوع التحدي غير معروف:', this.currentChallenge.type);
         }
 
-        // نطق العنوان
-        audioManager.speak(this.currentChallenge.title);
+        // نطق العنوان - تم تعطيله
     }
 
     // لعبة السمكة
@@ -356,9 +378,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي السمكة
         audioManager.playSuccessSound();
-        
-        // تشغيل التعليق الصوتي الخاص بنجاح السمكة
-        audioManager.playVoiceFile('voices/fish_success.mp3');
+        audioManager.playVoiceFile('audio/mom.mp3');
         
         setTimeout(() => {
             // معالجة الإجابة الصحيحة مباشرة لتجنب التخطي
@@ -369,7 +389,7 @@ class ChallengeManager {
             this.updateScore();
             
             // عرض رسالة التشجيع الخاصة بتحدي السمكة
-            const message = 'ممتاز أنت مميز! 🌟';
+            const message = 'ممتاز جدا! 🌟';
             this.showFeedback(message, 'success');
             
             // تحقق من المكافأة
@@ -663,7 +683,7 @@ class ChallengeManager {
             
             // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الحيوانات
             audioManager.playSuccessSound();
-            audioManager.playVoiceFile('voices/animal_success.mp3');
+            audioManager.playVoiceFile('audio/mom.mp3');
             
             // الانتقال للتحدي التالي
             setTimeout(() => {
@@ -672,7 +692,6 @@ class ChallengeManager {
         } else {
             // إجابة خاطئة
             audioManager.playErrorSound();
-            audioManager.playWrongVoice();
             
             const message = `قم بربط جميع الحيوانات المتشابهة! (${correctMatches}/${requiredPairs}) 🎯`;
             this.showFeedback(message, 'error');
@@ -702,18 +721,18 @@ class ChallengeManager {
                             <button class="shadow-btn w-full bg-white hover:bg-purple-50 p-8 rounded-3xl shadow-lg transition-all hover:scale-105 border-4 border-transparent" 
                                     data-correct="${option.correct}" 
                                     data-option-id="${option.id}">
-                                <!-- صورة الظل - Shadow Image -->
-                                <img src="${option.image}" 
-                                     alt="${option.alt}" 
-                                     class="w-full h-48 object-contain shadow-image"
-                                     onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=&quot;text-6xl&quot;>🖤</div><p class=&quot;text-red-500 text-sm mt-2&quot;>الصورة غير متوفرة<br>${option.image}</p>';">
+                                ${option.useEmoji ? 
+                                    `<div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 h-48 flex items-center justify-center">
+                                        <div class="text-8xl" style="filter: grayscale(100%) brightness(0.3);">${option.emoji}</div>
+                                    </div>` 
+                                    : 
+                                    `<img src="${option.image}" 
+                                         alt="${option.alt}" 
+                                         class="w-full h-48 object-contain shadow-image">`
+                                }
                             </button>
                         </div>
                     `).join('')}
-                </div>
-                
-                <div class="text-sm text-gray-500 mt-4">
-                    💡 Tip: Shadow images should be placed in the <code class="bg-gray-200 px-2 py-1 rounded">shadows/</code> folder
                 </div>
             </div>
         `;
@@ -738,7 +757,7 @@ class ChallengeManager {
                     
                     // تشغيل صوت النجاح والتعليق الصوتي العربي الخاص بتحدي الظلال
                     audioManager.playSuccessSound();
-                    audioManager.playVoiceFile('voices/shadows_success.mp3'); // wasl
+                    audioManager.playVoiceFile('audio/ahsnt.mp3');
                     
                     // عرض رسالة مخصصة لتحدي الظلال
                     setTimeout(() => {
@@ -746,7 +765,7 @@ class ChallengeManager {
                         this.correctAnswers++;
                         this.updateScore();
                         
-                        const message = 'وصلت! أحسنت! ✈️';
+                        const message = 'ممتاز جدا! ✈️';
                         this.showFeedback(message, 'success');
                         
                         // تحقق من المكافأة والانتقال
@@ -769,7 +788,6 @@ class ChallengeManager {
                     
                     // تشغيل صوت الخطأ والتعليق الصوتي العربي
                     audioManager.playErrorSound();
-                    audioManager.playWrongVoice(); // "حاول مرة أخرى!"
                     
                     // إزالة تأثير الاهتزاز بعد الانتهاء
                     setTimeout(() => {
@@ -1145,7 +1163,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الكلمة المختلفة
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('mom.mp3');
+        audioManager.playVoiceFile('audio/mom.mp3');
         
         const message = 'ممتاز جدا! 🌟';
         this.showFeedback(message, 'success');
@@ -1172,7 +1190,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي استبدال المقطع
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('ahsnt.mp3');
+        audioManager.playVoiceFile('audio/ahsnt.mp3');
         
         const message = 'برافو احسنت! 👏';
         this.showFeedback(message, 'success');
@@ -1199,7 +1217,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الموضع
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('mom.mp3');
+        audioManager.playVoiceFile('audio/mom.mp3');
         
         const message = 'ممتاز جدا! 🌟';
         this.showFeedback(message, 'success');
@@ -1226,7 +1244,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي حذف المقطع
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('ahsnt.mp3');
+        audioManager.playVoiceFile('audio/ahsnt.mp3');
         
         const message = 'برافو احسنت! 👏';
         this.showFeedback(message, 'success');
@@ -1253,7 +1271,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي تكوين الكلمات
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('haka.mp3');
+        audioManager.playVoiceFile('audio/haka.mp3');
         
         const message = 'انت مبدع حقا! 💫';
         this.showFeedback(message, 'success');
@@ -1280,7 +1298,7 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي املأ الفراغ
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('wasl.mp3');
+        audioManager.playVoiceFile('audio/wasl.mp3');
         
         const message = 'احسنت واصل! 🚀';
         this.showFeedback(message, 'success');
@@ -1307,9 +1325,9 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي القلم
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('voices/pen_success.mp3'); // batl
+        audioManager.playVoiceFile('audio/mom.mp3');
         
-        const message = 'أحسنت يا بطل! ✏️';
+        const message = 'ممتاز جدا! ✏️';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1334,7 +1352,6 @@ class ChallengeManager {
         
         // تشغيل الصوت والتعليق الصوتي العربي
         audioManager.playSuccessSound();
-        audioManager.playCorrectVoice(); // Arabic: "أحسنت!" / "عمل رائع!" / "ممتاز!"
         
         const encouragement = challengesData.encouragement.correct;
         const message = encouragement[Math.floor(Math.random() * encouragement.length)];
@@ -1358,7 +1375,6 @@ class ChallengeManager {
     // التعامل مع الإجابة الخاطئة
     handleWrongAnswer() {
         audioManager.playErrorSound();
-        audioManager.playWrongVoice(); // Arabic: "حاول مرة أخرى!" / "خطأ، جرب من جديد!"
         
         const encouragement = challengesData.encouragement.wrong;
         const message = encouragement[Math.floor(Math.random() * encouragement.length)];

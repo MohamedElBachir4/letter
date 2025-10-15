@@ -5,53 +5,40 @@ class AudioManager {
     constructor() {
         this.audioContext = null;
         this.isSpeaking = false;
+        this.isAudioEnabled = false;
         this.initAudioContext();
         
-        // قائمة التعليقات الصوتية العربية
-        this.voiceFiles = {
-            // Challenge voices - أصوات التحديات
-            challenges: {
-                'fish-game': 'voices/fish_challenge.mp3',
-                'animal-matching': 'voices/animal_matching_challenge.mp3',
-                'shadows': 'voices/shadows_challenge.mp3',
-                'pen-hold': 'voices/pen_hold_challenge.mp3',
-                'baa-different-word': 'voices/baa_different_word.mp3',
-                'baa-replace-syllable': 'voices/baa_replace_syllable.mp3',
-                'baa-position': 'voices/baa_position.mp3',
-                'baa-delete-syllable': 'voices/baa_delete_syllable.mp3',
-                'baa-build-words': 'voices/baa_build_words.mp3',
-                'baa-fill-blank': 'voices/baa_fill_blank.mp3',
-                'jeem-different-word': 'voices/jeem_different_word.mp3'
-            },
-            
-            // Feedback voices - correct answers (randomized)
-            correct: [
-                'voices/correct_1.mp3',  // "أحسنت!"
-                'voices/correct_2.mp3',  // "عمل رائع!"
-                'voices/correct_3.mp3',  // "ممتاز!"
-                'voices/correct_4.mp3',  // "برافو!"
-                'voices/correct_5.mp3'   // "رائع جداً!"
-            ],
-            
-            // Feedback voices - wrong answers (randomized)
-            wrong: [
-                'voices/wrong_1.mp3',    // "حاول مرة أخرى!"
-                'voices/wrong_2.mp3',    // "خطأ، جرب من جديد!"
-                'voices/wrong_3.mp3'     // "جرب مرة أخرى!"
-            ],
-            
-            // Section completion
-            sectionComplete: 'voices/section_complete.mp3', // "أحسنت! أكملت القسم"
-            
-            // Final completion
-            gameComplete: 'voices/game_complete.mp3' // "مبروك! أكملت جميع التحديات"
-        };
+        console.log('🎵 AudioManager initialized');
     }
 
     // تهيئة Audio Context
     initAudioContext() {
-        if ('AudioContext' in window || 'webkitAudioContext' in window) {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        try {
+            if ('AudioContext' in window || 'webkitAudioContext' in window) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                console.log('🎵 AudioContext created, state:', this.audioContext.state);
+            }
+        } catch (error) {
+            console.error('❌ Error creating AudioContext:', error);
+        }
+    }
+
+    // تفعيل الصوت (يجب استدعاؤه عند أول تفاعل)
+    enableAudio() {
+        if (!this.isAudioEnabled && this.audioContext) {
+            console.log('🔓 Enabling audio...');
+            
+            if (this.audioContext.state === 'suspended') {
+                this.audioContext.resume().then(() => {
+                    console.log('✅ AudioContext resumed, state:', this.audioContext.state);
+                    this.isAudioEnabled = true;
+                }).catch(error => {
+                    console.error('❌ Error resuming AudioContext:', error);
+                });
+            } else {
+                console.log('✅ AudioContext already running');
+                this.isAudioEnabled = true;
+            }
         }
     }
 
@@ -69,46 +56,84 @@ class AudioManager {
     
     // تشغيل صوت التحدي
     playChallengeVoice(challengeId) {
-        const voiceFile = this.voiceFiles.challenges[challengeId];
-        if (voiceFile) {
-            this.playVoiceFile(voiceFile);
-        }
+        // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
     // تشغيل صوت إجابة صحيحة (عشوائي)
     playCorrectVoice() {
-        const randomIndex = Math.floor(Math.random() * this.voiceFiles.correct.length);
-        const voiceFile = this.voiceFiles.correct[randomIndex];
-        this.playVoiceFile(voiceFile);
+        // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
     // تشغيل صوت إجابة خاطئة (عشوائي)
     playWrongVoice() {
-        const randomIndex = Math.floor(Math.random() * this.voiceFiles.wrong.length);
-        const voiceFile = this.voiceFiles.wrong[randomIndex];
-        this.playVoiceFile(voiceFile);
+        // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
     // تشغيل صوت إكمال القسم
     playSectionCompleteVoice() {
-        this.playVoiceFile(this.voiceFiles.sectionComplete);
+        // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
     // تشغيل صوت إكمال اللعبة
     playGameCompleteVoice() {
-        this.playVoiceFile(this.voiceFiles.gameComplete);
+        // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
     // تشغيل ملف صوتي عربي
     playVoiceFile(filename) {
-        if (!filename) return;
+        if (!filename) {
+            console.warn('⚠️ No filename provided to playVoiceFile');
+            return;
+        }
         
-        const audio = new Audio(filename);
-        audio.volume = 0.8; // Volume suitable for voices
-        audio.play().catch(error => {
-            console.warn('Could not play voice file:', filename);
-            console.warn('Make sure the MP3 file exists in the voices/ folder');
-        });
+        // تفعيل الصوت إذا لم يكن مفعلاً
+        this.enableAudio();
+        
+        console.log('🔊 Attempting to play voice file:', filename);
+        
+        try {
+            const audio = new Audio(filename);
+            audio.volume = 0.8;
+            audio.preload = 'auto';
+            
+            // Event listeners for debugging
+            audio.addEventListener('loadstart', () => {
+                console.log('📥 Loading:', filename);
+            });
+            
+            audio.addEventListener('canplay', () => {
+                console.log('▶️ Can play:', filename);
+            });
+            
+            audio.addEventListener('playing', () => {
+                console.log('✅ Now playing:', filename);
+            });
+            
+            audio.addEventListener('error', (e) => {
+                console.error('❌ Audio error for:', filename);
+                console.error('Error code:', audio.error?.code);
+                console.error('Error message:', audio.error?.message);
+            });
+            
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('✅ Play promise resolved:', filename);
+                    })
+                    .catch(error => {
+                        console.error('❌ Play promise rejected:', filename);
+                        console.error('Error:', error.name, '-', error.message);
+                        
+                        if (error.name === 'NotAllowedError') {
+                            console.warn('⚠️ Audio blocked by browser. User interaction required.');
+                        }
+                    });
+            }
+        } catch (error) {
+            console.error('❌ Exception in playVoiceFile:', error);
+        }
     }
 
     // Legacy method (disabled)

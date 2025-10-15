@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الأصوات</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .status {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .log-success { background: #d4edda; color: #155724; }
+        .log-error { background: #f8d7da; color: #721c24; }
+        .log-info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 اختبار التعليقات الصوتية</h1>
+        
+        <div class="status" id="status">
+            <div class="log-entry log-info">انقر على أي زر لاختبار الصوت...</div>
+        </div>
+        
+        <div class="audio-grid" id="audio-grid">
+            <!-- Will be filled by JavaScript -->
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <button onclick="testAllAudios()" style="font-size: 18px; padding: 20px 40px;">
+                🎵 اختبر جميع الأصوات
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const audioFiles = [
+            { file: 'samaka.mp3', name: 'لعبة السمكة' },
+            { file: 'rabt.mp3', name: 'ربط الحيوانات' },
+            { file: 'dell.mp3', name: 'الظلال' },
+            { file: 'kalm.mp3', name: 'إمساك القلم' },
+            { file: 'mokh.mp3', name: 'الكلمة المختلفة' },
+            { file: 'mak.mp3', name: 'استبدال المقطع' },
+            { file: 'mawdii.mp3', name: 'الموضع' },
+            { file: 'hadf.mp3', name: 'حذف المقطع' },
+            { file: 'kaw.mp3', name: 'تكوين الكلمات' },
+            { file: 'faragh.mp3', name: 'املأ الفراغ' },
+            { file: 'mom.mp3', name: 'ممتاز (نجاح)' },
+            { file: 'ahsnt.mp3', name: 'أحسنت (نجاح)' },
+            { file: 'haka.mp3', name: 'مبدع (نجاح)' },
+            { file: 'wasl.mp3', name: 'واصل (نجاح)' },
+            { file: 'loup1.mp3', name: 'الثعلب 1' },
+            { file: 'loup2.mp3', name: 'الثعلب 2' },
+            { file: 'dob1.mp3', name: 'الدب 1' },
+            { file: 'dob2.mp3', name: 'الدب 2' },
+            { file: 'far1.mp3', name: 'الفراشة 1' },
+            { file: 'far2.mp3', name: 'الفراشة 2' },
+            { file: 'jam1.mp3', name: 'الجمل 1' },
+            { file: 'jam2.mp3', name: 'الجمل 2' }
+        ];
+
+        const statusDiv = document.getElementById('status');
+        let currentAudio = null;
+
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = message;
+            statusDiv.insertBefore(logEntry, statusDiv.firstChild);
+            
+            // Keep only last 20 logs
+            while (statusDiv.children.length > 20) {
+                statusDiv.removeChild(statusDiv.lastChild);
+            }
+        }
+
+        function playAudio(filename, name) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+
+            addLog(`🔊 محاولة تشغيل: ${name} (${filename})`, 'info');
+            
+            const audio = new Audio(`audio/${filename}`);
+            audio.volume = 0.8;
+            
+            audio.addEventListener('loadstart', () => {
+                addLog(`📥 جاري تحميل: ${name}`, 'info');
+            });
+            
+            audio.addEventListener('canplay', () => {
+                addLog(`✅ جاهز للتشغيل: ${name}`, 'success');
+            });
+            
+            audio.addEventListener('playing', () => {
+                addLog(`▶️ يتم التشغيل الآن: ${name}`, 'success');
+            });
+            
+            audio.addEventListener('ended', () => {
+                addLog(`⏹️ انتهى التشغيل: ${name}`, 'info');
+                currentAudio = null;
+            });
+            
+            audio.addEventListener('error', (e) => {
+                addLog(`❌ خطأ في تحميل: ${name}`, 'error');
+                addLog(`Error code: ${audio.error?.code}`, 'error');
+            });
+            
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        addLog(`✅ تم بدء التشغيل: ${name}`, 'success');
+                        currentAudio = audio;
+                    })
+                    .catch(error => {
+                        addLog(`❌ فشل التشغيل: ${name} - ${error.message}`, 'error');
+                    });
+            }
+        }
+
+        function testAllAudios() {
+            addLog('🎵 بدء اختبار جميع الأصوات...', 'info');
+            let index = 0;
+            
+            function playNext() {
+                if (index >= audioFiles.length) {
+                    addLog('✅ انتهى اختبار جميع الأصوات!', 'success');
+                    return;
+                }
+                
+                const audio = audioFiles[index];
+                playAudio(audio.file, audio.name);
+                index++;
+                
+                setTimeout(playNext, 2000); // Wait 2 seconds between tests
+            }
+            
+            playNext();
+        }
+
+        // Create buttons
+        const grid = document.getElementById('audio-grid');
+        audioFiles.forEach(audio => {
+            const btn = document.createElement('button');
+            btn.textContent = audio.name;
+            btn.onclick = () => playAudio(audio.file, audio.name);
+            grid.appendChild(btn);
+        });
+
+        // Log initialization
+        addLog('✅ صفحة الاختبار جاهزة!', 'success');
+        addLog('انقر على أي زر لاختبار الصوت...', 'info');
+    </script>
+</body>
+</html>
+
