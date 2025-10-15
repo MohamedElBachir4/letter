@@ -1,0 +1,43 @@
+{
+  "name": "arabic-letters-learning-game",
+  "version": "1.0.0",
+  "description": "🎓 لعبة تعليمية تفاعلية للأطفال لتعليم الحروف العربية بأسلوب Duolingo",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve",
+    "dev": "npx serve -l 8000",
+    "build": "echo 'No build step required - static HTML project'",
+    "test": "echo 'No tests configured yet'"
+  },
+  "keywords": [
+    "تعليم",
+    "حروف",
+    "عربية",
+    "أطفال",
+    "لعبة",
+    "تفاعلية",
+    "duolingo",
+    "education",
+    "arabic",
+    "letters",
+    "kids",
+    "game",
+    "interactive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/arabic-letters-learning-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/arabic-letters-learning-game/issues"
+  },
+  "homepage": "https://github.com/yourusername/arabic-letters-learning-game#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+

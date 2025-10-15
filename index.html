@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 لعبة تعليم الحروف</title>
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #FFB6D9 0%, #FEC7D7 25%, #A4D8E1 50%, #8EC5FC 75%, #B8D8FF 100%);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(5deg); }
+        }
+        
+        .pulse-button {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.08); }
+        }
+        
+        .decorative-element {
+            position: absolute;
+            opacity: 0.2;
+            pointer-events: none;
+            animation: float-element 6s ease-in-out infinite;
+        }
+        
+        @keyframes float-element {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+        
+        .btn-primary {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .card-main {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .feature-box {
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- عناصر زخرفية في الخلفية -->
+    <div class="decorative-element text-9xl" style="top: 10%; right: 5%;">🎨</div>
+    <div class="decorative-element text-9xl" style="top: 60%; left: 5%;">📚</div>
+    <div class="decorative-element text-9xl" style="top: 30%; right: 80%;">✏️</div>
+    <div class="decorative-element text-9xl" style="top: 70%; right: 10%;">🌟</div>
+    <div class="decorative-element text-9xl" style="top: 50%; right: 85%;">☁️</div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="container mx-auto px-4 py-8 min-h-screen flex items-center justify-center">
+        <div class="max-w-2xl w-full">
+            <!-- البطاقة الرئيسية -->
+            <div class="card-main rounded-3xl shadow-2xl p-8 md:p-12 text-center relative overflow-hidden">
+                <!-- تأثير توهج في الخلفية -->
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-100/50 via-pink-100/50 to-blue-100/50 animate-pulse"></div>
+                
+                <!-- المحتوى -->
+                <div class="relative z-10">
+                    <!-- أيقونة الطفل العائمة -->
+                    <div class="floating text-9xl mb-6">
+                        👦📚✨
+                    </div>
+                    
+                    <!-- العنوان الرئيسي -->
+                    <h1 class="text-5xl md:text-7xl font-black mb-4" style="background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #3B82F6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        🎓 لعبة تعليم الحروف
+                    </h1>
+                    
+                    <p class="text-2xl md:text-3xl font-bold mb-8" style="color: #6B21A8;">
+                        تعلّم الحروف العربية بطريقة ممتعة وتفاعلية!
+                    </p>
+                </div>
+                
+                <!-- الأزرار -->
+                <div class="space-y-5 relative z-10">
+                    <!-- زر الاستماع للعرض -->
+                    <button 
+                        id="listenBtn"
+                        class="btn-primary w-full bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 text-white text-2xl md:text-4xl font-black py-8 px-10 rounded-3xl shadow-2xl flex items-center justify-center gap-4 border-4 border-white"
+                    >
+                        <span class="text-5xl">📄</span>
+                        <span>عرض المشروع</span>
+                    </button>
+                    
+                    <!-- زر بدء اللعبة -->
+                    <button 
+                        id="startGameBtn"
+                        class="btn-primary pulse-button w-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 text-white text-2xl md:text-4xl font-black py-8 px-10 rounded-3xl shadow-2xl flex items-center justify-center gap-4 border-4 border-white"
+                    >
+                        <span class="text-5xl">🎮</span>
+                        <span>ابدأ اللعبة</span>
+                    </button>
+                </div>
+                
+                <!-- معلومات إضافية -->
+                <div class="mt-10 grid grid-cols-3 gap-5 text-center relative z-10">
+                    <div class="feature-box bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl p-6 border-3 border-purple-300">
+                        <div class="text-5xl mb-3 animate-bounce">🎯</div>
+                        <div class="text-base font-black text-purple-700">تحديات ممتعة</div>
+                    </div>
+                    <div class="feature-box bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-6 border-3 border-blue-300">
+                        <div class="text-5xl mb-3 animate-bounce" style="animation-delay: 0.2s;">🔊</div>
+                        <div class="text-base font-black text-blue-700">نطق صوتي</div>
+                    </div>
+                    <div class="feature-box bg-gradient-to-br from-green-100 to-green-200 rounded-2xl p-6 border-3 border-green-300">
+                        <div class="text-5xl mb-3 animate-bounce" style="animation-delay: 0.4s;">⭐</div>
+                        <div class="text-base font-black text-green-700">نقاط ومكافآت</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- حقوق الطبع -->
+            <div class="text-center mt-8 text-white text-lg font-bold opacity-90 drop-shadow-lg">
+                <p>✨ تصميم تعليمي تفاعلي للأطفال 2025 ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gentle sound effect for button clicks
+        const playClickSound = () => {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.08);
+        };
+
+        // زر عرض المشروع (فتح PDF)
+        document.getElementById('listenBtn').addEventListener('click', () => {
+            playClickSound();
+            // فتح ملف PDF في نافذة جديدة
+            window.open('project.pdf', '_blank');
+        });
+
+        // زر بدء اللعبة
+        document.getElementById('startGameBtn').addEventListener('click', () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = 'game.html';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
