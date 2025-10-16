@@ -180,9 +180,9 @@ const challengesData = {
             letter: 'ج',
             points: 10,
             exercises: [
-                { original: 'مَسْجِد', colored: 'مَ', replacement: 'جَ', answer: 'جَسْجِد' },
-                { original: 'دَجاجة', colored: 'دَ', replacement: 'جَ', answer: 'جَجاجة' },
-                { original: 'رَجُل', colored: 'رَ', replacement: 'جَ', answer: 'جَجُل' }
+                { original: 'نَمَل', colored: 'نَ', replacement: 'جَ', answer: 'جَمَل' },
+                { original: 'سَرَح', colored: 'سَ', replacement: 'جَ', answer: 'جَرَح' },
+                { original: 'حَبَل', colored: 'حَ', replacement: 'جَ', answer: 'جَبَل' }
             ]
         },
         {
