@@ -115,36 +115,36 @@ class ChallengeManager {
     // لعبة السمكة
     renderFishGame(container) {
         container.innerHTML = `
-            <div class="text-center">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
-                <p class="text-lg text-purple-500 mb-4">ارسم خطاً لمساعدة السمكة في الوصول إلى الحوض 🐟</p>
+            <div class="text-center px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                <p class="text-base md:text-lg text-purple-500 mb-3">ارسم خطاً لمساعدة السمكة في الوصول إلى الحوض 🐟</p>
                 
-                <div class="relative bg-blue-50 rounded-3xl p-8 h-96 overflow-hidden" id="fish-game-area">
+                <div class="relative bg-blue-50 rounded-3xl p-4 md:p-8 h-72 md:h-96 overflow-hidden" id="fish-game-area">
                     <!-- Canvas للرسم -->
                     <canvas id="drawing-canvas" class="absolute inset-0 w-full h-full cursor-crosshair drawing-canvas" style="z-index: 10;"></canvas>
                     
                     <!-- السمكة -->
-                    <div id="fish" class="absolute text-6xl cursor-pointer transition-all duration-500" style="top: 50%; right: 10%; z-index: 5;">
+                    <div id="fish" class="absolute text-4xl md:text-6xl cursor-pointer transition-all duration-500" style="top: 50%; right: 10%; z-index: 5;">
                         🐟
                     </div>
                     
                     <!-- المسار الموجود -->
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4">
-                        <div class="border-dashed border-4 border-blue-300 h-1"></div>
+                        <div class="border-dashed border-2 md:border-4 border-blue-300 h-1"></div>
                     </div>
                     
                     <!-- الحوض -->
-                    <div id="fishbowl" class="absolute text-6xl" style="top: 45%; left: 10%; z-index: 5;">
+                    <div id="fishbowl" class="absolute text-4xl md:text-6xl" style="top: 45%; left: 10%; z-index: 5;">
                         🏺
                     </div>
                 </div>
                 
-                <div class="mt-4 flex gap-4 justify-center">
-                    <button id="clearPath" class="bg-red-500 text-white text-lg font-bold py-2 px-6 rounded-xl hover:bg-red-600 transition-all">
+                <div class="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2">
+                    <button id="clearPath" class="bg-red-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-red-600 transition-all">
                         🗑️ امسح المسار
                     </button>
-                    <button id="checkPath" class="bg-green-500 text-white text-lg font-bold py-2 px-6 rounded-xl hover:bg-green-600 transition-all">
+                    <button id="checkPath" class="bg-green-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-green-600 transition-all">
                         ✅ تحقق من المسار
                     </button>
                 </div>
@@ -439,19 +439,19 @@ class ChallengeManager {
         }
 
         container.innerHTML = `
-            <div class="text-center">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
-                <p class="text-lg text-purple-500 mb-4">ارسم خطوطاً لربط الحيوانات المتشابهة 🎨</p>
+            <div class="text-center px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                <p class="text-base md:text-lg text-purple-500 mb-3">ارسم خطوطاً لربط الحيوانات المتشابهة 🎨</p>
                 
-                <div class="relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 h-96 overflow-hidden" id="matching-game-area">
+                <div class="relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-4 md:p-8 h-80 md:h-96 overflow-hidden" id="matching-game-area">
                     <!-- Canvas للرسم -->
                     <canvas id="matching-canvas" class="absolute inset-0 w-full h-full cursor-crosshair drawing-canvas" style="z-index: 10;"></canvas>
                     
-                    <div class="grid grid-cols-2 gap-8 max-w-2xl mx-auto h-full relative" style="z-index: 5;">
-                        <div id="left-column" class="space-y-4 flex flex-col justify-center">
+                    <div class="grid grid-cols-2 gap-4 md:gap-8 max-w-2xl mx-auto h-full relative" style="z-index: 5;">
+                        <div id="left-column" class="space-y-2 md:space-y-4 flex flex-col justify-center">
                             ${leftAnimals.map((animal, index) => `
-                                <div class="animal-card bg-yellow-100 p-6 rounded-2xl text-5xl cursor-pointer hover:scale-110 transition-all border-4 border-transparent hover:border-yellow-300" 
+                                <div class="animal-card bg-yellow-100 p-3 md:p-6 rounded-2xl text-3xl md:text-5xl cursor-pointer hover:scale-110 transition-all border-4 border-transparent hover:border-yellow-300" 
                                      data-id="${animal.id}" 
                                      data-side="left" 
                                      data-index="${index}"
@@ -460,9 +460,9 @@ class ChallengeManager {
                                 </div>
                             `).join('')}
                         </div>
-                        <div id="right-column" class="space-y-4 flex flex-col justify-center">
+                        <div id="right-column" class="space-y-2 md:space-y-4 flex flex-col justify-center">
                             ${rightAnimals.map((animal, index) => `
-                                <div class="animal-card bg-green-100 p-6 rounded-2xl text-5xl cursor-pointer hover:scale-110 transition-all border-4 border-transparent hover:border-green-300" 
+                                <div class="animal-card bg-green-100 p-3 md:p-6 rounded-2xl text-3xl md:text-5xl cursor-pointer hover:scale-110 transition-all border-4 border-transparent hover:border-green-300" 
                                      data-id="${animal.id}" 
                                      data-side="right" 
                                      data-index="${index}"
@@ -474,11 +474,11 @@ class ChallengeManager {
                     </div>
                 </div>
                 
-                <div class="mt-4 flex gap-4 justify-center">
-                    <button id="clearLines" class="bg-red-500 text-white text-lg font-bold py-2 px-6 rounded-xl hover:bg-red-600 transition-all">
+                <div class="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2">
+                    <button id="clearLines" class="bg-red-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-red-600 transition-all">
                         🗑️ امسح الخطوط
                     </button>
-                    <button id="checkMatching" class="bg-green-500 text-white text-lg font-bold py-2 px-6 rounded-xl hover:bg-green-600 transition-all">
+                    <button id="checkMatching" class="bg-green-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-green-600 transition-all">
                         ✅ تحقق من الربط
                     </button>
                 </div>
@@ -740,31 +740,31 @@ class ChallengeManager {
         const shuffledOptions = [...this.currentChallenge.shadowOptions].sort(() => Math.random() - 0.5);
         
         container.innerHTML = `
-            <div class="text-center max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-4xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
                 <!-- Main Image - الصورة الأساسية -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="text-9xl mb-6">${this.currentChallenge.image}</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">${this.currentChallenge.question}</h3>
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-7xl md:text-9xl mb-4">${this.currentChallenge.image}</div>
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4">${this.currentChallenge.question}</h3>
                 </div>
                 
                 <!-- Shadow Options - خيارات الظلال -->
-                <div class="grid grid-cols-3 gap-6 mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8">
                     ${shuffledOptions.map((option, index) => `
                         <div class="shadow-option-container">
-                            <button class="shadow-btn w-full bg-white hover:bg-purple-50 p-8 rounded-3xl shadow-lg transition-all hover:scale-105 border-4 border-transparent" 
+                            <button class="shadow-btn w-full bg-white hover:bg-purple-50 p-4 md:p-8 rounded-3xl shadow-lg transition-all hover:scale-105 border-4 border-transparent" 
                                     data-correct="${option.correct}" 
                                     data-option-id="${option.id}">
                                 ${option.useEmoji ? 
-                                    `<div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 h-48 flex items-center justify-center">
-                                        <div class="text-8xl" style="filter: grayscale(100%) brightness(0.3);">${option.emoji}</div>
+                                    `<div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 md:p-8 h-32 md:h-48 flex items-center justify-center">
+                                        <div class="text-6xl md:text-8xl" style="filter: grayscale(100%) brightness(0.3);">${option.emoji}</div>
                                     </div>` 
                                     : 
                                     `<img src="${option.image}" 
                                          alt="${option.alt}" 
-                                         class="w-full h-48 object-contain shadow-image">`
+                                         class="w-full h-32 md:h-48 object-contain shadow-image">`
                                 }
                             </button>
                         </div>
@@ -847,19 +847,19 @@ class ChallengeManager {
     // اختيار متعدد
     renderMultipleChoice(container) {
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                ${this.currentChallenge.image ? `<div class="text-9xl mb-8">${this.currentChallenge.image}</div>` : ''}
+                ${this.currentChallenge.image ? `<div class="text-7xl md:text-9xl mb-6">${this.currentChallenge.image}</div>` : ''}
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">${this.currentChallenge.question}</h3>
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">${this.currentChallenge.question}</h3>
                     
-                    <div class="grid gap-4">
+                    <div class="grid gap-3 md:gap-4">
                         ${this.currentChallenge.options.map((option, index) => `
-                            <button class="option-btn bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 p-6 rounded-2xl text-xl font-bold text-gray-800 transition-all hover:scale-105 text-right" data-correct="${option.correct}" data-option-id="${option.id}">
-                                <span class="mr-3">${option.emoji || '📌'}</span>
+                            <button class="option-btn bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 p-4 md:p-6 rounded-2xl text-lg md:text-xl font-bold text-gray-800 transition-all hover:scale-105 text-right" data-correct="${option.correct}" data-option-id="${option.id}">
+                                <span class="mr-2 md:mr-3">${option.emoji || '📌'}</span>
                                 ${option.text}
                             </button>
                         `).join('')}
@@ -911,27 +911,27 @@ class ChallengeManager {
         const exercise = this.currentChallenge.exercises[0]; // نأخذ أول تمرين كمثال
 
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="text-4xl font-bold mb-8">
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
                         <span class="text-gray-400 line-through">${exercise.colored}</span>
                         <span class="text-gray-800">${exercise.original.replace(exercise.colored, '')}</span>
                     </div>
                     
-                    <div class="mb-8">
-                        <div id="replacement-syllable" class="inline-block bg-purple-200 text-purple-800 text-3xl font-bold px-6 py-4 rounded-2xl cursor-move" draggable="true">
+                    <div class="mb-6 md:mb-8">
+                        <div id="replacement-syllable" class="inline-block bg-purple-200 text-purple-800 text-2xl md:text-3xl font-bold px-5 md:px-6 py-3 md:py-4 rounded-2xl cursor-move" draggable="true">
                             ${exercise.replacement}
                         </div>
                     </div>
                     
-                    <div id="drop-zone" class="border-4 border-dashed border-purple-300 rounded-2xl p-8 min-h-32 bg-purple-50">
-                        <p class="text-gray-400">اسحب المقطع هنا</p>
+                    <div id="drop-zone" class="border-4 border-dashed border-purple-300 rounded-2xl p-6 md:p-8 min-h-24 md:min-h-32 bg-purple-50">
+                        <p class="text-gray-400 text-lg md:text-xl">اسحب المقطع هنا</p>
                     </div>
                     
-                    <div id="result" class="mt-6 text-3xl font-bold text-green-600"></div>
+                    <div id="result" class="mt-4 md:mt-6 text-2xl md:text-3xl font-bold text-green-600"></div>
                 </div>
             </div>
         `;
@@ -976,23 +976,23 @@ class ChallengeManager {
         const word = this.currentChallenge.words[0];
 
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="text-5xl font-bold mb-8 text-gray-800">
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-4xl md:text-5xl font-bold mb-6 md:mb-8 text-gray-800">
                         ${word.word}
                     </div>
                     
-                    <div class="grid grid-cols-3 gap-4">
-                        <button class="position-btn bg-blue-100 hover:bg-blue-200 p-6 rounded-2xl text-xl font-bold transition-all" data-position="أول">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                        <button class="position-btn bg-blue-100 hover:bg-blue-200 p-4 md:p-6 rounded-2xl text-lg md:text-xl font-bold transition-all" data-position="أول">
                             أول الكلمة
                         </button>
-                        <button class="position-btn bg-green-100 hover:bg-green-200 p-6 rounded-2xl text-xl font-bold transition-all" data-position="وسط">
+                        <button class="position-btn bg-green-100 hover:bg-green-200 p-4 md:p-6 rounded-2xl text-lg md:text-xl font-bold transition-all" data-position="وسط">
                             وسط الكلمة
                         </button>
-                        <button class="position-btn bg-yellow-100 hover:bg-yellow-200 p-6 rounded-2xl text-xl font-bold transition-all" data-position="آخر">
+                        <button class="position-btn bg-yellow-100 hover:bg-yellow-200 p-4 md:p-6 rounded-2xl text-lg md:text-xl font-bold transition-all" data-position="آخر">
                             آخر الكلمة
                         </button>
                     </div>
@@ -1029,12 +1029,12 @@ class ChallengeManager {
         const exercise = this.currentChallenge.exercises[0];
 
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="text-4xl font-bold mb-8">
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
                         <span class="text-gray-800">${exercise.word}</span>
                         <span class="text-red-500 line-through mx-2">${exercise.delete}</span>
                     </div>
@@ -1042,11 +1042,11 @@ class ChallengeManager {
                     <input 
                         type="text" 
                         id="answer-input" 
-                        class="text-3xl font-bold text-center p-4 border-4 border-purple-300 rounded-2xl w-64 focus:border-purple-500 outline-none"
+                        class="text-2xl md:text-3xl font-bold text-center p-3 md:p-4 border-4 border-purple-300 rounded-2xl w-48 md:w-64 focus:border-purple-500 outline-none"
                         placeholder="اكتب الإجابة"
                     />
                     
-                    <button id="check-answer" class="block mx-auto mt-6 bg-green-500 text-white text-xl font-bold py-4 px-8 rounded-2xl hover:bg-green-600 transition-all">
+                    <button id="check-answer" class="block mx-auto mt-4 md:mt-6 bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
                     </button>
                 </div>
@@ -1078,30 +1078,30 @@ class ChallengeManager {
         const exercise = this.currentChallenge.exercises[0];
 
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold text-gray-600 mb-4">المقاطع المتاحة:</h3>
-                        <div class="flex gap-4 justify-center flex-wrap" id="syllables-container">
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-lg md:text-xl font-bold text-gray-600 mb-3 md:mb-4">المقاطع المتاحة:</h3>
+                        <div class="flex gap-2 md:gap-4 justify-center flex-wrap" id="syllables-container">
                             ${exercise.syllables.map((syllable, index) => `
-                                <div class="syllable bg-purple-200 text-purple-800 text-3xl font-bold px-6 py-4 rounded-2xl cursor-pointer hover:scale-110 transition-all" data-syllable="${syllable}" data-index="${index}">
+                                <div class="syllable bg-purple-200 text-purple-800 text-2xl md:text-3xl font-bold px-4 md:px-6 py-3 md:py-4 rounded-2xl cursor-pointer hover:scale-110 transition-all" data-syllable="${syllable}" data-index="${index}">
                                     ${syllable}
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                     
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold text-gray-600 mb-4">الكلمة:</h3>
-                        <div id="word-builder" class="min-h-20 border-4 border-dashed border-purple-300 rounded-2xl p-4 flex gap-2 justify-center items-center bg-purple-50">
-                            <p class="text-gray-400">انقر على المقاطع لبناء الكلمة</p>
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-lg md:text-xl font-bold text-gray-600 mb-3 md:mb-4">الكلمة:</h3>
+                        <div id="word-builder" class="min-h-16 md:min-h-20 border-4 border-dashed border-purple-300 rounded-2xl p-3 md:p-4 flex gap-2 justify-center items-center bg-purple-50">
+                            <p class="text-gray-400 text-base md:text-lg">انقر على المقاطع لبناء الكلمة</p>
                         </div>
                     </div>
                     
-                    <button id="check-word" class="bg-green-500 text-white text-xl font-bold py-4 px-8 rounded-2xl hover:bg-green-600 transition-all">
+                    <button id="check-word" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
                     </button>
                 </div>
@@ -1156,16 +1156,16 @@ class ChallengeManager {
         const exercise = this.currentChallenge.exercises[0];
 
         container.innerHTML = `
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">${this.currentChallenge.title}</h2>
-                <p class="text-xl text-gray-600 mb-8">${this.currentChallenge.description}</p>
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
                 
-                <div class="bg-white rounded-3xl p-8 shadow-lg mb-8">
-                    <div class="text-5xl font-bold mb-8 text-gray-800">
-                        ${exercise.word.replace('_', '<input type="text" class="inline-block w-16 text-center border-b-4 border-purple-500 bg-transparent outline-none" id="blank-input" />')}
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 text-gray-800">
+                        ${exercise.word.replace('_', '<input type="text" class="inline-block w-12 md:w-16 text-center border-b-4 border-purple-500 bg-transparent outline-none" id="blank-input" />')}
                     </div>
                     
-                    <button id="check-blank" class="bg-green-500 text-white text-xl font-bold py-4 px-8 rounded-2xl hover:bg-green-600 transition-all">
+                    <button id="check-blank" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
                     </button>
                 </div>
