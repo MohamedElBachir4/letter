@@ -269,13 +269,19 @@ class ChallengeManager {
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
         
-        // أحداث اللمس للأجهزة المحمولة
+        // أحداث اللمس للأجهزة المحمولة - مع تتبع آخر موضع لمس
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
             const mouseEvent = new MouseEvent('mousedown', {
                 clientX: touch.clientX,
-                clientY: touch.clientY
+                clientY: touch.clientY,
+                bubbles: true
             });
             canvas.dispatchEvent(mouseEvent);
         });
@@ -283,16 +289,28 @@ class ChallengeManager {
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
             const mouseEvent = new MouseEvent('mousemove', {
                 clientX: touch.clientX,
-                clientY: touch.clientY
+                clientY: touch.clientY,
+                bubbles: true
             });
             canvas.dispatchEvent(mouseEvent);
         });
         
         canvas.addEventListener('touchend', (e) => {
             e.preventDefault();
-            const mouseEvent = new MouseEvent('mouseup', {});
+            // استخدام آخر إحداثيات معروفة من changedTouches أو lastTouch
+            const touch = e.changedTouches[0];
+            const finalX = touch ? touch.clientX : lastTouchX;
+            const finalY = touch ? touch.clientY : lastTouchY;
+            
+            const mouseEvent = new MouseEvent('mouseup', {
+                clientX: finalX,
+                clientY: finalY,
+                bubbles: true
+            });
             canvas.dispatchEvent(mouseEvent);
         });
         
@@ -576,13 +594,19 @@ class ChallengeManager {
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
         
-        // أحداث اللمس للأجهزة المحمولة
+        // أحداث اللمس للأجهزة المحمولة - مع تتبع آخر موضع لمس
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
             const mouseEvent = new MouseEvent('mousedown', {
                 clientX: touch.clientX,
-                clientY: touch.clientY
+                clientY: touch.clientY,
+                bubbles: true
             });
             canvas.dispatchEvent(mouseEvent);
         });
@@ -590,16 +614,28 @@ class ChallengeManager {
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
             const mouseEvent = new MouseEvent('mousemove', {
                 clientX: touch.clientX,
-                clientY: touch.clientY
+                clientY: touch.clientY,
+                bubbles: true
             });
             canvas.dispatchEvent(mouseEvent);
         });
         
         canvas.addEventListener('touchend', (e) => {
             e.preventDefault();
-            const mouseEvent = new MouseEvent('mouseup', {});
+            // استخدام آخر إحداثيات معروفة من changedTouches أو lastTouch
+            const touch = e.changedTouches[0];
+            const finalX = touch ? touch.clientX : lastTouchX;
+            const finalY = touch ? touch.clientY : lastTouchY;
+            
+            const mouseEvent = new MouseEvent('mouseup', {
+                clientX: finalX,
+                clientY: finalY,
+                bubbles: true
+            });
             canvas.dispatchEvent(mouseEvent);
         });
         
