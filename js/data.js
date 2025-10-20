@@ -13,6 +13,15 @@ const challengesData = {
             // successAudio: تم تعطيل التسجيلات الصوتية
         },
         {
+            id: 'frog-game',
+            type: 'frog-path',
+            title: '🐸 لعبة الضفدع',
+            description: 'ساعد الضفدع للوصول إلى الورقة',
+            points: 10,
+            emoji: '🐸',
+            // successAudio: تم تعطيل التسجيلات الصوتية
+        },
+        {
             id: 'animal-matching',
             type: 'matching',
             title: '🦁 ربط الحيوانات',
@@ -55,201 +64,238 @@ const challengesData = {
         }
     ],
 
-    // تحديات حرف الباء
+    // تحديات حرف الباء - نسخة مشوقة على نمط Duolingo
     letterBaa: [
         {
-            id: 'baa-different-word',
+            id: 'baa-odd-word-out',
             type: 'multiple-choice',
-            title: 'حرف الباء - الكلمة المختلفة',
-            description: 'اختر الكلمة التي لا تنتهي بنفس الحرف',
+            title: '🟠 السؤال 1: اشطب الكلمة الدخيلة',
+            description: 'اختر الكلمة التي لا تحتوي على حرف الباء في نهايتها',
             letter: 'ب',
             points: 10,
-            question: 'أي كلمة مختلفة؟',
+            question: 'أي كلمة دخيلة؟ 🎯',
             options: [
-                { id: 1, text: 'ذَهَبَ', audio: 'ذَهَبَ', correct: false },
-                { id: 2, text: 'كَتَبَ', audio: 'كَتَبَ', correct: false },
-                { id: 3, text: 'يُجمَع', audio: 'يُجمَع', correct: true },
-                { id: 4, text: 'لَعِبَ', audio: 'لَعِبَ', correct: false }
-            ],
-            // successAudio: تم تعطيل التسجيلات الصوتية
+                { id: 1, text: 'يَشرَبُ', audio: 'يَشرَبُ', correct: false, emoji: '💧' },
+                { id: 2, text: 'يَضرِبُ', audio: 'يَضرِبُ', correct: false, emoji: '🥊' },
+                { id: 3, text: 'يَهرُبُ', audio: 'يَهرُبُ', correct: false, emoji: '🏃' },
+                { id: 4, text: 'يَجمَعُ', audio: 'يَجمَعُ', correct: true, emoji: '📦' }
+            ]
         },
         {
-            id: 'baa-replace-syllable',
-            type: 'drag-drop',
-            title: 'حرف الباء - استبدال المقطع',
-            description: 'استبدل المقطع الملوّن بمقطع "بَ"',
+            id: 'baa-repeated-letter',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 2: ما الحرف المتكرر؟',
+            description: 'ما هو الحرف الذي تكرّر في نهاية الكلمات التالية؟',
             letter: 'ب',
             points: 10,
-            exercises: [
-                { original: 'زَيْت', colored: 'زَ', replacement: 'بَ', answer: 'بَيْت' },
-                { original: 'فُنْدُق', colored: 'فُ', replacement: 'بُ', answer: 'بُنْدُق' },
-                { original: 'نَار', colored: 'نَ', replacement: 'بَ', answer: 'بَار' }
-            ],
-            // successAudio: تم تعطيل التسجيلات الصوتية
+            question: 'يَشرَبُ – يَضرِبُ – يَهرُبُ\nما الحرف المتكرر في النهاية؟',
+            options: [
+                { id: 1, text: 'ب', audio: 'ب', correct: true },
+                { id: 2, text: 'ر', audio: 'ر', correct: false },
+                { id: 3, text: 'م', audio: 'م', correct: false },
+                { id: 4, text: 'ل', audio: 'ل', correct: false }
+            ]
         },
         {
-            id: 'baa-position',
+            id: 'baa-position-game',
             type: 'position-choice',
-            title: 'حرف الباء - الموضع',
-            description: 'ضع حرف الباء في المكان المناسب',
+            title: '🟠 السؤال 3: حدّد موضع حرف الباء',
+            description: 'اضغط على موقع حرف الباء في الكلمة',
             letter: 'ب',
             points: 10,
             words: [
-                { word: 'بَيْت', position: 'أول', correct: true },
-                { word: 'كِتَاب', position: 'آخر', correct: true },
-                { word: 'صَبَاح', position: 'وسط', correct: true }
-            ],
-            // successAudio: تم تعطيل التسجيلات الصوتية
+                { word: 'بَرميل', position: 'أول', correct: true },
+                { word: 'جَيب', position: 'آخر', correct: true },
+                { word: 'صَنوبَر', position: 'وسط', correct: true }
+            ]
+        },
+        {
+            id: 'baa-build-word-syllables',
+            type: 'syllable-builder',
+            title: '🟠 السؤال 4: كوّن كلمة صحيحة',
+            description: 'اسحب المقاطع بالترتيب لتكوين كلمة صحيحة',
+            letter: 'ب',
+            points: 10,
+            exercises: [
+                { syllables: ['م', 'ب', 'را', 'ة'], answer: 'مبراة', displayWord: 'مبراة' }
+            ]
+        },
+        {
+            id: 'baa-replace-letter',
+            type: 'text-input',
+            title: '🟠 السؤال 5: استبدل الحرف الملوّن',
+            description: 'استبدل الحرف الملوّن بحرف الباء واكتب الكلمة الجديدة',
+            letter: 'ب',
+            points: 10,
+            exercises: [
+                { original: 'زَيت', colored: 'زَ', replacement: 'بَ', answer: 'بيت' }
+            ]
         },
         {
             id: 'baa-delete-syllable',
             type: 'text-input',
-            title: 'حرف الباء - حذف المقطع',
+            title: '🟠 السؤال 6: احذف المقطع الملوّن',
             description: 'احذف المقطع الملوّن واكتب الكلمة الجديدة',
             letter: 'ب',
             points: 10,
             exercises: [
-                { word: 'بَيْت', delete: 'بَ', answer: 'يْت' },
-                { word: 'كِتَاب', delete: 'ب', answer: 'كِتَا' }
-            ],
-            // successAudio: تم تعطيل التسجيلات الصوتية
-        },
-        {
-            id: 'baa-build-words',
-            type: 'syllable-builder',
-            title: 'حرف الباء - تكوين الكلمات',
-            description: 'كوّن كلمات من المقاطع',
-            letter: 'ب',
-            points: 10,
-            exercises: [
-                { syllables: ['بَ', 'يْ', 'ت'], answer: 'بَيْت' },
-                { syllables: ['كِ', 'تَا', 'ب'], answer: 'كِتَاب' },
-                { syllables: ['بَا', 'ب'], answer: 'بَاب' }
+                { word: 'سِباحة', delete: 'ب', answer: 'ساحة', displayOriginal: 'سِباحة' }
             ]
         },
         {
-            id: 'baa-fill-blank',
+            id: 'baa-add-letter',
             type: 'fill-blank',
-            title: 'حرف الباء - املأ الفراغ',
-            description: 'أضف الباء إلى الكلمة',
+            title: '🟠 السؤال 7: أضف حرف الباء',
+            description: 'أضف حرف الباء إلى الكلمة لتكوين كلمة جديدة',
             letter: 'ب',
             points: 10,
             exercises: [
-                { word: '_َيْت', answer: 'ب', complete: 'بَيْت' },
-                { word: 'كِتَا_', answer: 'ب', complete: 'كِتَاب' },
-                { word: '_َاب', answer: 'ب', complete: 'بَاب' }
+                { word: '_َحيرة', answer: 'ب', complete: 'بَحيرة', hint: 'حِيرة → بَحيرة' },
+                { word: '_َلونة', answer: 'ب', complete: 'بَلونة', hint: 'لونة → بَلونة' }
             ]
+        },
+        {
+            id: 'baa-delete-segments',
+            type: 'delete-segments',
+            title: '🟠 السؤال 8: احذف المقاطع التي لا تحتوي على حرف الباء',
+            description: 'اضغط على المقاطع لحذفها، واترك حرف الباء فقط',
+            letter: 'ب',
+            points: 10,
+            word: 'البَطَّة',
+            allSegments: ['ال', 'بَ', 'طَّ', 'ة'],
+            deletableSegments: ['ال', 'طَّ', 'ة'],
+            protectedSegment: 'بَ',
+            emoji: '🦆'
         }
     ],
 
-    // حوار حرف الباء
-    letterBaaDialogue: {
-        title: '🦊 حوار حرف الباء',
-        characters: ['ثعلب', 'دب'],
-        dialogue: [
-            { speaker: 'ثعلب', text: 'مرحباً أيها الدب!', highlight: 'ب', audio: 'loup1.mp3' },
-            { speaker: 'دب', text: 'أهلاً يا ثعلب الجميل', highlight: 'ب', audio: 'dob1.mp3' },
-            { speaker: 'ثعلب', text: 'هل تحب اللعب؟', highlight: 'ب', audio: 'loup2.mp3' },
-            { speaker: 'دب', text: 'ب ب ب... أحب اللعب كثيراً!', highlight: 'ب', audio: 'dob2.mp3' }
-        ],
-        emoji: { 'ثعلب': '🦊', 'دب': '🐻' }
-    },
-
-    // تحديات حرف الجيم
+    // تحديات حرف الجيم - نسخة مشوقة على نمط Duolingo
     letterJeem: [
         {
-            id: 'jeem-different-word',
+            id: 'jeem-odd-word-out',
             type: 'multiple-choice',
-            title: 'حرف الجيم - الكلمة المختلفة',
-            description: 'اختر الكلمة التي لا تبدأ بحرف الجيم',
+            title: '🟠 السؤال 1: اشطب الكلمة الدخيلة',
+            description: 'اختر الكلمة التي لا تحتوي على حرف الجيم',
             letter: 'ج',
             points: 10,
-            question: 'أي كلمة لا تبدأ بحرف الجيم؟',
+            question: 'أي كلمة دخيلة؟ 🎯',
             options: [
-                { id: 1, text: 'جَمَل', audio: 'جَمَل', correct: false },
-                { id: 2, text: 'جَوز', audio: 'جَوز', correct: false },
-                { id: 3, text: 'فَراشة', audio: 'فَراشة', correct: true },
-                { id: 4, text: 'جَميل', audio: 'جَميل', correct: false }
+                { id: 1, text: 'جَمَل', audio: 'جَمَل', correct: false, emoji: '🐪' },
+                { id: 2, text: 'جَرَس', audio: 'جَرَس', correct: false, emoji: '🔔' },
+                { id: 3, text: 'جَوْز', audio: 'جَوْز', correct: false, emoji: '🥥' },
+                { id: 4, text: 'باب', audio: 'باب', correct: true, emoji: '🚪' }
             ]
         },
         {
-            id: 'jeem-replace-syllable',
-            type: 'drag-drop',
-            title: 'حرف الجيم - استبدال المقطع',
-            description: 'استبدل المقطع الملوّن بمقطع "جَ"',
+            id: 'jeem-repeated-letter',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 2: ما الحرف المتكرر؟',
+            description: 'ما هو الحرف الذي تكرّر في نهاية الكلمات التالية؟',
             letter: 'ج',
             points: 10,
-            exercises: [
-                { original: 'نَمَل', colored: 'نَ', replacement: 'جَ', answer: 'جَمَل' },
-                { original: 'سَرَح', colored: 'سَ', replacement: 'جَ', answer: 'جَرَح' },
-                { original: 'حَبَل', colored: 'حَ', replacement: 'جَ', answer: 'جَبَل' }
+            question: 'يَخرُجُ – يَمزُجُ – يَنسُجُ\nما الحرف المتكرر في النهاية؟',
+            options: [
+                { id: 1, text: 'ج', audio: 'ج', correct: true },
+                { id: 2, text: 'ر', audio: 'ر', correct: false },
+                { id: 3, text: 'س', audio: 'س', correct: false },
+                { id: 4, text: 'م', audio: 'م', correct: false }
             ]
         },
         {
-            id: 'jeem-position',
+            id: 'jeem-position-game',
             type: 'position-choice',
-            title: 'حرف الجيم - الموضع',
-            description: 'حدد موضع حرف الجيم في الكلمة',
+            title: '🟠 السؤال 3: حدّد موضع حرف الجيم',
+            description: 'اضغط على موقع حرف الجيم في الكلمة',
             letter: 'ج',
             points: 10,
             words: [
                 { word: 'جَمَل', position: 'أول', correct: true },
-                { word: 'مَنْهَج', position: 'آخر', correct: true },
-                { word: 'سَجَّادة', position: 'وسط', correct: true }
+                { word: 'سَجّادَة', position: 'وسط', correct: true },
+                { word: 'ثَلْج', position: 'آخر', correct: true }
+            ]
+        },
+        {
+            id: 'jeem-build-word-syllables',
+            type: 'syllable-builder',
+            title: '🟠 السؤال 4: كوّن كلمة صحيحة',
+            description: 'اسحب المقاطع بالترتيب لتكوين كلمة صحيحة',
+            letter: 'ج',
+            points: 10,
+            exercises: [
+                { syllables: ['م', 'ج', 'ل', 'ة'], answer: 'مجلة', displayWord: 'مجلة' }
+            ]
+        },
+        {
+            id: 'jeem-replace-letter',
+            type: 'text-input',
+            title: '🟠 السؤال 5: استبدل الحرف الملوّن',
+            description: 'استبدل الحرف الملوّن بحرف الجيم واكتب الكلمة الجديدة',
+            letter: 'ج',
+            points: 10,
+            exercises: [
+                { original: 'حِبال', colored: 'حِ', replacement: 'جِ', answer: 'جبال' },
+                { original: 'نُسور', colored: 'نُ', replacement: 'جُ', answer: 'جسور' }
             ]
         },
         {
             id: 'jeem-delete-syllable',
             type: 'text-input',
-            title: 'حرف الجيم - حذف المقطع',
+            title: '🟠 السؤال 6: احذف المقطع الملوّن',
             description: 'احذف المقطع الملوّن واكتب الكلمة الجديدة',
             letter: 'ج',
             points: 10,
             exercises: [
-                { word: 'جَمَل', delete: 'جَ', answer: 'مَل' },
-                { word: 'مَنْهَج', delete: 'ج', answer: 'مَنْهَ' }
+                { word: 'حزائر', delete: 'ح', answer: 'جزائر', displayOriginal: 'حزائر' }
             ]
         },
         {
-            id: 'jeem-build-words',
-            type: 'syllable-builder',
-            title: 'حرف الجيم - تكوين الكلمات',
-            description: 'كوّن كلمات من المقاطع',
-            letter: 'ج',
-            points: 10,
-            exercises: [
-                { syllables: ['جَ', 'مَ', 'ل'], answer: 'جَمَل' },
-                { syllables: ['جَ', 'ميل'], answer: 'جَميل' },
-                { syllables: ['جَ', 'وْز'], answer: 'جَوْز' }
-            ]
-        },
-        {
-            id: 'jeem-fill-blank',
+            id: 'jeem-add-letter',
             type: 'fill-blank',
-            title: 'حرف الجيم - املأ الفراغ',
-            description: 'أضف الجيم إلى الكلمة',
+            title: '🟠 السؤال 7: أضف حرف الجيم',
+            description: 'أضف حرف الجيم إلى الكلمة لتكوين كلمة جديدة',
             letter: 'ج',
             points: 10,
             exercises: [
-                { word: '_َمَل', answer: 'ج', complete: 'جَمَل' },
-                { word: 'مَنْهَ_', answer: 'ج', complete: 'مَنْهَج' },
-                { word: '_َوْز', answer: 'ج', complete: 'جَوْز' }
+                { word: '_َمَل', answer: 'ج', complete: 'جَمَل', hint: 'مل → جَمَل' },
+                { word: '_َوْزَة', answer: 'ج', complete: 'جَوْزَة', hint: 'وزة → جَوْزَة' }
             ]
+        },
+        {
+            id: 'jeem-delete-segments',
+            type: 'delete-segments',
+            title: '🟠 السؤال 8: احذف المقاطع التي لا تحتوي على حرف الجيم',
+            description: 'اضغط على المقاطع لحذفها، واترك حرف الجيم فقط',
+            letter: 'ج',
+            points: 10,
+            word: 'الجَمَل',
+            allSegments: ['ال', 'جَ', 'مَ', 'ل'],
+            deletableSegments: ['ال', 'مَ', 'ل'],
+            protectedSegment: 'جَ',
+            emoji: '🐪'
         }
     ],
 
-    // حوار حرف الجيم
+    // حوار حرف الجيم - نسخة مشوقة على نمط Duolingo
     letterJeemDialogue: {
-        title: '🦋 حوار حرف الجيم',
+        title: '🦋 حوار حرف الجيم - الفراشة والجمل',
         characters: ['فراشة', 'جمل'],
         dialogue: [
-            { speaker: 'فراشة', text: 'أعطني جوزة يا جمل', highlight: 'ج', audio: 'far1.mp3' },
-            { speaker: 'جمل', text: 'ج ج ج... جميلة!', highlight: 'ج', audio: 'jam1.mp3' },
-            { speaker: 'فراشة', text: 'شكراً يا جمل الكريم', highlight: 'ج', audio: 'far2.mp3' },
-            { speaker: 'جمل', text: 'الجوز لذيذ جداً', highlight: 'ج', audio: 'jam2.mp3' }
+            { speaker: 'فراشة', text: 'قالتِ الفَراشَةُ: خُذْ جَرَسِي وَأَعْطِنِي جَوْزَةً يا جَمَلُ.', highlight: 'ج', audio: 'fara.mp3' },
+            { speaker: 'جمل', text: 'قالَ الجَمَلُ: جَ جَ جَ... فِكْرَةٌ جَميلَةٌ!', highlight: 'ج', audio: 'jam.mp3' }
         ],
-        emoji: { 'فراشة': '🦋', 'جمل': '🐫' }
+        emoji: { 'فراشة': '🦋', 'جمل': '🐪' }
     },
+
+    // حوار حرف الباء - نسخة مشوقة على نمط Duolingo
+    letterBaaDialogue: {
+        title: '🦊 حوار حرف الباء - حفلة الأصدقاء',
+        characters: ['ثعلوبة'],
+        dialogue: [
+            { speaker: 'ثعلوبة', text: 'نادت ثعلوبةُ: تَعالي يا بَطبوطةُ، تَعالَ يا سَنجوبُ... مَعي بُرتقالٌ وبُندقٌ وبِسكويتٌ وبالوناتٌ!', highlight: 'ب', audio: 'balo.mp3' }
+        ],
+        emoji: { 'ثعلوبة': '🦊' }
+    },
+
 
     // رسائل التشجيع
     encouragement: {
@@ -277,7 +323,11 @@ const challengesData = {
             'ممتاز! أنت في الطريق الصحيح! 🏆',
             'مبروك! استمر بهذا الأداء الرائع! 🌟',
             'برافو! أنت بطل حقيقي! 👑'
-        ]
+        ],
+        letterComplete: {
+            'ب': '🎉 أحسنت يا بطل الباء! 🎉\n\nلقد أتقنت حرف الباء! 🌟',
+            'ج': '🥳 رائع! 🥳\n\nلقد أتقنت حرف الجيم بنجاح! 🌟'
+        }
     },
 
     // المكافآت

@@ -18,52 +18,57 @@ class ChallengeManager {
         
         // تشغيل صوت التحدي (بعد تفاعل المستخدم)
         setTimeout(() => {
-            console.log('🔊 Playing audio for challenge:', challenge.id);
-            
-            // تفعيل الصوت
             audioManager.enableAudio();
             
             // تشغيل ملف صوتي خاص لكل تحدي
             if (challenge.id === 'fish-game') {
-                console.log('🐟 Fish game audio - samaka.mp3');
                 audioManager.playVoiceFile('audio/samaka.mp3');
             }
+            else if (challenge.id === 'frog-game') {
+                audioManager.playVoiceFile('audio/difda.mp3');
+            }
             else if (challenge.id === 'animal-matching') {
-                console.log('🦁 Animal matching audio - rabt.mp3');
-                audioManager.playVoiceFile('audio/rabt.mp3');
+                audioManager.playVoiceFile('audio/haiw.mp3');
             }
             else if (challenge.id === 'shadows') {
-                console.log('✈️ Shadows audio - dell.mp3');
-                audioManager.playVoiceFile('audio/dell.mp3');
+                audioManager.playVoiceFile('audio/del.mp3');
             }
             else if (challenge.id === 'pen-hold') {
-                console.log('✏️ Pen hold audio - kalm.mp3');
                 audioManager.playVoiceFile('audio/kalm.mp3');
             }
-            // تحديات حرف الباء والجيم
-            else if (challenge.id === 'baa-different-word' || challenge.id === 'jeem-different-word') {
-                console.log('📝 Different word audio');
-                audioManager.playVoiceFile('audio/mokh.mp3');
+            // أسئلة حرف الباء (1-8)
+            else if (challenge.id === 'baa-odd-word-out' || challenge.id === 'jeem-odd-word-out') {
+                audioManager.playVoiceFile('audio/q1.mp3');
             }
-            else if (challenge.id === 'baa-replace-syllable' || challenge.id === 'jeem-replace-syllable') {
-                console.log('🔄 Replace syllable audio');
-                audioManager.playVoiceFile('audio/mak.mp3');
+            else if (challenge.id === 'baa-repeated-letter' || challenge.id === 'jeem-repeated-letter') {
+                audioManager.playVoiceFile('audio/q2.mp3');
             }
-            else if (challenge.id === 'baa-position' || challenge.id === 'jeem-position') {
-                console.log('📍 Position audio');
-                audioManager.playVoiceFile('audio/mawdii.mp3');
+            else if (challenge.id === 'baa-position-game') {
+                audioManager.playVoiceFile('audio/q3.mp3');
+            }
+            else if (challenge.id === 'jeem-position-game') {
+                audioManager.playVoiceFile('audio/q3j.mp3');
+            }
+            else if (challenge.id === 'baa-build-word-syllables' || challenge.id === 'jeem-build-word-syllables') {
+                audioManager.playVoiceFile('audio/q4.mp3');
+            }
+            else if (challenge.id === 'baa-replace-letter' || challenge.id === 'jeem-replace-letter') {
+                audioManager.playVoiceFile('audio/q5.mp3');
             }
             else if (challenge.id === 'baa-delete-syllable' || challenge.id === 'jeem-delete-syllable') {
-                console.log('❌ Delete syllable audio');
-                audioManager.playVoiceFile('audio/hadf.mp3');
+                audioManager.playVoiceFile('audio/q6.mp3');
             }
-            else if (challenge.id === 'baa-build-words' || challenge.id === 'jeem-build-words') {
-                console.log('🏗️ Build words audio');
-                audioManager.playVoiceFile('audio/kaw.mp3');
+            else if (challenge.id === 'baa-add-letter') {
+                audioManager.playVoiceFile('audio/q7.mp3');
             }
-            else if (challenge.id === 'baa-fill-blank' || challenge.id === 'jeem-fill-blank') {
-                console.log('📝 Fill blank audio');
-                audioManager.playVoiceFile('audio/faragh.mp3');
+            else if (challenge.id === 'jeem-add-letter') {
+                audioManager.playVoiceFile('audio/q7j.mp3');
+            }
+            else if (challenge.id === 'baa-delete-segments') {
+                audioManager.playVoiceFile('audio/q8.mp3');
+            }
+            else if (challenge.id === 'jeem-delete-segments') {
+                audioManager.playVoiceFile('audio/q8j.mp3');
             }
         }, 500);
         
@@ -80,6 +85,9 @@ class ChallengeManager {
         switch (this.currentChallenge.type) {
             case 'fish-path':
                 this.renderFishGame(container);
+                break;
+            case 'frog-path':
+                this.renderFrogGame(container);
                 break;
             case 'matching':
                 this.renderMatchingGame(container);
@@ -104,6 +112,15 @@ class ChallengeManager {
                 break;
             case 'fill-blank':
                 this.renderFillBlank(container);
+                break;
+            case 'word-segmentation':
+                this.renderWordSegmentation(container);
+                break;
+            case 'find-letter-segment':
+                this.renderFindLetterSegment(container);
+                break;
+            case 'delete-segments':
+                this.renderDeleteSegments(container);
                 break;
             default:
                 console.warn('نوع التحدي غير معروف:', this.currentChallenge.type);
@@ -189,27 +206,20 @@ class ChallengeManager {
         let lastX = 0;
         let lastY = 0;
         
-        // دالة لحساب التقدم وتحريك السمكة تدريجياً
-        const updateFishPosition = () => {
-            // حساب نسبة التقدم (0% إلى 100%)
-            const progress = Math.min((pathLength / targetPathLength) * 100, 100);
+        // دالة لتحريك السمكة لموقع نهاية الخط المرسوم
+        const updateFishPosition = (x, y) => {
+            const rect = canvas.getBoundingClientRect();
             
-            // حساب الموقع الجديد للسمكة بناءً على التقدم
-            // البداية: right: 10% (90% من اليسار)
-            // النهاية: left: 10% (10% من اليسار)
-            const startPosition = 90; // 90% من اليسار
-            const endPosition = 10; // 10% من اليسار
-            const currentPosition = startPosition - ((startPosition - endPosition) * (progress / 100));
+            // تحويل الإحداثيات إلى نسب مئوية من حجم منطقة اللعب
+            const percentX = (x / rect.width) * 100;
+            const percentY = (y / rect.height) * 100;
             
-            // تحريك السمكة بسلاسة
+            // تحريك السمكة لموقع آخر نقطة رسم
             fish.style.right = 'auto';
-            fish.style.left = currentPosition + '%';
-            fish.style.transition = 'left 0.3s ease-out';
-            
-            // إضافة تأثير حركة السباحة
-            if (progress > 0) {
-                fish.style.transform = 'translateY(-50%) rotate(' + (Math.sin(Date.now() / 200) * 3) + 'deg)';
-            }
+            fish.style.left = percentX + '%';
+            fish.style.top = percentY + '%';
+            fish.style.transform = 'translate(-50%, -50%) rotate(' + (Math.sin(Date.now() / 200) * 3) + 'deg)';
+            fish.style.transition = 'left 0.1s ease-out, top 0.1s ease-out';
         };
         
         // بدء الرسم
@@ -251,8 +261,8 @@ class ChallengeManager {
             ctx.lineTo(x, y);
             ctx.stroke();
             
-            // تحديث موقع السمكة تدريجياً مع التقدم في الرسم
-            updateFishPosition();
+            // تحديث موقع السمكة لنهاية الخط المرسوم
+            updateFishPosition(x, y);
         };
         
         // إنهاء الرسم
@@ -394,9 +404,9 @@ class ChallengeManager {
             this.createFishSuccessParticles();
         }, 1200);
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي السمكة
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/mom.mp3');
+        audioManager.playVoiceFile('audio/hsantyabatal.mp3');
         
         setTimeout(() => {
             // معالجة الإجابة الصحيحة مباشرة لتجنب التخطي
@@ -407,7 +417,7 @@ class ChallengeManager {
             this.updateScore();
             
             // عرض رسالة التشجيع الخاصة بتحدي السمكة
-            const message = 'ممتاز جدا! 🌟';
+            const message = 'أحسنت يا بطل 🌟';
             this.showFeedback(message, 'success');
             
             // تحقق من المكافأة
@@ -714,12 +724,12 @@ class ChallengeManager {
             this.updateScore();
             
             // عرض رسالة التشجيع الخاصة بتحدي الحيوانات
-            const message = 'برافو عمل رائع! 🦁';
+            const message = 'احسنت واصل 🦁';
             this.showFeedback(message, 'success');
             
-            // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الحيوانات
+            // تشغيل صوت النجاح والتسجيل الصوتي
             audioManager.playSuccessSound();
-            audioManager.playVoiceFile('audio/mom.mp3');
+            audioManager.playVoiceFile('audio/ahsntwasl.mp3');
             
             // الانتقال للتحدي التالي
             setTimeout(() => {
@@ -791,9 +801,9 @@ class ChallengeManager {
                     btn.classList.add('correct-shadow-glow', 'animate-shadow-bounce');
                     btn.classList.add('border-green-500');
                     
-                    // تشغيل صوت النجاح والتعليق الصوتي العربي الخاص بتحدي الظلال
+                    // تشغيل صوت النجاح والتسجيل الصوتي
                     audioManager.playSuccessSound();
-                    audioManager.playVoiceFile('audio/ahsnt.mp3');
+                    audioManager.playVoiceFile('audio/jiid.mp3');
                     
                     // عرض رسالة مخصصة لتحدي الظلال
                     setTimeout(() => {
@@ -801,7 +811,7 @@ class ChallengeManager {
                         this.correctAnswers++;
                         this.updateScore();
                         
-                        const message = 'ممتاز جدا! ✈️';
+                        const message = 'جيد جدا ✈️';
                         this.showFeedback(message, 'success');
                         
                         // تحقق من المكافأة والانتقال
@@ -864,6 +874,10 @@ class ChallengeManager {
                             </button>
                         `).join('')}
                     </div>
+                    
+                    <button id="skip-btn" class="mt-6 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-3 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
                 </div>
             </div>
         `;
@@ -885,9 +899,13 @@ class ChallengeManager {
                 if (isCorrect) {
                     btn.classList.add('bg-green-300', 'ring-4', 'ring-green-500');
                     
-                    // معالجة خاصة لتحدي الكلمة المختلفة
-                    if (this.currentChallenge.id === 'baa-different-word' || this.currentChallenge.id === 'jeem-different-word') {
+                    // معالجة خاصة لتحدي الكلمة المختلفة (السؤال 1)
+                    if (this.currentChallenge.id === 'baa-odd-word-out' || this.currentChallenge.id === 'jeem-odd-word-out') {
                         this.handleDifferentWordSuccess();
+                    }
+                    // معالجة خاصة للسؤال 2 (الحرف المتكرر)
+                    else if (this.currentChallenge.id === 'baa-repeated-letter' || this.currentChallenge.id === 'jeem-repeated-letter') {
+                        this.handleRepeatedLetterSuccess();
                     }
                     // معالجة خاصة لتحدي القلم
                     else if (this.currentChallenge.id === 'pen-hold') {
@@ -904,6 +922,15 @@ class ChallengeManager {
                 optionButtons.forEach(b => b.disabled = true);
             });
         });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
     // سحب وإفلات
@@ -996,6 +1023,10 @@ class ChallengeManager {
                             آخر الكلمة
                         </button>
                     </div>
+                    
+                    <button id="skip-btn" class="mt-6 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-3 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
                 </div>
             </div>
         `;
@@ -1022,11 +1053,26 @@ class ChallengeManager {
                 buttons.forEach(b => b.disabled = true);
             });
         });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
     // إدخال نص
     renderTextInput(container) {
         const exercise = this.currentChallenge.exercises[0];
+        
+        // معالجة خاصة للسؤال 5: استبدل الحرف الملوّن (حرف الباء والجيم)
+        if (this.currentChallenge.id === 'baa-replace-letter' || this.currentChallenge.id === 'jeem-replace-letter') {
+            this.renderReplaceLetterInput(container);
+            return;
+        }
 
         container.innerHTML = `
             <div class="text-center max-w-3xl mx-auto px-2">
@@ -1048,6 +1094,10 @@ class ChallengeManager {
                     
                     <button id="check-answer" class="block mx-auto mt-4 md:mt-6 bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
+                    </button>
+                    
+                    <button id="skip-btn" class="block mx-auto mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
                     </button>
                 </div>
             </div>
@@ -1071,6 +1121,102 @@ class ChallengeManager {
                 this.handleWrongAnswer();
             }
         });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
+    }
+    
+    // معالج خاص للسؤال 5: استبدل الحرف الملوّن
+    renderReplaceLetterInput(container) {
+        const exercises = this.currentChallenge.exercises;
+        let currentExerciseIndex = 0;
+        
+        const showExercise = () => {
+            if (currentExerciseIndex >= exercises.length) return;
+            
+            const exercise = exercises[currentExerciseIndex];
+        
+        container.innerHTML = `
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <div class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
+                        <span class="text-gray-800">الكلمة الأصلية: </span>
+                        <span class="text-red-500 font-bold text-4xl md:text-5xl">${exercise.colored}</span>
+                        <span class="text-gray-800">${exercise.original.replace(exercise.colored, '')}</span>
+                    </div>
+                    
+                    <div class="text-2xl md:text-3xl text-purple-600 mb-4 md:mb-6">
+                        استبدل <span class="text-red-500 font-bold">${exercise.colored}</span> بـ <span class="text-green-500 font-bold">${exercise.replacement}</span>
+                    </div>
+                    
+                    <input 
+                        type="text" 
+                        id="answer-input" 
+                        class="text-2xl md:text-3xl font-bold text-center p-3 md:p-4 border-4 border-purple-300 rounded-2xl w-48 md:w-64 focus:border-purple-500 outline-none"
+                        placeholder="اكتب الكلمة الجديدة"
+                    />
+                    
+                    <button id="check-answer" class="block mx-auto mt-4 md:mt-6 bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
+                        تحقق ✓
+                    </button>
+                    
+                    <button id="skip-btn" class="block mx-auto mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                    
+                    ${exercises.length > 1 ? `<div class="mt-4 text-gray-500">تمرين ${currentExerciseIndex + 1} من ${exercises.length}</div>` : ''}
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('check-answer').addEventListener('click', () => {
+            const input = document.getElementById('answer-input');
+            audioManager.playClickSound();
+            
+            if (input.value.trim() === exercise.answer) {
+                input.classList.add('border-green-500', 'bg-green-50');
+                
+                // الانتقال للتمرين التالي أو إنهاء
+                setTimeout(() => {
+                    currentExerciseIndex++;
+                    if (currentExerciseIndex < exercises.length) {
+                        showExercise();
+                    } else {
+                        // معالجة خاصة لتحدي استبدال الحرف
+                        this.handleReplaceSyllableSuccess();
+                    }
+                }, 1000);
+            } else {
+                input.classList.add('border-red-500', 'bg-red-50');
+                this.handleWrongAnswer();
+                
+                setTimeout(() => {
+                    input.value = '';
+                    input.classList.remove('border-red-500', 'bg-red-50');
+                }, 2000);
+            }
+        });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
+        };
+        
+        showExercise();
     }
 
     // بناء الكلمات من المقاطع
@@ -1103,6 +1249,10 @@ class ChallengeManager {
                     
                     <button id="check-word" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
+                    </button>
+                    
+                    <button id="skip-btn" class="mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
                     </button>
                 </div>
             </div>
@@ -1149,6 +1299,15 @@ class ChallengeManager {
                 this.handleWrongAnswer();
             }
         });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
     // املأ الفراغ
@@ -1167,6 +1326,10 @@ class ChallengeManager {
                     
                     <button id="check-blank" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
                         تحقق ✓
+                    </button>
+                    
+                    <button id="skip-btn" class="mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
                     </button>
                 </div>
             </div>
@@ -1190,18 +1353,54 @@ class ChallengeManager {
                 this.handleWrongAnswer();
             }
         });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
-    // معالجة خاصة للنجاح في تحدي الكلمة المختلفة
+    // معالجة خاصة للنجاح في تحدي الكلمة المختلفة (السؤال 1)
     handleDifferentWordSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الكلمة المختلفة
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/mom.mp3');
+        audioManager.playVoiceFile('audio/ahsntwasl.mp3');
         
-        const message = 'ممتاز جدا! 🌟';
+        const message = 'احسنت واصل 🌟';
+        this.showFeedback(message, 'success');
+        
+        // تحديث النقاط
+        this.updateScore();
+        
+        // تحقق من المكافأة (كل 5 إجابات صحيحة)
+        if (this.correctAnswers % 5 === 0) {
+            setTimeout(() => {
+                this.showReward();
+            }, 1500);
+        } else {
+            setTimeout(() => {
+                this.nextChallenge();
+            }, 2000);
+        }
+    }
+    
+    // معالجة خاصة للنجاح في السؤال 2 (الحرف المتكرر)
+    handleRepeatedLetterSuccess() {
+        this.score += this.currentChallenge.points || 10;
+        this.correctAnswers++;
+        
+        // تشغيل صوت النجاح والتسجيل الصوتي
+        audioManager.playSuccessSound();
+        audioManager.playVoiceFile('audio/hsantyabatal.mp3');
+        
+        const message = 'احسنت يا بطل 🌟';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1219,16 +1418,16 @@ class ChallengeManager {
         }
     }
 
-    // معالجة خاصة للنجاح في تحدي استبدال المقطع
+    // معالجة خاصة للنجاح في تحدي استبدال المقطع (السؤال 5)
     handleReplaceSyllableSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي استبدال المقطع
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/ahsnt.mp3');
+        audioManager.playVoiceFile('audio/momtaz.mp3');
         
-        const message = 'برافو احسنت! 👏';
+        const message = 'ممتاز 👏';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1246,16 +1445,16 @@ class ChallengeManager {
         }
     }
 
-    // معالجة خاصة للنجاح في تحدي الموضع
+    // معالجة خاصة للنجاح في تحدي الموضع (السؤال 3)
     handlePositionSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي الموضع
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/mom.mp3');
+        audioManager.playVoiceFile('audio/jiid.mp3');
         
-        const message = 'ممتاز جدا! 🌟';
+        const message = 'جيد جدا 🌟';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1273,16 +1472,16 @@ class ChallengeManager {
         }
     }
 
-    // معالجة خاصة للنجاح في تحدي حذف المقطع
+    // معالجة خاصة للنجاح في تحدي حذف المقطع (السؤال 6)
     handleDeleteSyllableSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي حذف المقطع
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/ahsnt.mp3');
+        audioManager.playVoiceFile('audio/ahsntwasl.mp3');
         
-        const message = 'برافو احسنت! 👏';
+        const message = 'احسنت واصل 👏';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1300,16 +1499,16 @@ class ChallengeManager {
         }
     }
 
-    // معالجة خاصة للنجاح في تحدي تكوين الكلمات
+    // معالجة خاصة للنجاح في تحدي تكوين الكلمات (السؤال 4)
     handleBuildWordsSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي تكوين الكلمات
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/haka.mp3');
+        audioManager.playVoiceFile('audio/mmtazntamomiiz.mp3');
         
-        const message = 'انت مبدع حقا! 💫';
+        const message = 'ممتاز انت مميز 💫';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1327,16 +1526,16 @@ class ChallengeManager {
         }
     }
 
-    // معالجة خاصة للنجاح في تحدي املأ الفراغ
+    // معالجة خاصة للنجاح في تحدي املأ الفراغ (السؤال 7)
     handleFillBlankSuccess() {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي املأ الفراغ
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/wasl.mp3');
+        audioManager.playVoiceFile('audio/jiid.mp3');
         
-        const message = 'احسنت واصل! 🚀';
+        const message = 'جيد جدا 🚀';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1352,6 +1551,311 @@ class ChallengeManager {
                 this.nextChallenge();
             }, 2000);
         }
+    }
+    
+    // صفحة تفاعلية لكشف الحرف المستهدف
+    showLetterRevealPage(letter, letterName, audioFile) {
+        const container = document.getElementById('challenge-container');
+        
+        container.innerHTML = `
+            <div class="fixed inset-0 flex items-center justify-center z-50 animate-fade-in overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);">
+                <!-- Animated Background Particles -->
+                <div class="absolute inset-0 overflow-hidden">
+                    <div class="particle particle-1"></div>
+                    <div class="particle particle-2"></div>
+                    <div class="particle particle-3"></div>
+                    <div class="particle particle-4"></div>
+                    <div class="particle particle-5"></div>
+                    <div class="particle particle-6"></div>
+                    <div class="particle particle-7"></div>
+                    <div class="particle particle-8"></div>
+                </div>
+                
+                <!-- Floating Confetti -->
+                <div class="confetti-container">
+                    <div class="confetti confetti-1">🎊</div>
+                    <div class="confetti confetti-2">🎉</div>
+                    <div class="confetti confetti-3">🎈</div>
+                    <div class="confetti confetti-4">⭐</div>
+                    <div class="confetti confetti-5">✨</div>
+                    <div class="confetti confetti-6">🌟</div>
+                    <div class="confetti confetti-7">💫</div>
+                    <div class="confetti confetti-8">🎁</div>
+                </div>
+                
+                <div class="text-center px-4 relative z-10">
+                    <!-- العنوان الحماسي مع تأثير متوهج -->
+                    <div class="mb-6">
+                        <h1 class="text-6xl md:text-8xl font-black text-white mb-2 animate-bounce-in" 
+                            style="text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,215,0,0.6), 0 5px 15px rgba(0,0,0,0.3); 
+                                   font-family: 'Arial Black', sans-serif;">
+                            🎉 يا رفاق! 🎉
+                        </h1>
+                        <div class="text-2xl md:text-3xl font-bold text-yellow-200 animate-pulse-fast">
+                            ✨ اكتشفنا الحرف المستهدف ✨
+                        </div>
+                    </div>
+                    
+                    <!-- الحرف الكبير مع دائرة متوهجة -->
+                    <div class="relative inline-block my-8">
+                        <!-- دائرة خلفية متوهجة -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="glow-circle"></div>
+                        </div>
+                        
+                        <!-- الحرف -->
+                        <div class="relative z-10 letter-reveal" 
+                             style="font-size: clamp(120px, 25vw, 280px); 
+                                    font-weight: 900; 
+                                    color: #fff;
+                                    text-shadow: 
+                                        0 0 30px rgba(255,255,255,1),
+                                        0 0 60px rgba(255,215,0,0.8),
+                                        0 0 90px rgba(255,165,0,0.6),
+                                        0 10px 30px rgba(0,0,0,0.5);
+                                    font-family: 'Arial Black', sans-serif;">
+                            ${letter}
+                        </div>
+                        
+                        <!-- جزيئات متطايرة محسّنة -->
+                        <div class="sparkles-container">
+                            <div class="sparkle sparkle-1">✨</div>
+                            <div class="sparkle sparkle-2">⭐</div>
+                            <div class="sparkle sparkle-3">🌟</div>
+                            <div class="sparkle sparkle-4">💫</div>
+                            <div class="sparkle sparkle-5">✨</div>
+                            <div class="sparkle sparkle-6">⭐</div>
+                            <div class="sparkle sparkle-7">🌟</div>
+                            <div class="sparkle sparkle-8">💫</div>
+                            <div class="sparkle sparkle-9">✨</div>
+                            <div class="sparkle sparkle-10">⭐</div>
+                        </div>
+                    </div>
+                    
+                    <!-- النص التوضيحي مع تأثير قوس قزح -->
+                    <h2 class="text-5xl md:text-7xl font-black mb-8 animate-rainbow" 
+                        style="text-shadow: 
+                            0 0 10px rgba(255,255,255,0.8),
+                            0 5px 20px rgba(0,0,0,0.4);
+                            font-family: 'Arial Black', sans-serif;">
+                        هو حرف ${letterName}!
+                    </h2>
+                    
+                    <!-- أيقونات احتفالية متحركة -->
+                    <div class="flex justify-center items-center gap-4 mb-8 text-6xl md:text-7xl">
+                        <span class="animate-bounce-emoji" style="animation-delay: 0s;">🎊</span>
+                        <span class="animate-bounce-emoji" style="animation-delay: 0.2s;">🎈</span>
+                        <span class="animate-bounce-emoji" style="animation-delay: 0.4s;">🎉</span>
+                        <span class="animate-bounce-emoji" style="animation-delay: 0.6s;">🎁</span>
+                        <span class="animate-bounce-emoji" style="animation-delay: 0.8s;">🎊</span>
+                    </div>
+                    
+                    <!-- زر المتابعة محسّن -->
+                    <button id="continueBtn" class="relative overflow-hidden bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 text-purple-900 text-2xl md:text-4xl font-black py-5 px-16 rounded-full hover:scale-110 transition-all duration-300 shadow-2xl animate-button-pulse"
+                            style="text-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 4px solid rgba(255,255,255,0.8);">
+                        <span class="relative z-10">🚀 رائع! لنكمل 🚀</span>
+                        <div class="button-shine"></div>
+                    </button>
+                </div>
+            </div>
+            
+            <style>
+                /* Background Particles */
+                .particle {
+                    position: absolute;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    animation: float-particle 20s infinite;
+                }
+                .particle-1 { width: 80px; height: 80px; top: 10%; left: 10%; animation-duration: 15s; }
+                .particle-2 { width: 60px; height: 60px; top: 20%; right: 15%; animation-duration: 18s; animation-delay: 2s; }
+                .particle-3 { width: 100px; height: 100px; bottom: 15%; left: 20%; animation-duration: 20s; animation-delay: 4s; }
+                .particle-4 { width: 70px; height: 70px; bottom: 25%; right: 10%; animation-duration: 17s; animation-delay: 6s; }
+                .particle-5 { width: 50px; height: 50px; top: 50%; left: 5%; animation-duration: 16s; animation-delay: 1s; }
+                .particle-6 { width: 90px; height: 90px; top: 60%; right: 8%; animation-duration: 19s; animation-delay: 3s; }
+                .particle-7 { width: 65px; height: 65px; top: 30%; left: 50%; animation-duration: 21s; animation-delay: 5s; }
+                .particle-8 { width: 75px; height: 75px; bottom: 40%; right: 40%; animation-duration: 14s; animation-delay: 7s; }
+                
+                @keyframes float-particle {
+                    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+                    25% { transform: translate(50px, -50px) rotate(90deg); opacity: 0.6; }
+                    50% { transform: translate(100px, 0) rotate(180deg); opacity: 0.3; }
+                    75% { transform: translate(50px, 50px) rotate(270deg); opacity: 0.6; }
+                }
+                
+                /* Confetti Animation */
+                .confetti-container {
+                    position: absolute;
+                    inset: 0;
+                    pointer-events: none;
+                }
+                .confetti {
+                    position: absolute;
+                    font-size: 2.5rem;
+                    animation: fall-confetti 8s infinite;
+                }
+                .confetti-1 { left: 10%; animation-delay: 0s; }
+                .confetti-2 { left: 20%; animation-delay: 1s; }
+                .confetti-3 { left: 30%; animation-delay: 2s; }
+                .confetti-4 { left: 40%; animation-delay: 3s; }
+                .confetti-5 { left: 50%; animation-delay: 4s; }
+                .confetti-6 { left: 60%; animation-delay: 5s; }
+                .confetti-7 { left: 70%; animation-delay: 6s; }
+                .confetti-8 { left: 80%; animation-delay: 7s; }
+                
+                @keyframes fall-confetti {
+                    0% { top: -10%; transform: rotate(0deg); opacity: 1; }
+                    100% { top: 110%; transform: rotate(720deg); opacity: 0; }
+                }
+                
+                /* Glow Circle */
+                .glow-circle {
+                    width: 300px;
+                    height: 300px;
+                    border-radius: 50%;
+                    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,215,0,0.3) 40%, transparent 70%);
+                    animation: pulse-circle 2s ease-in-out infinite;
+                }
+                
+                @keyframes pulse-circle {
+                    0%, 100% { transform: scale(1); opacity: 0.6; }
+                    50% { transform: scale(1.3); opacity: 0.3; }
+                }
+                
+                /* Letter Reveal Animation */
+                .letter-reveal {
+                    animation: letter-appear 1s ease-out, letter-pulse 2s ease-in-out 1s infinite;
+                }
+                
+                @keyframes letter-appear {
+                    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+                    60% { transform: scale(1.2) rotate(20deg); }
+                    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                }
+                
+                @keyframes letter-pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.08); }
+                }
+                
+                /* Sparkles Enhanced */
+                .sparkles-container {
+                    position: absolute;
+                    inset: 0;
+                    pointer-events: none;
+                }
+                .sparkle {
+                    position: absolute;
+                    font-size: 2.5rem;
+                    animation: sparkle-move 3s ease-in-out infinite;
+                }
+                
+                @keyframes sparkle-move {
+                    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+                    50% { transform: translate(var(--tx), var(--ty)) rotate(180deg) scale(1.5); opacity: 0.6; }
+                }
+                
+                .sparkle-1 { top: -20%; left: -20%; --tx: 20px; --ty: -40px; animation-delay: 0s; }
+                .sparkle-2 { top: -20%; right: -20%; --tx: -20px; --ty: -40px; animation-delay: 0.3s; }
+                .sparkle-3 { top: 50%; left: -30%; --tx: 30px; --ty: 0px; animation-delay: 0.6s; }
+                .sparkle-4 { top: 50%; right: -30%; --tx: -30px; --ty: 0px; animation-delay: 0.9s; }
+                .sparkle-5 { bottom: -20%; left: -20%; --tx: 20px; --ty: 40px; animation-delay: 1.2s; }
+                .sparkle-6 { bottom: -20%; right: -20%; --tx: -20px; --ty: 40px; animation-delay: 1.5s; }
+                .sparkle-7 { top: 10%; left: 50%; --tx: 0px; --ty: -30px; animation-delay: 1.8s; }
+                .sparkle-8 { bottom: 10%; left: 50%; --tx: 0px; --ty: 30px; animation-delay: 2.1s; }
+                .sparkle-9 { top: 30%; left: 10%; --tx: -20px; --ty: -20px; animation-delay: 2.4s; }
+                .sparkle-10 { top: 30%; right: 10%; --tx: 20px; --ty: -20px; animation-delay: 2.7s; }
+                
+                /* Rainbow Text Animation */
+                @keyframes rainbow-text {
+                    0% { color: #ff6b6b; }
+                    16% { color: #ffd93d; }
+                    33% { color: #6bcf7f; }
+                    50% { color: #4d96ff; }
+                    66% { color: #a78bfa; }
+                    83% { color: #ff6bcf; }
+                    100% { color: #ff6b6b; }
+                }
+                
+                .animate-rainbow {
+                    animation: rainbow-text 3s linear infinite;
+                }
+                
+                /* Bounce In Animation */
+                @keyframes bounce-in {
+                    0% { transform: scale(0); opacity: 0; }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+                
+                .animate-bounce-in {
+                    animation: bounce-in 0.8s ease-out;
+                }
+                
+                /* Emoji Bounce */
+                @keyframes bounce-emoji {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-30px); }
+                }
+                
+                .animate-bounce-emoji {
+                    display: inline-block;
+                    animation: bounce-emoji 1.5s ease-in-out infinite;
+                }
+                
+                /* Button Pulse */
+                @keyframes button-pulse {
+                    0%, 100% { transform: scale(1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+                    50% { transform: scale(1.05); box-shadow: 0 25px 60px rgba(0,0,0,0.4); }
+                }
+                
+                .animate-button-pulse {
+                    animation: button-pulse 2s ease-in-out infinite;
+                }
+                
+                /* Button Shine Effect */
+                .button-shine {
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+                    animation: shine 3s infinite;
+                }
+                
+                @keyframes shine {
+                    0% { left: -100%; }
+                    50%, 100% { left: 100%; }
+                }
+                
+                /* Fast Pulse */
+                @keyframes pulse-fast {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.7; }
+                }
+                
+                .animate-pulse-fast {
+                    animation: pulse-fast 1s ease-in-out infinite;
+                }
+            </style>
+        `;
+        
+        // تشغيل الصوت
+        setTimeout(() => {
+            audioManager.playVoiceFile(audioFile);
+        }, 300);
+        
+        // زر المتابعة
+        document.getElementById('continueBtn').addEventListener('click', () => {
+            // تحديث النقاط
+            this.updateScore();
+            
+            // الانتقال للتحدي التالي
+            setTimeout(() => {
+                this.nextChallenge();
+            }, 500);
+        });
     }
 
     // معالجة خاصة للنجاح في تحدي القلم
@@ -1359,11 +1863,11 @@ class ChallengeManager {
         this.score += this.currentChallenge.points || 10;
         this.correctAnswers++;
         
-        // تشغيل الصوت والتعليق الصوتي العربي الخاص بتحدي القلم
+        // تشغيل صوت النجاح والتسجيل الصوتي
         audioManager.playSuccessSound();
-        audioManager.playVoiceFile('audio/mom.mp3');
+        audioManager.playVoiceFile('audio/momtaz.mp3');
         
-        const message = 'ممتاز جدا! ✏️';
+        const message = 'ممتاز ✏️';
         this.showFeedback(message, 'success');
         
         // تحديث النقاط
@@ -1421,16 +1925,517 @@ class ChallengeManager {
             this.renderChallenge(); // إعادة عرض التحدي
         }, 2000);
     }
+    
+    // تخطي التحدي
+    skipChallenge() {
+        console.log('Skipping challenge:', this.currentChallenge.id);
+        
+        // عرض رسالة التخطي
+        this.showFeedback('تم تخطي السؤال ⏭️', 'info');
+        
+        // الانتقال للتحدي التالي
+        setTimeout(() => {
+            this.nextChallenge();
+        }, 1000);
+    }
+    
+    // تقطيع الكلمات
+    renderWordSegmentation(container) {
+        const word = this.currentChallenge.word;
+        const correctSegments = this.currentChallenge.segments;
+        const emoji = this.currentChallenge.emoji || '📝';
+        
+        container.innerHTML = `
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <!-- الكلمة الكاملة مع الإيموجي -->
+                    <div class="mb-6 md:mb-8">
+                        <div class="text-6xl md:text-8xl mb-4">${emoji}</div>
+                        <div class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                            ${word}
+                        </div>
+                        <p class="text-lg md:text-xl text-purple-600">قطّع هذه الكلمة إلى مقاطع</p>
+                    </div>
+                    
+                    <!-- منطقة التقطيع -->
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-700 mb-4">المقاطع:</h3>
+                        <div id="segments-display" class="flex gap-3 justify-center flex-wrap min-h-20 items-center">
+                            <p class="text-gray-400 text-lg">اضغط على الكلمة أعلاه لتقطيعها</p>
+                        </div>
+                    </div>
+                    
+                    <!-- المقاطع المتاحة للاختيار -->
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-700 mb-4">اختر المقاطع بالترتيب:</h3>
+                        <div id="available-segments" class="flex gap-2 md:gap-3 justify-center flex-wrap">
+                            ${this.shuffleArray([...correctSegments]).map((segment, index) => `
+                                <button class="segment-btn bg-purple-200 hover:bg-purple-300 text-purple-800 text-2xl md:text-3xl font-bold px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-all hover:scale-110" data-segment="${segment}">
+                                    ${segment}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 justify-center">
+                        <button id="check-segmentation" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
+                            تحقق ✓
+                        </button>
+                        
+                        <button id="reset-segmentation" class="bg-yellow-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-yellow-600 transition-all">
+                            🔄 إعادة
+                        </button>
+                    </div>
+                    
+                    <button id="skip-btn" class="mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        let selectedSegments = [];
+        const segmentsDisplay = document.getElementById('segments-display');
+        const segmentButtons = container.querySelectorAll('.segment-btn');
+        
+        // معالج النقر على المقاطع
+        segmentButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                
+                const segment = btn.dataset.segment;
+                selectedSegments.push(segment);
+                
+                // مسح الرسالة الافتراضية
+                if (selectedSegments.length === 1) {
+                    segmentsDisplay.innerHTML = '';
+                }
+                
+                // إضافة المقطع المختار
+                const segmentEl = document.createElement('div');
+                segmentEl.className = 'bg-green-200 text-green-800 text-2xl md:text-3xl font-bold px-4 md:px-5 py-3 md:py-4 rounded-2xl';
+                segmentEl.textContent = segment;
+                segmentsDisplay.appendChild(segmentEl);
+                
+                // تعطيل الزر
+                btn.disabled = true;
+                btn.style.opacity = '0.3';
+                btn.style.pointerEvents = 'none';
+            });
+        });
+        
+        // زر التحقق
+        document.getElementById('check-segmentation').addEventListener('click', () => {
+            audioManager.playClickSound();
+            
+            // التحقق من صحة الترتيب
+            const isCorrect = JSON.stringify(selectedSegments) === JSON.stringify(correctSegments);
+            
+            if (isCorrect) {
+                segmentsDisplay.classList.add('ring-4', 'ring-green-500', 'bg-green-50', 'rounded-2xl', 'p-4');
+                
+                // معالجة خاصة لتحدي التقطيع
+                this.handleWordSegmentationSuccess();
+            } else {
+                segmentsDisplay.classList.add('ring-4', 'ring-red-500', 'bg-red-50', 'rounded-2xl', 'p-4');
+                this.handleWrongAnswer();
+            }
+        });
+        
+        // زر الإعادة
+        document.getElementById('reset-segmentation').addEventListener('click', () => {
+            audioManager.playClickSound();
+            
+            selectedSegments = [];
+            segmentsDisplay.innerHTML = '<p class="text-gray-400 text-lg">اضغط على الكلمة أعلاه لتقطيعها</p>';
+            segmentsDisplay.classList.remove('ring-4', 'ring-green-500', 'ring-red-500', 'bg-green-50', 'bg-red-50');
+            
+            // إعادة تفعيل جميع الأزرار
+            segmentButtons.forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            });
+        });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
+    }
+    
+    // دالة مساعدة لخلط المصفوفة
+    shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+    
+    // معالجة خاصة للنجاح في تحدي التقطيع
+    handleWordSegmentationSuccess() {
+        this.score += this.currentChallenge.points || 10;
+        this.correctAnswers++;
+        
+        audioManager.playSuccessSound();
+        
+        const message = 'ممتاز! أحسنت التقطيع! 🦆';
+        this.showFeedback(message, 'success');
+        
+        this.updateScore();
+        
+        if (this.correctAnswers % 5 === 0) {
+            setTimeout(() => {
+                this.showReward();
+            }, 1500);
+        } else {
+            setTimeout(() => {
+                this.nextChallenge();
+            }, 2000);
+        }
+    }
+    
+    // حذف المقاطع التي لا تحتوي على الحرف
+    renderDeleteSegments(container) {
+        const word = this.currentChallenge.word;
+        const allSegments = this.currentChallenge.allSegments;
+        const deletableSegments = this.currentChallenge.deletableSegments;
+        const protectedSegment = this.currentChallenge.protectedSegment;
+        const emoji = this.currentChallenge.emoji || '📝';
+        
+        let deletedSegments = [];
+        
+        container.innerHTML = `
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <!-- الكلمة الكاملة مع الإيموجي -->
+                    <div class="mb-6 md:mb-8">
+                        <div class="text-6xl md:text-8xl mb-4">${emoji}</div>
+                        <div class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                            ${word}
+                        </div>
+                    </div>
+                    
+                    <!-- المقاطع القابلة للحذف -->
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-700 mb-4">المقاطع:</h3>
+                        <p class="text-lg text-purple-600 mb-4">اضغط على المقاطع لحذفها (ما عدا حرف الباء)</p>
+                        <div id="segments-container" class="flex gap-3 justify-center flex-wrap">
+                            ${allSegments.map((segment, index) => {
+                                const isDeletable = deletableSegments.includes(segment);
+                                const isProtected = segment === protectedSegment;
+                                return `
+                                    <div class="segment-item ${isDeletable ? 'deletable' : 'protected'}" data-segment="${segment}">
+                                        <button class="segment-delete-btn bg-gradient-to-r ${isProtected ? 'from-green-200 to-green-300 cursor-not-allowed' : 'from-purple-200 to-pink-200 hover:from-red-300 hover:to-red-400'} text-gray-800 text-3xl md:text-4xl font-bold px-5 md:px-6 py-4 md:py-5 rounded-2xl transition-all hover:scale-110 border-4 border-transparent" data-segment="${segment}" ${!isDeletable ? 'disabled' : ''}>
+                                            ${segment}
+                                        </button>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <p class="text-sm md:text-base text-gray-500 mt-3">💡 حرف الباء محمي ولا يمكن حذفه</p>
+                    </div>
+                    
+                    <button id="check-deletion" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
+                        تحقق ✓
+                    </button>
+                    
+                    <button id="skip-btn" class="mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        const segmentButtons = container.querySelectorAll('.segment-delete-btn');
+        
+        segmentButtons.forEach(btn => {
+            const segment = btn.dataset.segment;
+            const isDeletable = deletableSegments.includes(segment);
+            
+            if (isDeletable) {
+                btn.addEventListener('click', () => {
+                    audioManager.playClickSound();
+                    
+                    // تشغيل الصوت الخاص بكل مقطع (السؤال 8)
+                    if (this.currentChallenge.id === 'baa-delete-segments') {
+                        console.log('🔊 حذف المقطع (الباء):', segment);
+                        
+                        const segmentAudios = {
+                            'ال': 'audio/al.mp3',
+                            'طَّ': 'audio/ta.mp3',
+                            'ة': 'audio/to.mp3'
+                        };
+                        
+                        if (segmentAudios[segment]) {
+                            console.log('✅ تشغيل الصوت:', segmentAudios[segment]);
+                            audioManager.playVoiceFile(segmentAudios[segment]);
+                        } else {
+                            console.log('❌ لا يوجد صوت للمقطع:', segment, 'الأصوات المتاحة:', Object.keys(segmentAudios));
+                        }
+                    }
+                    
+                    // تشغيل الصوت الخاص بكل مقطع (السؤال 8 - حرف الجيم)
+                    if (this.currentChallenge.id === 'jeem-delete-segments') {
+                        console.log('🔊 حذف المقطع (الجيم):', segment);
+                        
+                        const segmentAudios = {
+                            'ال': 'audio/al.mp3',
+                            'مَ': 'audio/ma.mp3',
+                            'ل': 'audio/lo.mp3'
+                        };
+                        
+                        if (segmentAudios[segment]) {
+                            console.log('✅ تشغيل الصوت:', segmentAudios[segment]);
+                            audioManager.playVoiceFile(segmentAudios[segment]);
+                        } else {
+                            console.log('❌ لا يوجد صوت للمقطع:', segment, 'الأصوات المتاحة:', Object.keys(segmentAudios));
+                        }
+                    }
+                    
+                    // حذف المقطع (إخفاؤه)
+                    btn.style.opacity = '0';
+                    btn.style.transform = 'scale(0)';
+                    btn.style.transition = 'all 0.3s ease-out';
+                    
+                    setTimeout(() => {
+                        btn.style.display = 'none';
+                    }, 300);
+                    
+                    // إضافة للمحذوفات
+                    if (!deletedSegments.includes(segment)) {
+                        deletedSegments.push(segment);
+                    }
+                });
+            } else {
+                // حرف الباء محمي
+                btn.addEventListener('click', () => {
+                    audioManager.playErrorSound();
+                    
+                    // تأثير اهتزاز
+                    btn.classList.add('animate-shake-error');
+                    
+                    // رسالة
+                    this.showFeedback('لا يمكن حذف حرف الباء! 🦆', 'error');
+                    
+                    setTimeout(() => {
+                        btn.classList.remove('animate-shake-error');
+                    }, 500);
+                });
+            }
+        });
+        
+        // زر التحقق
+        document.getElementById('check-deletion').addEventListener('click', () => {
+            audioManager.playClickSound();
+            
+            // التحقق من حذف جميع المقاطع ما عدا الباء
+            const allDeleted = deletableSegments.every(seg => deletedSegments.includes(seg));
+            
+            if (allDeleted) {
+                // نجاح
+                this.score += this.currentChallenge.points || 10;
+                this.correctAnswers++;
+                this.updateScore();
+                
+                audioManager.playSuccessSound();
+                
+                // إذا كان السؤال 8 لحرف الباء، نعرض الصفحة الخاصة
+                if (this.currentChallenge.id === 'baa-delete-segments') {
+                    setTimeout(() => {
+                        this.showLetterRevealPage('ب', 'الباء', 'audio/rifakba.mp3');
+                    }, 1000);
+                    return;
+                }
+                
+                // إذا كان السؤال 8 لحرف الجيم، نعرض الصفحة الخاصة
+                if (this.currentChallenge.id === 'jeem-delete-segments') {
+                    setTimeout(() => {
+                        this.showLetterRevealPage('ج', 'الجيم', 'audio/rifakj.mp3');
+                    }, 1000);
+                    return;
+                }
+                
+                const message = 'ممتاز! أبقيت على الحرف! 🦆';
+                this.showFeedback(message, 'success');
+                
+                if (this.correctAnswers % 5 === 0) {
+                    setTimeout(() => {
+                        this.showReward();
+                    }, 1500);
+                } else {
+                    setTimeout(() => {
+                        this.nextChallenge();
+                    }, 2000);
+                }
+            } else {
+                audioManager.playErrorSound();
+                const remaining = deletableSegments.filter(seg => !deletedSegments.includes(seg));
+                this.showFeedback(`احذف جميع المقاطع ما عدا الباء! (باقي: ${remaining.join('، ')})`, 'error');
+            }
+        });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
+    }
+    
+    // تحديد المقطع الذي يحتوي على الحرف
+    renderFindLetterSegment(container) {
+        const word = this.currentChallenge.word;
+        const allSegments = this.currentChallenge.allSegments;
+        const correctSegment = this.currentChallenge.correctSegment;
+        const emoji = this.currentChallenge.emoji || '📝';
+        
+        container.innerHTML = `
+            <div class="text-center max-w-3xl mx-auto px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                
+                <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
+                    <!-- الكلمة الكاملة مع الإيموجي -->
+                    <div class="mb-6 md:mb-8">
+                        <div class="text-6xl md:text-8xl mb-4">${emoji}</div>
+                        <div class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                            ${word}
+                        </div>
+                        <p class="text-lg md:text-xl text-purple-600 mb-4">مقاطع الكلمة:</p>
+                        <div class="flex gap-2 justify-center mb-4">
+                            ${allSegments.map(seg => `
+                                <div class="bg-gray-100 text-gray-600 text-2xl md:text-3xl font-bold px-4 py-3 rounded-xl border-2 border-gray-300">
+                                    ${seg}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- السؤال -->
+                    <div class="mb-6 md:mb-8">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-700 mb-4">اختر المقطع الذي يحتوي على حرف الباء:</h3>
+                        <div id="segment-options" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            ${allSegments.map((segment, index) => `
+                                <button class="segment-option-btn bg-purple-200 hover:bg-purple-300 text-purple-800 text-2xl md:text-3xl font-bold px-4 md:px-6 py-4 md:py-6 rounded-2xl transition-all hover:scale-110 border-4 border-transparent" data-segment="${segment}">
+                                    ${segment}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <button id="skip-btn" class="mt-3 bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        const segmentButtons = container.querySelectorAll('.segment-option-btn');
+        
+        segmentButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                
+                const selectedSegment = btn.dataset.segment;
+                const isCorrect = selectedSegment === correctSegment;
+                
+                // تعطيل جميع الأزرار
+                segmentButtons.forEach(b => b.disabled = true);
+                
+                if (isCorrect) {
+                    // إجابة صحيحة
+                    btn.classList.add('bg-green-300', 'border-green-500', 'ring-4', 'ring-green-500');
+                    
+                    // إخفاء المقاطع الأخرى تدريجياً
+                    segmentButtons.forEach(b => {
+                        if (b !== btn) {
+                            b.style.opacity = '0.3';
+                            b.classList.add('line-through');
+                        }
+                    });
+                    
+                    // معالجة النجاح
+                    setTimeout(() => {
+                        this.score += this.currentChallenge.points || 10;
+                        this.correctAnswers++;
+                        this.updateScore();
+                        
+                        audioManager.playSuccessSound();
+                        
+                        const message = 'ممتاز! وجدت حرف الباء! 🦆';
+                        this.showFeedback(message, 'success');
+                        
+                        if (this.correctAnswers % 5 === 0) {
+                            setTimeout(() => {
+                                this.showReward();
+                            }, 1500);
+                        } else {
+                            setTimeout(() => {
+                                this.nextChallenge();
+                            }, 2000);
+                        }
+                    }, 1000);
+                } else {
+                    // إجابة خاطئة
+                    btn.classList.add('bg-red-300', 'border-red-500', 'ring-4', 'ring-red-500');
+                    this.handleWrongAnswer();
+                    
+                    // إعادة تفعيل الأزرار
+                    setTimeout(() => {
+                        segmentButtons.forEach(b => {
+                            b.disabled = false;
+                            b.classList.remove('bg-red-300', 'border-red-500', 'ring-4', 'ring-red-500');
+                        });
+                    }, 2000);
+                }
+            });
+        });
+        
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
+    }
 
     // عرض رسالة التغذية الراجعة
     showFeedback(message, type) {
         const feedbackEl = document.getElementById('feedback');
         if (!feedbackEl) return;
 
+        let borderClass = 'border-4 border-red-400';
+        let textClass = 'text-red-600';
+        
+        if (type === 'success') {
+            borderClass = 'border-4 border-green-400';
+            textClass = 'text-green-600';
+        } else if (type === 'info') {
+            borderClass = 'border-4 border-blue-400';
+            textClass = 'text-blue-600';
+        }
+
         feedbackEl.innerHTML = `
             <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
-                <div class="bg-white rounded-3xl shadow-2xl p-8 text-center ${type === 'success' ? 'border-4 border-green-400' : 'border-4 border-red-400'}">
-                    <p class="text-3xl font-bold ${type === 'success' ? 'text-green-600' : 'text-red-600'}">${message}</p>
+                <div class="bg-white rounded-3xl shadow-2xl p-8 text-center ${borderClass}">
+                    <p class="text-3xl font-bold ${textClass}">${message}</p>
                 </div>
             </div>
         `;
@@ -1442,6 +2447,406 @@ class ChallengeManager {
         }, 2000);
     }
 
+    // لعبة الضفدع - مسار منحني
+    renderFrogGame(container) {
+        container.innerHTML = `
+            <div class="text-center px-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-600 mb-3">${this.currentChallenge.title}</h2>
+                <p class="text-lg md:text-xl text-gray-600 mb-6">${this.currentChallenge.description}</p>
+                <p class="text-base md:text-lg text-purple-500 mb-3">ارسم مساراً منحنياً لمساعدة الضفدع في الوصول إلى الورقة 🐸</p>
+                
+                <div class="relative bg-gradient-to-br from-green-100 to-blue-100 rounded-3xl p-4 md:p-8 h-72 md:h-96 overflow-hidden" id="frog-game-area">
+                    <!-- Canvas للرسم -->
+                    <canvas id="frog-canvas" class="absolute inset-0 w-full h-full cursor-crosshair drawing-canvas" style="z-index: 10;"></canvas>
+                    
+                    <!-- Canvas للخطوط المتقطعة المرشدة -->
+                    <canvas id="guide-path-canvas" class="absolute inset-0 w-full h-full" style="z-index: 2; pointer-events: none;"></canvas>
+                    
+                    <!-- الضفدع -->
+                    <div id="frog" class="absolute text-4xl md:text-6xl cursor-pointer transition-all duration-500" style="bottom: 10%; left: 10%; z-index: 5;">
+                        🐸
+                    </div>
+                    
+                    <!-- ورقة الشجر -->
+                    <div id="leaf" class="absolute text-4xl md:text-6xl" style="top: 10%; right: 10%; z-index: 5;">
+                        🍃
+                    </div>
+                </div>
+                
+                <div class="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2">
+                    <button id="clearFrogPath" class="bg-red-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-red-600 transition-all">
+                        🗑️ امسح المسار
+                    </button>
+                    <button id="checkFrogPath" class="bg-green-500 text-white text-base md:text-lg font-bold py-3 md:py-2 px-5 md:px-6 rounded-xl hover:bg-green-600 transition-all">
+                        ✅ تحقق من المسار
+                    </button>
+                </div>
+            </div>
+        `;
+
+        this.setupFrogGameDrawing();
+    }
+
+    // إعداد الرسم في لعبة الضفدع
+    setupFrogGameDrawing() {
+        const canvas = document.getElementById('frog-canvas');
+        const ctx = canvas.getContext('2d');
+        const gameArea = document.getElementById('frog-game-area');
+        const frog = document.getElementById('frog');
+        
+        // Canvas للخطوط المرشدة
+        const guideCanvas = document.getElementById('guide-path-canvas');
+        const guideCtx = guideCanvas ? guideCanvas.getContext('2d') : null;
+        
+        let pathLength = 0;
+        let startPoint = null;
+        const targetPathLength = 350; // أطول قليلاً من لعبة السمكة
+        
+        // تعيين حجم Canvas
+        const resizeCanvas = () => {
+            const rect = gameArea.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            if (guideCanvas) {
+                guideCanvas.width = rect.width;
+                guideCanvas.height = rect.height;
+                drawGuidePath(guideCtx, rect.width, rect.height);
+            }
+            
+            // تعيين خصائص الرسم - أخضر للضفدع
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.shadowColor = '#16a34a';
+            ctx.shadowBlur = 4;
+        };
+        
+        // رسم المسار المرشد المتقطع - قفزات الضفدع
+        const drawGuidePath = (ctx, width, height) => {
+            if (!ctx) return;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // إعداد نمط الخط المتقطع
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.globalAlpha = 0.7;
+            ctx.setLineDash([15, 10]); // خطوط متقطعة: 15 بكسل خط، 10 بكسل فراغ
+            
+            // رسم قفزات الضفدع (أقواس متتالية)
+            const startX = width * 0.15;
+            const startY = height * 0.85;
+            const endX = width * 0.85;
+            const endY = height * 0.15;
+            
+            // عدد القفزات
+            const numberOfJumps = 5;
+            
+            // رسم كل قفزة كقوس
+            for (let i = 0; i < numberOfJumps; i++) {
+                ctx.beginPath();
+                
+                // نقطة بداية ونهاية كل قفزة
+                const t1 = i / numberOfJumps;
+                const t2 = (i + 1) / numberOfJumps;
+                
+                const x1 = startX + (endX - startX) * t1;
+                const y1 = startY - (startY - endY) * t1;
+                
+                const x2 = startX + (endX - startX) * t2;
+                const y2 = startY - (startY - endY) * t2;
+                
+                // نقطة التحكم لإنشاء القوس (أعلى من الخط المستقيم)
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
+                const controlX = midX;
+                const controlY = midY - 30; // القوس يرتفع 30 بكسل
+                
+                // رسم قوس القفزة
+                ctx.moveTo(x1, y1);
+                ctx.quadraticCurveTo(controlX, controlY, x2, y2);
+                ctx.stroke();
+            }
+            
+            // إعادة تعيين النمط
+            ctx.setLineDash([]);
+            ctx.globalAlpha = 1;
+        };
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        let isDrawing = false;
+        let hasDrawnPath = false;
+        let lastX = 0;
+        let lastY = 0;
+        
+        // دالة لتحريك الضفدع لموقع نهاية الخط المرسوم
+        const updateFrogPosition = (x, y) => {
+            const rect = canvas.getBoundingClientRect();
+            
+            // تحويل الإحداثيات إلى نسب مئوية من حجم منطقة اللعب
+            const percentX = (x / rect.width) * 100;
+            const percentY = (y / rect.height) * 100;
+            
+            // تحريك الضفدع لموقع آخر نقطة رسم
+            frog.style.left = percentX + '%';
+            frog.style.top = percentY + '%';
+            frog.style.bottom = 'auto';
+            
+            // تأثير القفز
+            const bounce = Math.abs(Math.sin(Date.now() / 150) * 5);
+            frog.style.transform = `translate(-50%, -50%) translateY(-${bounce}px)`;
+            frog.style.transition = 'left 0.1s ease-out, top 0.1s ease-out';
+        };
+        
+        // بدء الرسم
+        const startDrawing = (e) => {
+            isDrawing = true;
+            hasDrawnPath = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            lastX = x;
+            lastY = y;
+            startPoint = {x, y};
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            
+            audioManager.playDragSound();
+        };
+        
+        // أثناء الرسم
+        const draw = (e) => {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const dx = x - lastX;
+            const dy = y - lastY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            pathLength += distance;
+            
+            lastX = x;
+            lastY = y;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            // تحديث موقع الضفدع لنهاية الخط المرسوم
+            updateFrogPosition(x, y);
+        };
+        
+        // إنهاء الرسم
+        const stopDrawing = () => {
+            if (isDrawing) {
+                isDrawing = false;
+                audioManager.playDropSound();
+            }
+        };
+        
+        // أحداث الماوس
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // أحداث اللمس
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                bubbles: true
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            lastTouchX = touch.clientX;
+            lastTouchY = touch.clientY;
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                bubbles: true
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            const finalX = touch ? touch.clientX : lastTouchX;
+            const finalY = touch ? touch.clientY : lastTouchY;
+            
+            const mouseEvent = new MouseEvent('mouseup', {
+                clientX: finalX,
+                clientY: finalY,
+                bubbles: true
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        // زر مسح المسار
+        document.getElementById('clearFrogPath').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasDrawnPath = false;
+            pathLength = 0;
+            startPoint = null;
+            
+            frog.style.left = '10%';
+            frog.style.bottom = '10%';
+            frog.style.transform = 'none';
+            frog.style.transition = 'all 0.5s ease-out';
+            
+            audioManager.playClickSound();
+        });
+        
+        // زر التحقق من المسار
+        document.getElementById('checkFrogPath').addEventListener('click', () => {
+            audioManager.playClickSound();
+            
+            if (!hasDrawnPath) {
+                audioManager.playErrorSound();
+                return;
+            }
+            
+            if (pathLength < targetPathLength * 0.7) {
+                audioManager.playErrorSound();
+                this.showFeedback('ارسم مساراً أطول للضفدع! 🐸', 'error');
+                return;
+            }
+            
+            this.completeFrogAnimation();
+        });
+    }
+
+    // إكمال حركة الضفدع
+    completeFrogAnimation() {
+        const frog = document.getElementById('frog');
+        const leaf = document.getElementById('leaf');
+        const canvas = document.getElementById('frog-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // تحريك الضفدع للوصول للورقة
+        frog.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        frog.style.left = '90%';
+        frog.style.bottom = '90%';
+        frog.style.transform = 'translateY(0) rotate(0deg) scale(1.1)';
+        
+        // قفزات متعددة
+        let jumpCount = 0;
+        const jumpInterval = setInterval(() => {
+            if (jumpCount < 5) {
+                const jumpHeight = 15 - jumpCount * 3;
+                frog.style.transform = `translateY(-${jumpHeight}px) scale(1.1)`;
+                jumpCount++;
+            } else {
+                clearInterval(jumpInterval);
+            }
+        }, 250);
+        
+        // إزالة المسار تدريجياً
+        let opacity = 1;
+        const fadeInterval = setInterval(() => {
+            opacity -= 0.05;
+            ctx.globalAlpha = opacity;
+            
+            if (opacity <= 0) {
+                clearInterval(fadeInterval);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.globalAlpha = 1;
+            }
+        }, 50);
+        
+        // جسيمات النجاح
+        setTimeout(() => {
+            this.createFrogSuccessParticles();
+        }, 1500);
+        
+        audioManager.playSuccessSound();
+        audioManager.playVoiceFile('audio/mmtazntamomiiz.mp3');
+        
+        setTimeout(() => {
+            this.score += this.currentChallenge.points || 10;
+            this.correctAnswers++;
+            this.updateScore();
+            
+            const message = 'ممتاز انت مميز 🐸';
+            this.showFeedback(message, 'success');
+            
+            if (this.correctAnswers % 5 === 0) {
+                setTimeout(() => {
+                    this.showReward();
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    this.nextChallenge();
+                }, 1000);
+            }
+        }, 2000);
+    }
+
+    // جسيمات النجاح للضفدع
+    createFrogSuccessParticles() {
+        const leaf = document.getElementById('leaf');
+        const gameArea = document.getElementById('frog-game-area');
+        
+        if (!leaf || !gameArea) return;
+        
+        const leafRect = leaf.getBoundingClientRect();
+        const gameRect = gameArea.getBoundingClientRect();
+        
+        const particles = ['💚', '✨', '🌟', '⭐', '🍀', '💫', '🌿'];
+        const particleCount = 10;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+            particle.className = 'absolute text-3xl pointer-events-none';
+            particle.style.cssText = `
+                left: ${(leafRect.left - gameRect.left) + (Math.random() * 60 - 30)}px;
+                top: ${(leafRect.top - gameRect.top) + (Math.random() * 60 - 30)}px;
+                animation: float-bubble ${1 + Math.random()}s ease-out forwards;
+                animation-delay: ${i * 0.1}s;
+                opacity: 0;
+                z-index: 20;
+            `;
+            
+            gameArea.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 2000 + (i * 100));
+        }
+        
+        // تأثير توهج للورقة
+        leaf.style.transform = 'scale(1.3)';
+        leaf.style.filter = 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))';
+        leaf.style.transition = 'all 0.3s ease-out';
+        
+        setTimeout(() => {
+            leaf.style.transform = 'scale(1)';
+            leaf.style.filter = 'none';
+        }, 800);
+    }
+    
     // إضافة تأثير الفقاعات والنجوم عند نجاح السمكة
     createFishSuccessParticles() {
         const fishbowl = document.getElementById('fishbowl');

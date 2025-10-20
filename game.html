@@ -381,6 +381,21 @@
             }
         }
 
+        /* تأثير الجسيمات الاحتفالية */
+        @keyframes float-celebration {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) translateX(calc(-50px + 100px * var(--random))) scale(1.5) rotate(720deg);
+            }
+        }
+
         /* ===== Shadow Challenge Animations ===== */
         
         /* تأثير التوهج للظل الصحيح - Glow effect for correct shadow */

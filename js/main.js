@@ -183,13 +183,17 @@ class GameController {
         } else if (this.currentSection === 'letterBaaDialogue') {
             this.startLetterBaa();
         } else if (this.currentSection === 'letterBaa') {
-            this.showSectionComplete('حرف الباء', () => {
+            // رسالة خاصة لإكمال حرف الباء
+            this.showLetterComplete('ب', () => {
                 this.showLetterJeemDialogue();
             });
         } else if (this.currentSection === 'letterJeemDialogue') {
             this.startLetterJeem();
         } else if (this.currentSection === 'letterJeem') {
-            this.showFinalCongratulations();
+            // رسالة خاصة لإكمال حرف الجيم
+            this.showLetterComplete('ج', () => {
+                this.showFinalCongratulations();
+            });
         }
     }
 
@@ -231,6 +235,95 @@ class GameController {
             audioManager.playClickSound();
             if (onContinue) onContinue();
         });
+    }
+
+    // عرض إكمال الحرف بشكل مخصص
+    showLetterComplete(letter, onContinue) {
+        const mainContent = document.getElementById('main-content');
+        const completeMessage = challengesData.encouragement.letterComplete[letter] || 'أحسنت! لقد أتقنت الحرف!';
+        
+        // رسوم متحركة خاصة للحروف
+        const letterEmojis = {
+            'ب': '🎈🎁🎊',
+            'ج': '🦋🔔🐪'
+        };
+        
+        const letterNames = {
+            'ب': 'حرف الباء',
+            'ج': 'حرف الجيم'
+        };
+        
+        const letterColors = {
+            'ب': 'from-purple-100 via-pink-100 to-purple-100',
+            'ج': 'from-yellow-100 via-orange-100 to-yellow-100'
+        };
+        
+        mainContent.innerHTML = `
+            <div class="text-center max-w-4xl mx-auto animate-fade-in">
+                <div class="bg-white rounded-3xl shadow-2xl p-12">
+                    <div class="text-9xl mb-6">${letterEmojis[letter] || '🎉'}</div>
+                    <h1 class="text-5xl font-bold text-purple-600 mb-6" style="white-space: pre-line;">${completeMessage}</h1>
+                    
+                    <div class="bg-gradient-to-r ${letterColors[letter] || 'from-yellow-100 via-pink-100 to-purple-100'} rounded-2xl p-8 mb-8">
+                        <div class="text-8xl font-bold ${letter === 'ج' ? 'text-orange-800' : 'text-purple-800'} mb-4">${letter}</div>
+                        <div class="text-2xl text-gray-700 mb-6">${letterNames[letter]}</div>
+                        
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <div class="text-5xl mb-2">⭐</div>
+                                <div class="text-xl text-gray-600">النقاط</div>
+                                <div class="text-4xl font-bold text-purple-600">${this.gameState.score}</div>
+                            </div>
+                            <div>
+                                <div class="text-5xl mb-2">✅</div>
+                                <div class="text-xl text-gray-600">إجابات صحيحة</div>
+                                <div class="text-4xl font-bold text-green-600">${this.gameState.correctAnswers}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="continue-btn" class="bg-gradient-to-r from-green-500 to-blue-500 text-white text-3xl font-bold py-6 px-12 rounded-2xl hover:scale-105 transition-all shadow-lg">
+                        🚀 المتابعة للحرف التالي
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // تشغيل صوت خاص وتأثيرات متحركة
+        audioManager.playRewardSound();
+        
+        // إضافة جسيمات متحركة احتفالية
+        this.createCelebrationParticles();
+
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            audioManager.playClickSound();
+            if (onContinue) onContinue();
+        });
+    }
+    
+    // إضافة جسيمات احتفالية
+    createCelebrationParticles() {
+        const container = document.getElementById('main-content');
+        const particles = ['🎉', '🎊', '⭐', '✨', '💫', '🌟', '🎈'];
+        
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+            particle.className = 'absolute text-4xl pointer-events-none';
+            particle.style.cssText = `
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation: float-celebration ${2 + Math.random() * 2}s ease-out forwards;
+                animation-delay: ${i * 0.1}s;
+                opacity: 0;
+            `;
+            
+            container.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 4000 + (i * 100));
+        }
     }
 
     // عرض مقدمة مهارات الوعي الصوتي
