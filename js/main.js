@@ -391,9 +391,62 @@ class GameController {
         });
     }
 
-    // عرض الحوار
+    // عرض الحوار / القصة المصورة
     showDialogue(dialogueData, onComplete) {
         const mainContent = document.getElementById('main-content');
+        
+        // نمط قصة بصورة وصوت (يدعم عدة شرائح)
+        if (dialogueData.type === 'image-story') {
+            // دعم الشكلين: خاصية واحدة أو مصفوفة شرائح
+            const slides = Array.isArray(dialogueData.slides) && dialogueData.slides.length
+                ? dialogueData.slides
+                : [{ image: dialogueData.image, audio: dialogueData.audio, storyText: dialogueData.storyText }];
+
+            let current = 0;
+
+            const renderSlide = () => {
+                const s = slides[current] || {};
+                mainContent.innerHTML = `
+                    <div class="text-center max-w-4xl mx-auto animate-fade-in">
+                        <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-12">
+                            <h1 class="text-3xl md:text-4xl font-bold text-purple-600 mb-4 md:mb-8">${dialogueData.title || 'قصة'}</h1>
+                            <p class="text-xl md:text-2xl text-gray-800 mb-4 md:mb-6" style="white-space: pre-line;">
+                                ${s.storyText || ''}
+                            </p>
+                            <div class="rounded-2xl overflow-hidden shadow-lg mb-6 md:mb-8">
+                                <img src="${s.image || ''}" alt="قصة حرف الباء" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain; display: block;" />
+                            </div>
+                            <button id="continue-dialogue" class="bg-gradient-to-r from-green-500 to-blue-500 text-white text-2xl font-bold py-4 px-8 rounded-2xl hover:scale-105 transition-all shadow-lg">
+                                ${current < slides.length - 1 ? 'التالي ➡️' : 'إنهاء ✓'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // تشغيل صوت الشريحة الحالية
+                if (s.audio) {
+                    setTimeout(() => {
+                        audioManager.enableAudio();
+                        audioManager.playVoiceFile(s.audio);
+                    }, 300);
+                }
+
+                document.getElementById('continue-dialogue').addEventListener('click', () => {
+                    audioManager.playClickSound();
+                    if (current < slides.length - 1) {
+                        current++;
+                        renderSlide();
+                    } else if (onComplete) {
+                        onComplete();
+                    }
+                });
+            };
+
+            renderSlide();
+            return;
+        }
+
+        // النمط التقليدي للحوار
         mainContent.innerHTML = `
             <div class="text-center max-w-4xl mx-auto animate-fade-in">
                 <div class="bg-white rounded-3xl shadow-2xl p-12">

@@ -165,10 +165,24 @@ class ChallengeManager {
                         ✅ تحقق من المسار
                     </button>
                 </div>
+                <div class="mt-3 flex justify-center">
+                    <button id="skip-btn" class="bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                </div>
             </div>
         `;
 
         this.setupFishGameDrawing();
+
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
     // إعداد الرسم في لعبة السمكة مع تحريك السمكة تدريجياً
@@ -2481,10 +2495,24 @@ class ChallengeManager {
                         ✅ تحقق من المسار
                     </button>
                 </div>
+                <div class="mt-3 flex justify-center">
+                    <button id="skip-btn" class="bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-6 rounded-xl transition-all">
+                        ⏭️ تخطي السؤال
+                    </button>
+                </div>
             </div>
         `;
 
         this.setupFrogGameDrawing();
+
+        // زر التخطي
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                audioManager.playClickSound();
+                this.skipChallenge();
+            });
+        }
     }
 
     // إعداد الرسم في لعبة الضفدع

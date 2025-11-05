@@ -79,61 +79,79 @@ class AudioManager {
         // تم تعطيله - يتم استخدام playVoiceFile مباشرة
     }
     
-    // تشغيل ملف صوتي عربي
+    // تشغيل ملف صوتي عربي مع مسار احتياطي تلقائي
     playVoiceFile(filename) {
         if (!filename) {
             console.warn('⚠️ No filename provided to playVoiceFile');
             return;
         }
-        
+
         // تفعيل الصوت إذا لم يكن مفعلاً
         this.enableAudio();
-        
-        console.log('🔊 Attempting to play voice file:', filename);
-        
-        try {
-            const audio = new Audio(filename);
-            audio.volume = 0.8;
-            audio.preload = 'auto';
-            
-            // Event listeners for debugging
-            audio.addEventListener('loadstart', () => {
-                console.log('📥 Loading:', filename);
-            });
-            
-            audio.addEventListener('canplay', () => {
-                console.log('▶️ Can play:', filename);
-            });
-            
-            audio.addEventListener('playing', () => {
-                console.log('✅ Now playing:', filename);
-            });
-            
-            audio.addEventListener('error', (e) => {
-                console.error('❌ Audio error for:', filename);
-                console.error('Error code:', audio.error?.code);
-                console.error('Error message:', audio.error?.message);
-            });
-            
-            const playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log('✅ Play promise resolved:', filename);
-                    })
-                    .catch(error => {
-                        console.error('❌ Play promise rejected:', filename);
-                        console.error('Error:', error.name, '-', error.message);
-                        
-                        if (error.name === 'NotAllowedError') {
-                            console.warn('⚠️ Audio blocked by browser. User interaction required.');
-                        }
-                    });
-            }
-        } catch (error) {
-            console.error('❌ Exception in playVoiceFile:', error);
+
+        const triedWithFolder = filename.startsWith('audio/');
+        const sources = [];
+        // إن لم يحتوِ على مسار، جرّب أولاً المسار الحالي ثم audio/
+        if (!filename.includes('/')) {
+            sources.push(filename);
+            sources.push('audio/' + filename);
+        } else {
+            sources.push(filename);
         }
+
+        const tryPlay = (index) => {
+            if (index >= sources.length) {
+                console.error('❌ All audio sources failed for:', filename, 'tried:', sources);
+                return;
+            }
+
+            const src = sources[index];
+            console.log('🔊 Attempting to play voice file:', src);
+            try {
+                const audio = new Audio(src);
+                audio.volume = 0.8;
+                audio.preload = 'auto';
+
+                audio.addEventListener('loadstart', () => {
+                    console.log('📥 Loading:', src);
+                });
+
+                audio.addEventListener('canplay', () => {
+                    console.log('▶️ Can play:', src);
+                });
+
+                audio.addEventListener('playing', () => {
+                    console.log('✅ Now playing:', src);
+                });
+
+                audio.addEventListener('error', () => {
+                    console.warn('⚠️ Audio error for:', src, '→ trying next if available');
+                    // جرّب المصدر التالي
+                    tryPlay(index + 1);
+                });
+
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('✅ Play promise resolved:', src);
+                        })
+                        .catch(error => {
+                            console.warn('⚠️ Play rejected for:', src, error.name, '-', error.message);
+                            if (error.name === 'NotAllowedError') {
+                                console.warn('⚠️ Audio blocked by browser. User interaction required.');
+                            }
+                            // جرّب المصدر التالي
+                            tryPlay(index + 1);
+                        });
+                }
+            } catch (error) {
+                console.error('❌ Exception creating audio for:', src, error);
+                tryPlay(index + 1);
+            }
+        };
+
+        tryPlay(0);
     }
 
     // Legacy method (disabled)
