@@ -37,10 +37,10 @@ class ChallengeManager {
                 audioManager.playVoiceFile('audio/kalm.mp3');
             }
             // أسئلة حرف الباء (1-8)
-            else if (challenge.id === 'baa-odd-word-out' || challenge.id === 'jeem-odd-word-out') {
+            else if (challenge.id === 'baa-odd-word-out' || challenge.id === 'jeem-odd-word-out' || challenge.id === 'meem-odd-word-out' || challenge.id === 'taa-odd-word-out') {
                 audioManager.playVoiceFile('audio/q1.mp3');
             }
-            else if (challenge.id === 'baa-repeated-letter' || challenge.id === 'jeem-repeated-letter') {
+            else if (challenge.id === 'baa-repeated-letter' || challenge.id === 'jeem-repeated-letter' || challenge.id === 'meem-repeated-letter' || challenge.id === 'taa-repeated-letter') {
                 audioManager.playVoiceFile('audio/q2.mp3');
             }
             else if (challenge.id === 'baa-position-game') {
@@ -49,13 +49,16 @@ class ChallengeManager {
             else if (challenge.id === 'jeem-position-game') {
                 audioManager.playVoiceFile('audio/q3j.mp3');
             }
-            else if (challenge.id === 'baa-build-word-syllables' || challenge.id === 'jeem-build-word-syllables') {
+            else if (challenge.id === 'meem-position-game' || challenge.id === 'taa-position-game') {
+                audioManager.playVoiceFile('audio/q3.mp3');
+            }
+            else if (challenge.id === 'baa-build-word-syllables' || challenge.id === 'jeem-build-word-syllables' || challenge.id === 'meem-build-word-syllables' || challenge.id === 'taa-build-word-syllables') {
                 audioManager.playVoiceFile('audio/q4.mp3');
             }
-            else if (challenge.id === 'baa-replace-letter' || challenge.id === 'jeem-replace-letter') {
+            else if (challenge.id === 'baa-replace-letter' || challenge.id === 'jeem-replace-letter' || challenge.id === 'meem-replace-letter' || challenge.id === 'taa-replace-letter') {
                 audioManager.playVoiceFile('audio/q5.mp3');
             }
-            else if (challenge.id === 'baa-delete-syllable' || challenge.id === 'jeem-delete-syllable') {
+            else if (challenge.id === 'baa-delete-syllable' || challenge.id === 'jeem-delete-syllable' || challenge.id === 'meem-delete-syllable' || challenge.id === 'taa-delete-syllable') {
                 audioManager.playVoiceFile('audio/q6.mp3');
             }
             else if (challenge.id === 'baa-add-letter') {
@@ -64,11 +67,17 @@ class ChallengeManager {
             else if (challenge.id === 'jeem-add-letter') {
                 audioManager.playVoiceFile('audio/q7j.mp3');
             }
+            else if (challenge.id === 'meem-add-letter' || challenge.id === 'taa-add-letter') {
+                audioManager.playVoiceFile('audio/q7.mp3');
+            }
             else if (challenge.id === 'baa-delete-segments') {
                 audioManager.playVoiceFile('audio/q8.mp3');
             }
             else if (challenge.id === 'jeem-delete-segments') {
                 audioManager.playVoiceFile('audio/q8j.mp3');
+            }
+            else if (challenge.id === 'meem-delete-segments' || challenge.id === 'taa-delete-segments') {
+                audioManager.playVoiceFile('audio/q8.mp3');
             }
         }, 500);
         
@@ -2219,6 +2228,42 @@ class ChallengeManager {
                         }
                     }
                     
+                    // تشغيل الصوت الخاص بكل مقطع (السؤال 8 - حرف الميم)
+                    if (this.currentChallenge.id === 'meem-delete-segments') {
+                        console.log('🔊 حذف المقطع (الميم):', segment);
+                        
+                        const segmentAudios = {
+                            'ال': 'audio/al.mp3',
+                            'طَ': 'audio/ta.mp3',
+                            'ر': 'audio/lo.mp3'
+                        };
+                        
+                        if (segmentAudios[segment]) {
+                            console.log('✅ تشغيل الصوت:', segmentAudios[segment]);
+                            audioManager.playVoiceFile(segmentAudios[segment]);
+                        } else {
+                            console.log('❌ لا يوجد صوت للمقطع:', segment, 'الأصوات المتاحة:', Object.keys(segmentAudios));
+                        }
+                    }
+                    
+                    // تشغيل الصوت الخاص بكل مقطع (السؤال 8 - حرف التاء)
+                    if (this.currentChallenge.id === 'taa-delete-segments') {
+                        console.log('🔊 حذف المقطع (التاء):', segment);
+                        
+                        const segmentAudios = {
+                            'ال': 'audio/al.mp3',
+                            'ي': 'audio/lo.mp3',
+                            'ن': 'audio/lo.mp3'
+                        };
+                        
+                        if (segmentAudios[segment]) {
+                            console.log('✅ تشغيل الصوت:', segmentAudios[segment]);
+                            audioManager.playVoiceFile(segmentAudios[segment]);
+                        } else {
+                            console.log('❌ لا يوجد صوت للمقطع:', segment, 'الأصوات المتاحة:', Object.keys(segmentAudios));
+                        }
+                    }
+                    
                     // حذف المقطع (إخفاؤه)
                     btn.style.opacity = '0';
                     btn.style.transform = 'scale(0)';
@@ -2278,6 +2323,22 @@ class ChallengeManager {
                 if (this.currentChallenge.id === 'jeem-delete-segments') {
                     setTimeout(() => {
                         this.showLetterRevealPage('ج', 'الجيم', 'audio/rifakj.mp3');
+                    }, 1000);
+                    return;
+                }
+                
+                // إذا كان السؤال 8 لحرف الميم، نعرض الصفحة الخاصة
+                if (this.currentChallenge.id === 'meem-delete-segments') {
+                    setTimeout(() => {
+                        this.showLetterRevealPage('م', 'الميم', 'audio/rifakj.mp3');
+                    }, 1000);
+                    return;
+                }
+                
+                // إذا كان السؤال 8 لحرف التاء، نعرض الصفحة الخاصة
+                if (this.currentChallenge.id === 'taa-delete-segments') {
+                    setTimeout(() => {
+                        this.showLetterRevealPage('ت', 'التاء', 'audio/rifakj.mp3');
                     }, 1000);
                     return;
                 }

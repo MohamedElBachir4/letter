@@ -185,6 +185,13 @@ class GameController {
         } else if (this.currentSection === 'letterBaa') {
             // رسالة خاصة لإكمال حرف الباء
             this.showLetterComplete('ب', () => {
+                this.showLetterTaaDialogue();
+            });
+        } else if (this.currentSection === 'letterTaaDialogue') {
+            this.startLetterTaa();
+        } else if (this.currentSection === 'letterTaa') {
+            // رسالة خاصة لإكمال حرف التاء
+            this.showLetterComplete('ت', () => {
                 this.showLetterJeemDialogue();
             });
         } else if (this.currentSection === 'letterJeemDialogue') {
@@ -192,6 +199,13 @@ class GameController {
         } else if (this.currentSection === 'letterJeem') {
             // رسالة خاصة لإكمال حرف الجيم
             this.showLetterComplete('ج', () => {
+                this.showLetterMeemDialogue();
+            });
+        } else if (this.currentSection === 'letterMeemDialogue') {
+            this.startLetterMeem();
+        } else if (this.currentSection === 'letterMeem') {
+            // رسالة خاصة لإكمال حرف الميم
+            this.showLetterComplete('م', () => {
                 this.showFinalCongratulations();
             });
         }
@@ -245,17 +259,23 @@ class GameController {
         // رسوم متحركة خاصة للحروف
         const letterEmojis = {
             'ب': '🎈🎁🎊',
-            'ج': '🦋🔔🐪'
+            'ت': '🐉🍈🍎',
+            'ج': '🦋🔔🐪',
+            'م': '🌧️☂️🚢'
         };
         
         const letterNames = {
             'ب': 'حرف الباء',
-            'ج': 'حرف الجيم'
+            'ت': 'حرف التاء',
+            'ج': 'حرف الجيم',
+            'م': 'حرف الميم'
         };
         
         const letterColors = {
             'ب': 'from-purple-100 via-pink-100 to-purple-100',
-            'ج': 'from-yellow-100 via-orange-100 to-yellow-100'
+            'ت': 'from-green-100 via-emerald-100 to-green-100',
+            'ج': 'from-yellow-100 via-orange-100 to-yellow-100',
+            'م': 'from-blue-100 via-cyan-100 to-blue-100'
         };
         
         mainContent.innerHTML = `
@@ -265,7 +285,7 @@ class GameController {
                     <h1 class="text-5xl font-bold text-purple-600 mb-6" style="white-space: pre-line;">${completeMessage}</h1>
                     
                     <div class="bg-gradient-to-r ${letterColors[letter] || 'from-yellow-100 via-pink-100 to-purple-100'} rounded-2xl p-8 mb-8">
-                        <div class="text-8xl font-bold ${letter === 'ج' ? 'text-orange-800' : 'text-purple-800'} mb-4">${letter}</div>
+                        <div class="text-8xl font-bold ${letter === 'ج' ? 'text-orange-800' : letter === 'م' ? 'text-blue-800' : letter === 'ت' ? 'text-green-800' : 'text-purple-800'} mb-4">${letter}</div>
                         <div class="text-2xl text-gray-700 mb-6">${letterNames[letter]}</div>
                         
                         <div class="grid grid-cols-2 gap-6">
@@ -372,6 +392,25 @@ class GameController {
         });
     }
 
+    // بدء تحديات حرف التاء
+    startLetterTaa() {
+        this.currentSection = 'letterTaa';
+        this.challengeQueue = [...challengesData.letterTaa];
+        this.currentChallengeIndex = 0;
+        
+        this.loadNextChallenge();
+    }
+
+    // عرض حوار حرف التاء
+    showLetterTaaDialogue() {
+        this.currentSection = 'letterTaaDialogue';
+        const dialogue = challengesData.letterTaaDialogue;
+        
+        this.showDialogue(dialogue, () => {
+            this.proceedToNextSection();
+        });
+    }
+
     // بدء تحديات حرف الجيم
     startLetterJeem() {
         this.currentSection = 'letterJeem';
@@ -391,6 +430,25 @@ class GameController {
         });
     }
 
+    // بدء تحديات حرف الميم
+    startLetterMeem() {
+        this.currentSection = 'letterMeem';
+        this.challengeQueue = [...challengesData.letterMeem];
+        this.currentChallengeIndex = 0;
+        
+        this.loadNextChallenge();
+    }
+
+    // عرض حوار حرف الميم
+    showLetterMeemDialogue() {
+        this.currentSection = 'letterMeemDialogue';
+        const dialogue = challengesData.letterMeemDialogue;
+        
+        this.showDialogue(dialogue, () => {
+            this.proceedToNextSection();
+        });
+    }
+
     // عرض الحوار / القصة المصورة
     showDialogue(dialogueData, onComplete) {
         const mainContent = document.getElementById('main-content');
@@ -403,43 +461,152 @@ class GameController {
                 : [{ image: dialogueData.image, audio: dialogueData.audio, storyText: dialogueData.storyText }];
 
             let current = 0;
+            let currentAudio = null;
+
+            const goToNextSlide = () => {
+                if (current < slides.length - 1) {
+                    current++;
+                    renderSlide();
+                } else if (onComplete) {
+                    onComplete();
+                }
+            };
 
             const renderSlide = () => {
                 const s = slides[current] || {};
+                
+                // إيقاف الصوت السابق إن وجد
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio = null;
+                }
+                
+                const isLastSlide = current >= slides.length - 1;
+                
                 mainContent.innerHTML = `
                     <div class="text-center max-w-4xl mx-auto animate-fade-in">
                         <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-12">
-                            <h1 class="text-3xl md:text-4xl font-bold text-purple-600 mb-4 md:mb-8">${dialogueData.title || 'قصة'}</h1>
+                            <div class="flex justify-between items-center mb-4 md:mb-8">
+                                <h1 class="text-3xl md:text-4xl font-bold text-purple-600">${dialogueData.title || 'قصة'}</h1>
+                                <button id="skip-story" class="bg-gray-400 hover:bg-gray-500 text-white text-lg font-bold py-2 px-4 md:py-3 md:px-6 rounded-xl transition-all">
+                                    ⏭️ تخطي القصة
+                                </button>
+                            </div>
                             <p class="text-xl md:text-2xl text-gray-800 mb-4 md:mb-6" style="white-space: pre-line;">
                                 ${s.storyText || ''}
                             </p>
                             <div class="rounded-2xl overflow-hidden shadow-lg mb-6 md:mb-8">
                                 <img src="${s.image || ''}" alt="قصة حرف الباء" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain; display: block;" />
                             </div>
-                            <button id="continue-dialogue" class="bg-gradient-to-r from-green-500 to-blue-500 text-white text-2xl font-bold py-4 px-8 rounded-2xl hover:scale-105 transition-all shadow-lg">
-                                ${current < slides.length - 1 ? 'التالي ➡️' : 'إنهاء ✓'}
-                            </button>
+                            ${isLastSlide ? `
+                                <button id="finish-story" class="bg-gradient-to-r from-green-500 to-blue-500 text-white text-2xl font-bold py-4 px-8 rounded-2xl hover:scale-105 transition-all shadow-lg">
+                                    إنهاء ✓
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 `;
 
-                // تشغيل صوت الشريحة الحالية
+                // تشغيل صوت الشريحة الحالية مع الانتقال التلقائي عند الانتهاء
                 if (s.audio) {
                     setTimeout(() => {
                         audioManager.enableAudio();
-                        audioManager.playVoiceFile(s.audio);
+                        
+                        // محاولة تشغيل الصوت من مسارات مختلفة
+                        const sources = [];
+                        if (!s.audio.includes('/')) {
+                            sources.push(s.audio);
+                            sources.push('audio/' + s.audio);
+                        } else {
+                            sources.push(s.audio);
+                        }
+                        
+                        const tryPlay = (index) => {
+                            if (index >= sources.length) {
+                                console.warn('⚠️ لم يتم العثور على الملف الصوتي:', s.audio);
+                                // إذا لم يتم العثور على الصوت، انتقل تلقائياً بعد ثانيتين
+                                setTimeout(() => {
+                                    goToNextSlide();
+                                }, 2000);
+                                return;
+                            }
+                            
+                            const src = sources[index];
+                            const audio = new Audio(src);
+                            audio.volume = 0.8;
+                            currentAudio = audio;
+                            
+                            // عند انتهاء الصوت، الانتقال تلقائياً للشريحة التالية
+                            audio.addEventListener('ended', () => {
+                                console.log('✅ انتهى الصوت:', src);
+                                currentAudio = null;
+                                goToNextSlide();
+                            });
+                            
+                            audio.addEventListener('error', () => {
+                                console.warn('⚠️ خطأ في الصوت:', src, '→ جرب المصدر التالي');
+                                currentAudio = null;
+                                tryPlay(index + 1);
+                            });
+                            
+                            const playPromise = audio.play();
+                            if (playPromise !== undefined) {
+                                playPromise
+                                    .then(() => {
+                                        console.log('✅ بدأ تشغيل الصوت:', src);
+                                    })
+                                    .catch(error => {
+                                        console.warn('⚠️ لم يتم تشغيل الصوت:', src, error.name);
+                                        currentAudio = null;
+                                        tryPlay(index + 1);
+                                    });
+                            }
+                        };
+                        
+                        tryPlay(0);
                     }, 300);
+                } else {
+                    // إذا لم يكن هناك صوت، انتقل تلقائياً بعد ثانيتين
+                    setTimeout(() => {
+                        goToNextSlide();
+                    }, 2000);
                 }
 
-                document.getElementById('continue-dialogue').addEventListener('click', () => {
-                    audioManager.playClickSound();
-                    if (current < slides.length - 1) {
-                        current++;
-                        renderSlide();
-                    } else if (onComplete) {
-                        onComplete();
+                // زر تخطي القصة
+                const skipBtn = document.getElementById('skip-story');
+                if (skipBtn) {
+                    skipBtn.addEventListener('click', () => {
+                        audioManager.playClickSound();
+                        // إيقاف الصوت الحالي
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            currentAudio = null;
+                        }
+                        // الانتقال مباشرة للقسم التالي
+                        if (onComplete) {
+                            onComplete();
+                        }
+                    });
+                }
+
+                // زر إنهاء القصة (يظهر فقط في الشريحة الأخيرة)
+                if (isLastSlide) {
+                    const finishBtn = document.getElementById('finish-story');
+                    if (finishBtn) {
+                        finishBtn.addEventListener('click', () => {
+                            audioManager.playClickSound();
+                            // إيقاف الصوت الحالي
+                            if (currentAudio) {
+                                currentAudio.pause();
+                                currentAudio = null;
+                            }
+                            if (onComplete) {
+                                onComplete();
+                            }
+                        });
                     }
-                });
+                }
+
             };
 
             renderSlide();

@@ -43,7 +43,7 @@ const challengesData = {
             question: 'ما هو الظل الصحيح؟',
             image: '✈️',
             shadowOptions: [
-                { id: 1, image: 'del.png', correct: true, alt: 'ظل الطائرة', useEmoji: false },
+                { id: 1, image: 'images/del.png', correct: true, alt: 'ظل الطائرة', useEmoji: false },
                 { id: 2, useEmoji: true, emoji: '🚗', correct: false, alt: 'ظل السيارة' },
                 { id: 3, useEmoji: true, emoji: '🚢', correct: false, alt: 'ظل الباخرة' }
             ]
@@ -275,15 +275,166 @@ const challengesData = {
         }
     ],
 
-    // حوار حرف الجيم - نسخة مشوقة على نمط Duolingo
+    // حوار حرف الجيم - قصة بصورة وصوت
     letterJeemDialogue: {
-        title: '🦋 حوار حرف الجيم - الفراشة والجمل',
-        characters: ['فراشة', 'جمل'],
-        dialogue: [
-            { speaker: 'فراشة', text: 'قالتِ الفَراشَةُ: خُذْ جَرَسِي وَأَعْطِنِي جَوْزَةً يا جَمَلُ.', highlight: 'ج', audio: 'fara.mp3' },
-            { speaker: 'جمل', text: 'قالَ الجَمَلُ: جَ جَ جَ... فِكْرَةٌ جَميلَةٌ!', highlight: 'ج', audio: 'jam.mp3' }
-        ],
-        emoji: { 'فراشة': '🦋', 'جمل': '🐪' }
+        type: 'image-story',
+        title: '📖 قصة حرف الجيم',
+        slides: [
+            {
+                image: 'j1.png',
+                audio: 'j1.mp3',
+                storyText: 'كانَ هُناكَ جَمَلٌ جميلٌ يَتجوَّلُ ويُغَنّي بصوتِهِ الجميل، وكانَ يقول: «أَجْ! أَجْ! أَجْ!»'
+            },
+            {
+                image: 'j2.png',
+                audio: 'j2.mp3',
+                storyText: 'وكانت فراشةٌ بَنَفْسَجِيّةٌ جميلة تَحومُ فوقَه، فقالت له: أَنتَ جَ… جَ… جَميل! خُذْ جَرَسي، وأَعْطِني جَوْزَةً يا جَمَل. فقال الجملُ: لَقَد أَبْهَجتِني! تَعالي أَضُمُّكِ… جَ! جَ! جَ!'
+            },
+            {
+                image: 'j3.png',
+                audio: 'j3.mp3',
+                storyText: 'وعندما ضَمَّها، تَكَسَّرَ جَناحُها، وصارَ صَوْتُها يقول: «جَ! جَ! جَ!» فَبَكَتْ وتَصْرُخُ مِن الألَم. أَعطاها الجملُ عَصًا، فصارَ صَوْتُها: «جا! جا!»'
+            },
+            {
+                image: 'j4.png',
+                audio: 'j4.mp3',
+                storyText: 'ولَمْ تَسْتَطِعِ الطَّيرانَ، فَرَبَطَها الجملُ بِحَبْلٍ، فصارَ صَوْتُها: «چو! چو!» زادَ الألمُ في رِجْلِها، فقالت له: خُذْني إلى أُمّي… «جي! جي!»'
+            }
+        ]
+    },
+
+    // تحديات حرف الميم - نسخة مشوقة على نمط Duolingo
+    letterMeem: [
+        {
+            id: 'meem-odd-word-out',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 1: اشطب الكلمة الدخيلة',
+            description: 'اختر الكلمة التي لا تحتوي على حرف الميم',
+            letter: 'م',
+            points: 10,
+            question: 'أي كلمة دخيلة؟ 🎯',
+            options: [
+                { id: 1, text: 'مَطَر', audio: 'مَطَر', correct: false, emoji: '🌧️' },
+                { id: 2, text: 'مَظَلَّة', audio: 'مَظَلَّة', correct: false, emoji: '☂️' },
+                { id: 3, text: 'مَرْكَب', audio: 'مَرْكَب', correct: false, emoji: '🚢' },
+                { id: 4, text: 'باب', audio: 'باب', correct: true, emoji: '🚪' }
+            ]
+        },
+        {
+            id: 'meem-repeated-letter',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 2: ما الحرف المتكرر؟',
+            description: 'ما هو الحرف الذي تكرّر في نهاية الكلمات التالية؟',
+            letter: 'م',
+            points: 10,
+            question: 'يَكرُمُ – يَسلُمُ – يَعلَمُ\nما الحرف المتكرر في النهاية؟',
+            options: [
+                { id: 1, text: 'م', audio: 'م', correct: true },
+                { id: 2, text: 'ر', audio: 'ر', correct: false },
+                { id: 3, text: 'س', audio: 'س', correct: false },
+                { id: 4, text: 'ل', audio: 'ل', correct: false }
+            ]
+        },
+        {
+            id: 'meem-position-game',
+            type: 'position-choice',
+            title: '🟠 السؤال 3: حدّد موضع حرف الميم',
+            description: 'اضغط على موقع حرف الميم في الكلمة',
+            letter: 'م',
+            points: 10,
+            words: [
+                { word: 'مَطَر', position: 'أول', correct: true },
+                { word: 'سَمَك', position: 'وسط', correct: true },
+                { word: 'كَلِم', position: 'آخر', correct: true }
+            ]
+        },
+        {
+            id: 'meem-build-word-syllables',
+            type: 'syllable-builder',
+            title: '🟠 السؤال 4: كوّن كلمة صحيحة',
+            description: 'اسحب المقاطع بالترتيب لتكوين كلمة صحيحة',
+            letter: 'م',
+            points: 10,
+            exercises: [
+                { syllables: ['م', 'ط', 'ر'], answer: 'مطر', displayWord: 'مطر' }
+            ]
+        },
+        {
+            id: 'meem-replace-letter',
+            type: 'text-input',
+            title: '🟠 السؤال 5: استبدل الحرف الملوّن',
+            description: 'استبدل الحرف الملوّن بحرف الميم واكتب الكلمة الجديدة',
+            letter: 'م',
+            points: 10,
+            exercises: [
+                { original: 'بِيت', colored: 'بِ', replacement: 'مِ', answer: 'مِيت' },
+                { original: 'نَصْر', colored: 'نَ', replacement: 'مَ', answer: 'مَصْر' }
+            ]
+        },
+        {
+            id: 'meem-delete-syllable',
+            type: 'text-input',
+            title: '🟠 السؤال 6: احذف المقطع الملوّن',
+            description: 'احذف المقطع الملوّن واكتب الكلمة الجديدة',
+            letter: 'م',
+            points: 10,
+            exercises: [
+                { word: 'سَمَك', delete: 'م', answer: 'سَك', displayOriginal: 'سَمَك' }
+            ]
+        },
+        {
+            id: 'meem-add-letter',
+            type: 'fill-blank',
+            title: '🟠 السؤال 7: أضف حرف الميم',
+            description: 'أضف حرف الميم إلى الكلمة لتكوين كلمة جديدة',
+            letter: 'م',
+            points: 10,
+            exercises: [
+                { word: '_َطَر', answer: 'م', complete: 'مَطَر', hint: 'طر → مَطَر' },
+                { word: '_َرْكَب', answer: 'م', complete: 'مَرْكَب', hint: 'ركب → مَرْكَب' }
+            ]
+        },
+        {
+            id: 'meem-delete-segments',
+            type: 'delete-segments',
+            title: '🟠 السؤال 8: احذف المقاطع التي لا تحتوي على حرف الميم',
+            description: 'اضغط على المقاطع لحذفها، واترك حرف الميم فقط',
+            letter: 'م',
+            points: 10,
+            word: 'المَطَر',
+            allSegments: ['ال', 'مَ', 'طَ', 'ر'],
+            deletableSegments: ['ال', 'طَ', 'ر'],
+            protectedSegment: 'مَ',
+            emoji: '🌧️'
+        }
+    ],
+
+    // حوار حرف الميم - قصة بصورة وصوت
+    letterMeemDialogue: {
+        type: 'image-story',
+        title: '📖 قصة حرف الميم',
+        slides: [
+            {
+                image: 'n1.png',
+                audio: 'n1.mp3',
+                storyText: 'كانت هناك نَمْلَةٌ رَسّامَةٌ مُتَنَقِّلَة، حَطَّتْ رِحالَها في مَرْعًى جميلٍ. كانت تَرْسُمُ: ☀️ شَمْسًا ⛵ مَرْكَبًا ⚓ مِرْسَاةً'
+            },
+            {
+                image: 'n2.png',
+                audio: 'n2.mp3',
+                storyText: 'فَأَتَتْها مَعَزَةٌ، وقالت لها: اِرْسُميني يا نَمْلَة! فقالت النملة: أَنا مَشغولة، أُكْمِلُ رَسمي أَوَّلًا. فَبَدَأَتِ المَعَزَةُ تَبكي، وصَوْتُها يَقول: «أَمْ! أَمْ! أَمْ!» فَفَتَحَتِ النَّمْلَةُ يَدَها، وقالت: مَ… مَ… ماذا بِكِ؟'
+            },
+            {
+                image: 'n3.png',
+                audio: 'n3.mp3',
+                storyText: 'ثُمَّ قالت لها: سَأَضُمُّكِ يا صَغيرتي. وعندما ضَمَّتْها، صارَ صَوْتُ المَعَزَةِ: «مَ! مَ! مَ!» ولكن عندما ضَمَّتها، تَكَسَّرَتْ رِجْلُ النَّمْلَةِ! فَصَارَتْ تَصرُخُ وتقول: «مَ! مَ! مَ!» فأَعطَتْها المَعَزَةُ عَصًا لِتَتَّكِئَ عَلَيْها، وعندما حَمَلَتِ النملةُ العَصا، صارَ صوتُها: «ما! ما! ما!»'
+            },
+            {
+                image: 'n4.png',
+                audio: 'n4.mp3',
+                storyText: 'فَضَحِكَتِ المَعَزَةُ وقالت: هاهاها! هذا صَوْتي! «ما! ما!» سَأُرْبِكُكَ بصَوْتِ البَقَرَة: «مو! مو! مو!» حِينها أَتَى القِطُّ وهو يقول: «مي.مي.مي» وقال للنملة: اِرسُميني يا نَمْلَة. فقالت له: حاضِر يا مي مي.'
+            }
+        ]
     },
 
     // مقدمة حرف الباء - قصة بصورة وصوت (استبدال الحوار السابق)
@@ -292,68 +443,206 @@ const challengesData = {
         title: '📖 قصة حرف الباء',
         slides: [
             {
-                image: 'im1.png',
-                audio: 'vo1.mp3',
+                image: 'images/im1.png',
+                audio: 'audio/vo1.mp3',
                 storyText: 'كانَ يا ما كانَ، كانتْ هناكَ بَطبوطَةٌ جميلةٌ تعيشُ معَ أُمِّها في بيتٍ كبيرٍ، كانتْ تُحبُّها كثيرًا وتعتني بها.'
             },
             {
-                image: 'im2.png',
-                audio: 'vo2.mp3',
+                image: 'images/im2.png',
+                audio: 'audio/vo2.mp3',
                 storyText: 'كانت بَطبوطَةُ بَدينَةً تُحبُّ أكلَ الجُبنِ والبيضِ والبُندقِ والبُرتُقالِ والبِطيخِ والبِسكويتِ، وتُحبُّ شُربَ الحليبِ مِن ضَرعِ البَقَرَةِ.'
             },
             {
-                image: 'im3.png',
-                audio: 'vo3.mp3',
+                image: 'images/im3.png',
+                audio: 'audio/vo3.mp3',
                 storyText: 'كانت أُمُّها تَربِطُها بحَبْلٍ، تَخافُ عليها مِن أَكْلِ الذِّئابِ والكِلابِ.'
             },
             {
-                image: 'im4.png',
-                audio: 'vo4.mp3',
+                image: 'images/im4.png',
+                audio: 'audio/vo4.mp3',
                 storyText: 'ذاتَ مَرَّةٍ هَرَبَتْ مِنَ البَيْتِ وذَهَبَتْ إلى حَفْلَةِ ثَعْلُوبِ الماكرِ.'
             },
             {
-                image: 'im5.png',
-                audio: 'vo5.mp3',
+                image: 'images/im5.png',
+                audio: 'audio/vo5.mp3',
                 storyText: 'وعندما هَرَبَتْ، وَصَلَتْ إلى الغابَةِ، فَوَجَدَتْ نَفْسَها في مَكانٍ فيه سُكونٌ.'
             },
             {
-                image: 'im6.png',
-                audio: 'vo6.mp3',
+                image: 'images/im6.png',
+                audio: 'audio/vo6.mp3',
                 storyText: 'فَصارَتْ تَبكي، وصَوتُها يَقولُ: أَبْ... أَبْ... أَبْ.'
             },
             {
-                image: 'im7.png',
-                audio: 'vo7.mp3',
+                image: 'images/im7.png',
+                audio: 'audio/vo7.mp3',
                 storyText: 'سَمِعَتْها أُمُّها، فَجاءَتْ تَجري، وفَتَحَتْ يَدَها وفَمَها، وصارَ صَوتُها يَقولُ: بَ... بَ...'
             },
             {
-                image: 'im8.png',
-                audio: 'vo8.mp3',
+                image: 'images/im8.png',
+                audio: 'audio/vo8.mp3',
                 storyText: 'ثُمَّ ضَمَّتْها، فَصارَ صَوتُها يَقولُ: بُ... بُ...'
             },
             {
-                image: 'im9.png',
-                audio: 'vo9.mp3',
+                image: 'images/im9.png',
+                audio: 'audio/vo9.mp3',
                 storyText: 'وعندما ضَمَّتْها، تَكَسَّرَتْ رِجلُها، فَصارَ صَوتُها يَقولُ: بِ... بِ... بِ...'
             },
             {
-                image: 'im10.png',
-                audio: 'vo10.mp3',
+                image: 'images/im10.png',
+                audio: 'audio/vo10.mp3',
                 storyText: 'أَعطَتْها عَصًا لِتَتَّكِئَ عَلَيها، فَصارَ صَوتُها يَقولُ: با... با... با...'
             },
             {
-                image: 'im11.png',
-                audio: 'vo11.mp3',
+                image: 'images/im11.png',
+                audio: 'audio/vo11.mp3',
                 storyText: 'لم تَستَطِعِ المَشيَ بالعَصا، فَجَرَّتْها بِحَبلٍ، فَصارَ صَوتُها يَقولُ: بُو... بُو...'
             },
             {
-                image: 'im12.png',
-                audio: 'vo12.mp3',
+                image: 'images/im12.png',
+                audio: 'audio/vo12.mp3',
                 storyText: 'حينَها قالَتْ لِأُمِّها: لا أستَطيعُ المَشيَ، فَأَحضَرَتْ لَها عَرَبَةً صَغيرَةً وَوَضَعَتْها فيها، فَصَارَتْ تُشْبِهُ بَيْبي، فَفَرِحَتْ كَثيرًا وَقالَتْ: أَنا صِرْتُ بي... بي... بي...'
             }
         ]
     },
 
+    // تحديات حرف التاء - نسخة مشوقة على نمط Duolingo
+    letterTaa: [
+        {
+            id: 'taa-odd-word-out',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 1: اشطب الكلمة الدخيلة',
+            description: 'اختر الكلمة التي لا تحتوي على حرف التاء',
+            letter: 'ت',
+            points: 10,
+            question: 'أي كلمة دخيلة؟ 🎯',
+            options: [
+                { id: 1, text: 'تُوت', audio: 'تُوت', correct: false, emoji: '🫐' },
+                { id: 2, text: 'تُفّاح', audio: 'تُفّاح', correct: false, emoji: '🍎' },
+                { id: 3, text: 'تِين', audio: 'تِين', correct: false, emoji: '🍈' },
+                { id: 4, text: 'باب', audio: 'باب', correct: true, emoji: '🚪' }
+            ]
+        },
+        {
+            id: 'taa-repeated-letter',
+            type: 'multiple-choice',
+            title: '🟠 السؤال 2: ما الحرف المتكرر؟',
+            description: 'ما هو الحرف الذي تكرّر في نهاية الكلمات التالية؟',
+            letter: 'ت',
+            points: 10,
+            question: 'يَكتُمُ – يَفتَحُ – يَنتَظِرُ\nما الحرف المتكرر في النهاية؟',
+            options: [
+                { id: 1, text: 'ت', audio: 'ت', correct: true },
+                { id: 2, text: 'ر', audio: 'ر', correct: false },
+                { id: 3, text: 'م', audio: 'م', correct: false },
+                { id: 4, text: 'ح', audio: 'ح', correct: false }
+            ]
+        },
+        {
+            id: 'taa-position-game',
+            type: 'position-choice',
+            title: '🟠 السؤال 3: حدّد موضع حرف التاء',
+            description: 'اضغط على موقع حرف التاء في الكلمة',
+            letter: 'ت',
+            points: 10,
+            words: [
+                { word: 'تِين', position: 'أول', correct: true },
+                { word: 'مَطَر', position: 'وسط', correct: true },
+                { word: 'كَلِمَت', position: 'آخر', correct: true }
+            ]
+        },
+        {
+            id: 'taa-build-word-syllables',
+            type: 'syllable-builder',
+            title: '🟠 السؤال 4: كوّن كلمة صحيحة',
+            description: 'اسحب المقاطع بالترتيب لتكوين كلمة صحيحة',
+            letter: 'ت',
+            points: 10,
+            exercises: [
+                { syllables: ['ت', 'م', 'ر'], answer: 'تمر', displayWord: 'تمر' }
+            ]
+        },
+        {
+            id: 'taa-replace-letter',
+            type: 'text-input',
+            title: '🟠 السؤال 5: استبدل الحرف الملوّن',
+            description: 'استبدل الحرف الملوّن بحرف التاء واكتب الكلمة الجديدة',
+            letter: 'ت',
+            points: 10,
+            exercises: [
+                { original: 'بَيت', colored: 'بَ', replacement: 'ت', answer: 'تيت' },
+                { original: 'جَبل', colored: 'جَ', replacement: 'ت', answer: 'تَبل' }
+            ]
+        },
+        {
+            id: 'taa-delete-syllable',
+            type: 'text-input',
+            title: '🟠 السؤال 6: احذف المقطع الملوّن',
+            description: 'احذف المقطع الملوّن واكتب الكلمة الجديدة',
+            letter: 'ت',
+            points: 10,
+            exercises: [
+                { word: 'تَمْر', delete: 'ت', answer: 'مر', displayOriginal: 'تَمْر' }
+            ]
+        },
+        {
+            id: 'taa-add-letter',
+            type: 'fill-blank',
+            title: '🟠 السؤال 7: أضف حرف التاء',
+            description: 'أضف حرف التاء إلى الكلمة لتكوين كلمة جديدة',
+            letter: 'ت',
+            points: 10,
+            exercises: [
+                { word: '_ِين', answer: 'ت', complete: 'تِين', hint: 'ين → تِين' },
+                { word: '_َمْر', answer: 'ت', complete: 'تَمْر', hint: 'مر → تَمْر' }
+            ]
+        },
+        {
+            id: 'taa-delete-segments',
+            type: 'delete-segments',
+            title: '🟠 السؤال 8: احذف المقاطع التي لا تحتوي على حرف التاء',
+            description: 'اضغط على المقاطع لحذفها، واترك حرف التاء فقط',
+            letter: 'ت',
+            points: 10,
+            word: 'التِّين',
+            allSegments: ['ال', 'تِ', 'ي', 'ن'],
+            deletableSegments: ['ال', 'ي', 'ن'],
+            protectedSegment: 'تِ',
+            emoji: '🍈'
+        }
+    ],
+
+    // حوار حرف التاء - قصة التينين والتمساح
+    letterTaaDialogue: {
+        type: 'image-story',
+        title: '📖 قصة حرف التاء',
+        slides: [
+            {
+                image: 'images/111.png',
+                audio: 'audio/111.mp3',
+                storyText: 'عَلَى تَلٍّ جَميلٍ، كانَ هُناكَ تِنِّينٌ صَغيرٌ يَبْكي، وكانَ صَوْتُهُ يَقول: «أَتْ! أَتْ! أَتْ!»'
+            },
+            {
+                image: 'images/222.png',
+                audio: 'audio/222.mp3',
+                storyText: 'فَسَمِعَهُ التِّمْساحُ، فَقالَ لَهُ: مابِكَ يا صَديقي؟ فَقالَ التِّنينُ: أَنا وَحيدٌ.'
+            },
+            {
+                image: 'images/333.png',
+                audio: 'audio/333.mp3',
+                storyText: 'فَأجابَهُ التِّمْساحُ: مِنَ اليَومِ فَصاعِدًا، سَتَعيشُ مَعي أَنا وَأُمِّي «تِي تي» في تَلِّي الجَميلِ، وَسَأَعْتَني بِكَ، وَسَتَأكُلُ مِن خَيْراتي العَديدةِ: تُوتٍ، وَتُفّاحٍ، وَتِينٍ، وَتَمْرٍ'
+            },
+            {
+                image: 'images/444.png',
+                audio: 'audio/444.mp3',
+                storyText: 'فَرِحَ التِّنينُ الصَّغيرُ كَثيرًا، وَفَتَحَ يَدَهُ وَفَمَهُ، وَصارَ صَوْتُهُ يَقول: «تَ! تَ! تَ!» ثُمَّ ضَمَّهُ التِّمْساحُ، فَصارَ صَوْتُهُ: «تَ! تَ! تَ!» وَبَعْدَ مُدَّةٍ، كَبِرَ التِّنينُ كَثيرًا، وَتَغَيَّرَ لَوْنُهُ وَشَكْلُهُ، وَصارَت لَهُ أَسْنانٌ تُكَسِّرُ الحَديدَ، وَلا يَزالُ صَوْتُهُ يَقول: «تَ! تَ! تَ!»'
+            },
+            {
+                image: 'images/555.png',
+                audio: 'audio/555.mp3',
+                storyText: 'أَخَذَهُ الغُرورُ، فَأَصْبَحَ يُفَكِّرُ في خُطَّةٍ لِيَأكُلَ التِّمْساحَ وَأُمَّهُ، وَيَسْتَوْليَ عَلى خَيْراتِ التَّلِّ، وَيُصْبِحَ مَلِكًا. وَذاتَ مَرَّةٍ، اِلْتَقى التِّنينُ بالتِّمْساحِ، فَقالَ التِّنينُ: سَآكُلُكَ! فَخافَ التِّمْساحُ، وَقالَ: ما جَزاءُ الإحْسانِ إِلَّا الإحْسانُ يا صَديقي! فَقالَ التِّنينُ: أَنا لا أَعرِفُ الخَيْرَ، وَلا أَعرِفُ الإحْسانَ! عِندَها اِسْتَسْلَمَ التِّمْساحُ، وَرَفَعَ يَدَهُ وَصارَ يُنادِي بِصَوْتٍ مُرْتَفِعٍ: «تا! تا! تا! تا!» فَسَمِعَتْهُ أُمُّهُ، فَأَتَتْ بِحَبْلٍ كَبيرٍ، وَجَذَبَتْهُ بِهِ، فَتَشَبَّثَ بِالحَبْلِ، وَصارَ صَوْتُهُ: «تُو! تُو! تُو!» حِينَها شَكَرَ أُمَّهُ، وَقالَ لَها: شُكرًا لَكِ يا «تِي».'
+            }
+        ]
+    },
 
     // رسائل التشجيع
     encouragement: {
@@ -384,7 +673,9 @@ const challengesData = {
         ],
         letterComplete: {
             'ب': '🎉 أحسنت يا بطل الباء! 🎉\n\nلقد أتقنت حرف الباء! 🌟',
-            'ج': '🥳 رائع! 🥳\n\nلقد أتقنت حرف الجيم بنجاح! 🌟'
+            'ج': '🥳 رائع! 🥳\n\nلقد أتقنت حرف الجيم بنجاح! 🌟',
+            'م': '🌧️ ممتاز! 🌧️\n\nلقد أتقنت حرف الميم بنجاح! 🌟',
+            'ت': '🐉 ممتاز! 🐉\n\nلقد أتقنت حرف التاء بنجاح! 🌟'
         }
     },
 
