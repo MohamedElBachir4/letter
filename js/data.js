@@ -161,9 +161,9 @@ const challengesData = {
             description: 'اضغط على المقاطع لحذفها، واترك حرف الباء فقط',
             letter: 'ب',
             points: 10,
-            word: 'البَطَّة',
-            allSegments: ['ال', 'بَ', 'طَّ', 'ة'],
-            deletableSegments: ['ال', 'طَّ', 'ة'],
+            word: 'تَشْرَبُ البَطَّةُ الحَلِيبَ',
+            allSegments: ['ال', 'حَ', 'لي', 'بَ'],
+            deletableSegments: ['ال', 'حَ', 'لي'],
             protectedSegment: 'بَ',
             emoji: '🦆'
         }

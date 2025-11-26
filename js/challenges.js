@@ -77,7 +77,18 @@ class ChallengeManager {
                 audioManager.playVoiceFile('audio/q7mim.mp3');
             }
             else if (challenge.id === 'baa-delete-segments') {
-                audioManager.playVoiceFile('audio/q8.mp3');
+                // تشغيل bata.mp3 ثم mkat.mp3 بعد انتهائه
+                const bataAudio = new Audio('audio/bata.mp3');
+                bataAudio.volume = 0.8;
+                bataAudio.preload = 'auto';
+                
+                bataAudio.addEventListener('ended', () => {
+                    audioManager.playVoiceFile('audio/mkat.mp3');
+                });
+                
+                bataAudio.play().catch(error => {
+                    console.warn('⚠️ Error playing bata.mp3:', error);
+                });
             }
             else if (challenge.id === 'jeem-delete-segments') {
                 audioManager.playVoiceFile('audio/q8j.mp3');
@@ -2236,6 +2247,16 @@ class ChallengeManager {
         const deletableSegments = this.currentChallenge.deletableSegments;
         const protectedSegment = this.currentChallenge.protectedSegment;
         const emoji = this.currentChallenge.emoji || '📝';
+        const letter = this.currentChallenge.letter || 'ب';
+        
+        // تحديد اسم الحرف
+        const letterNames = {
+            'ب': 'الباء',
+            'ت': 'التاء',
+            'ج': 'الجيم',
+            'م': 'الميم'
+        };
+        const letterName = letterNames[letter] || 'الباء';
         
         let deletedSegments = [];
         
@@ -2256,7 +2277,7 @@ class ChallengeManager {
                     <!-- المقاطع القابلة للحذف -->
                     <div class="mb-6 md:mb-8">
                         <h3 class="text-xl md:text-2xl font-bold text-gray-700 mb-4">المقاطع:</h3>
-                        <p class="text-lg text-purple-600 mb-4">اضغط على المقاطع لحذفها (ما عدا حرف الباء)</p>
+                        <p class="text-lg text-purple-600 mb-4">اضغط على المقاطع لحذفها (ما عدا ${letterName})</p>
                         <div id="segments-container" class="flex gap-3 justify-center flex-wrap">
                             ${allSegments.map((segment, index) => {
                                 const isDeletable = deletableSegments.includes(segment);
@@ -2270,7 +2291,7 @@ class ChallengeManager {
                                 `;
                             }).join('')}
                         </div>
-                        <p class="text-sm md:text-base text-gray-500 mt-3">💡 حرف الباء محمي ولا يمكن حذفه</p>
+                        <p class="text-sm md:text-base text-gray-500 mt-3">💡 ${letterName} محمي ولا يمكن حذفه</p>
                     </div>
                     
                     <button id="check-deletion" class="bg-green-500 text-white text-lg md:text-xl font-bold py-3 md:py-4 px-6 md:px-8 rounded-2xl hover:bg-green-600 transition-all">
@@ -2299,9 +2320,9 @@ class ChallengeManager {
                         console.log('🔊 حذف المقطع (الباء):', segment);
                         
                         const segmentAudios = {
-                            'ال': 'audio/al.mp3',
-                            'طَّ': 'audio/ta.mp3',
-                            'ة': 'audio/to.mp3'
+                            'ال': 'audio/alb.mp3',
+                            'حَ': 'audio/hab.mp3',
+                            'لي': 'audio/lib.mp3'
                         };
                         
                         if (segmentAudios[segment]) {
@@ -2381,7 +2402,16 @@ class ChallengeManager {
                     }
                 });
             } else {
-                // حرف الباء محمي
+                // الحرف محمي
+                const letter = this.currentChallenge.letter || 'ب';
+                const letterNames = {
+                    'ب': 'الباء',
+                    'ت': 'التاء',
+                    'ج': 'الجيم',
+                    'م': 'الميم'
+                };
+                const letterName = letterNames[letter] || 'الباء';
+                
                 btn.addEventListener('click', () => {
                     audioManager.playErrorSound();
                     
@@ -2389,7 +2419,7 @@ class ChallengeManager {
                     btn.classList.add('animate-shake-error');
                     
                     // رسالة
-                    this.showFeedback('لا يمكن حذف حرف الباء! 🦆', 'error');
+                    this.showFeedback(`لا يمكن حذف ${letterName}! 🦆`, 'error');
                     
                     setTimeout(() => {
                         btn.classList.remove('animate-shake-error');
@@ -2459,8 +2489,16 @@ class ChallengeManager {
                 }
             } else {
                 audioManager.playErrorSound();
+                const letter = this.currentChallenge.letter || 'ب';
+                const letterNames = {
+                    'ب': 'الباء',
+                    'ت': 'التاء',
+                    'ج': 'الجيم',
+                    'م': 'الميم'
+                };
+                const letterName = letterNames[letter] || 'الباء';
                 const remaining = deletableSegments.filter(seg => !deletedSegments.includes(seg));
-                this.showFeedback(`احذف جميع المقاطع ما عدا الباء! (باقي: ${remaining.join('، ')})`, 'error');
+                this.showFeedback(`احذف جميع المقاطع ما عدا ${letterName}! (باقي: ${remaining.join('، ')})`, 'error');
             }
         });
         
