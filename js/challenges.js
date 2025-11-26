@@ -806,6 +806,7 @@ class ChallengeManager {
                                     : 
                                     `<img src="${option.image}" 
                                          alt="${option.alt}" 
+                                         loading="lazy"
                                          class="w-full h-32 md:h-48 object-contain shadow-image">`
                                 }
                             </button>

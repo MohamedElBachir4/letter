@@ -481,6 +481,12 @@ class GameController {
                     currentAudio = null;
                 }
                 
+                // تحميل الصورة التالية مسبقاً
+                if (current < slides.length - 1 && slides[current + 1]?.image) {
+                    const nextImg = new Image();
+                    nextImg.src = slides[current + 1].image;
+                }
+                
                 const isLastSlide = current >= slides.length - 1;
                 
                 mainContent.innerHTML = `
@@ -496,7 +502,7 @@ class GameController {
                                 ${s.storyText || ''}
                             </p>
                             <div class="rounded-2xl overflow-hidden shadow-lg mb-6 md:mb-8">
-                                <img src="${s.image || ''}" alt="قصة حرف الباء" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain; display: block;" />
+                                <img src="${s.image || ''}" alt="قصة حرف الباء" loading="eager" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain; display: block;" />
                             </div>
                             ${isLastSlide ? `
                                 <button id="finish-story" class="bg-gradient-to-r from-green-500 to-blue-500 text-white text-2xl font-bold py-4 px-8 rounded-2xl hover:scale-105 transition-all shadow-lg">
