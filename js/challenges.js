@@ -49,8 +49,11 @@ class ChallengeManager {
             else if (challenge.id === 'jeem-position-game') {
                 audioManager.playVoiceFile('audio/q3j.mp3');
             }
-            else if (challenge.id === 'meem-position-game' || challenge.id === 'taa-position-game') {
-                audioManager.playVoiceFile('audio/q3.mp3');
+            else if (challenge.id === 'taa-position-game') {
+                audioManager.playVoiceFile('audio/q3ta.mp3');
+            }
+            else if (challenge.id === 'meem-position-game') {
+                audioManager.playVoiceFile('audio/q3mim.mp3');
             }
             else if (challenge.id === 'baa-build-word-syllables' || challenge.id === 'jeem-build-word-syllables' || challenge.id === 'meem-build-word-syllables' || challenge.id === 'taa-build-word-syllables') {
                 audioManager.playVoiceFile('audio/q4.mp3');
@@ -67,8 +70,11 @@ class ChallengeManager {
             else if (challenge.id === 'jeem-add-letter') {
                 audioManager.playVoiceFile('audio/q7j.mp3');
             }
-            else if (challenge.id === 'meem-add-letter' || challenge.id === 'taa-add-letter') {
-                audioManager.playVoiceFile('audio/q7.mp3');
+            else if (challenge.id === 'taa-add-letter') {
+                audioManager.playVoiceFile('audio/q7ta.mp3');
+            }
+            else if (challenge.id === 'meem-add-letter') {
+                audioManager.playVoiceFile('audio/q7mim.mp3');
             }
             else if (challenge.id === 'baa-delete-segments') {
                 audioManager.playVoiceFile('audio/q8.mp3');
@@ -76,8 +82,11 @@ class ChallengeManager {
             else if (challenge.id === 'jeem-delete-segments') {
                 audioManager.playVoiceFile('audio/q8j.mp3');
             }
-            else if (challenge.id === 'meem-delete-segments' || challenge.id === 'taa-delete-segments') {
-                audioManager.playVoiceFile('audio/q8.mp3');
+            else if (challenge.id === 'taa-delete-segments') {
+                audioManager.playVoiceFile('audio/q8ta.mp3');
+            }
+            else if (challenge.id === 'meem-delete-segments') {
+                audioManager.playVoiceFile('audio/q8mim.mp3');
             }
         }, 500);
         
@@ -1091,10 +1100,59 @@ class ChallengeManager {
     renderTextInput(container) {
         const exercise = this.currentChallenge.exercises[0];
         
-        // معالجة خاصة للسؤال 5: استبدل الحرف الملوّن (حرف الباء والجيم)
-        if (this.currentChallenge.id === 'baa-replace-letter' || this.currentChallenge.id === 'jeem-replace-letter') {
+        // معالجة خاصة للسؤال 5: استبدل الحرف الملوّن
+        if (this.currentChallenge.id === 'baa-replace-letter' || this.currentChallenge.id === 'jeem-replace-letter' || 
+            this.currentChallenge.id === 'taa-replace-letter' || this.currentChallenge.id === 'meem-replace-letter') {
             this.renderReplaceLetterInput(container);
             return;
+        }
+
+        // معالجة خاصة للسؤال 6: احذف المقطع الملوّن - عرض الحرف الملون داخل الكلمة
+        let wordDisplay = '';
+        if (this.currentChallenge.id === 'baa-delete-syllable' || this.currentChallenge.id === 'taa-delete-syllable' || 
+            this.currentChallenge.id === 'jeem-delete-syllable' || this.currentChallenge.id === 'meem-delete-syllable') {
+            const word = exercise.word || exercise.displayOriginal;
+            const deleteChar = exercise.delete;
+            if (word && deleteChar) {
+                // البحث عن الحرف مع أو بدون حركات (الحركات: َ ُ ِ ْ ّ)
+                const arabicDiacritics = /[\u064B-\u065F\u0670]/g;
+                const wordWithoutDiacritics = word.replace(arabicDiacritics, '');
+                const indexInClean = wordWithoutDiacritics.indexOf(deleteChar);
+                
+                if (indexInClean !== -1) {
+                    // العثور على الموضع الفعلي في الكلمة الأصلية
+                    let actualIndex = 0;
+                    let cleanIndex = 0;
+                    for (let i = 0; i < word.length; i++) {
+                        const char = word[i];
+                        if (!/[\u064B-\u065F\u0670]/.test(char)) {
+                            if (cleanIndex === indexInClean) {
+                                actualIndex = i;
+                                break;
+                            }
+                            cleanIndex++;
+                        }
+                    }
+                    
+                    // العثور على نهاية الحرف (قد يكون مع حركة)
+                    let endIndex = actualIndex + 1;
+                    while (endIndex < word.length && /[\u064B-\u065F\u0670]/.test(word[endIndex])) {
+                        endIndex++;
+                    }
+                    
+                    const beforeChar = word.substring(0, actualIndex);
+                    const coloredChar = word.substring(actualIndex, endIndex);
+                    const afterChar = word.substring(endIndex);
+                    
+                    wordDisplay = `<span class="text-gray-800 inline">${beforeChar}</span><span class="text-red-500 font-bold underline decoration-2 inline">${coloredChar}</span><span class="text-gray-800 inline">${afterChar}</span>`;
+                } else {
+                    wordDisplay = `<span class="text-gray-800">${word}</span> <span class="text-red-500 line-through mx-2">${deleteChar}</span>`;
+                }
+            } else {
+                wordDisplay = `<span class="text-gray-800">${exercise.word || ''}</span> <span class="text-red-500 line-through mx-2">${exercise.delete || ''}</span>`;
+            }
+        } else {
+            wordDisplay = `<span class="text-gray-800">${exercise.word || ''}</span> <span class="text-red-500 line-through mx-2">${exercise.delete || ''}</span>`;
         }
 
         container.innerHTML = `
@@ -1104,8 +1162,7 @@ class ChallengeManager {
                 
                 <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
                     <div class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
-                        <span class="text-gray-800">${exercise.word}</span>
-                        <span class="text-red-500 line-through mx-2">${exercise.delete}</span>
+                        ${wordDisplay}
                     </div>
                     
                     <input 
@@ -1130,7 +1187,19 @@ class ChallengeManager {
             const input = document.getElementById('answer-input');
             audioManager.playClickSound();
             
-            if (input.value.trim() === exercise.answer) {
+            // دالة لإزالة التشكيل من النص العربي
+            const removeDiacritics = (text) => {
+                return text.replace(/[\u064B-\u065F\u0670]/g, '');
+            };
+            
+            const userAnswer = input.value.trim();
+            const correctAnswer = exercise.answer;
+            
+            // قبول الإجابة مع أو بدون تشكيل
+            const isCorrect = userAnswer === correctAnswer || 
+                            removeDiacritics(userAnswer) === removeDiacritics(correctAnswer);
+            
+            if (isCorrect) {
                 input.classList.add('border-green-500', 'bg-green-50');
                 
                 // معالجة خاصة لتحدي حذف المقطع
@@ -1164,6 +1233,27 @@ class ChallengeManager {
             if (currentExerciseIndex >= exercises.length) return;
             
             const exercise = exercises[currentExerciseIndex];
+            
+            // بناء عرض الكلمة مع الحرف الملون داخلها
+            const original = exercise.original || exercise.displayOriginal || '';
+            const colored = exercise.colored || '';
+            let wordDisplay = '';
+            
+            if (original && colored) {
+                // إذا كان الحرف يظهر أكثر من مرة، استخدم آخر ظهور (مثل "باب" حيث نريد الباء الثانية)
+                const firstIndex = original.indexOf(colored);
+                const lastIndex = original.lastIndexOf(colored);
+                const index = (firstIndex !== lastIndex) ? lastIndex : firstIndex;
+                
+                if (index !== -1) {
+                    wordDisplay = `<span class="text-gray-800 inline">${original.substring(0, index)}</span><span class="text-red-500 font-bold text-4xl md:text-5xl underline decoration-2 inline">${colored}</span><span class="text-gray-800 inline">${original.substring(index + colored.length)}</span>`;
+                } else {
+                    // إذا لم يتم العثور على الحرف، استخدم الطريقة القديمة
+                    wordDisplay = `<span class="text-red-500 font-bold text-4xl md:text-5xl inline">${colored}</span><span class="text-gray-800 inline">${original.replace(colored, '')}</span>`;
+                }
+            } else {
+                wordDisplay = `<span class="text-red-500 font-bold text-4xl md:text-5xl inline">${colored}</span><span class="text-gray-800 inline">${original}</span>`;
+            }
         
         container.innerHTML = `
             <div class="text-center max-w-3xl mx-auto px-2">
@@ -1173,8 +1263,7 @@ class ChallengeManager {
                 <div class="bg-white rounded-3xl p-4 md:p-8 shadow-lg mb-6">
                     <div class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
                         <span class="text-gray-800">الكلمة الأصلية: </span>
-                        <span class="text-red-500 font-bold text-4xl md:text-5xl">${exercise.colored}</span>
-                        <span class="text-gray-800">${exercise.original.replace(exercise.colored, '')}</span>
+                        ${wordDisplay}
                     </div>
                     
                     <div class="text-2xl md:text-3xl text-purple-600 mb-4 md:mb-6">
@@ -1205,7 +1294,19 @@ class ChallengeManager {
             const input = document.getElementById('answer-input');
             audioManager.playClickSound();
             
-            if (input.value.trim() === exercise.answer) {
+            // دالة لإزالة التشكيل من النص العربي
+            const removeDiacritics = (text) => {
+                return text.replace(/[\u064B-\u065F\u0670]/g, '');
+            };
+            
+            const userAnswer = input.value.trim();
+            const correctAnswer = exercise.answer;
+            
+            // قبول الإجابة مع أو بدون تشكيل
+            const isCorrect = userAnswer === correctAnswer || 
+                            removeDiacritics(userAnswer) === removeDiacritics(correctAnswer);
+            
+            if (isCorrect) {
                 input.classList.add('border-green-500', 'bg-green-50');
                 
                 // الانتقال للتمرين التالي أو إنهاء
@@ -2330,7 +2431,7 @@ class ChallengeManager {
                 // إذا كان السؤال 8 لحرف الميم، نعرض الصفحة الخاصة
                 if (this.currentChallenge.id === 'meem-delete-segments') {
                     setTimeout(() => {
-                        this.showLetterRevealPage('م', 'الميم', 'audio/rifakj.mp3');
+                        this.showLetterRevealPage('م', 'الميم', 'audio/rimim.mp3');
                     }, 1000);
                     return;
                 }
@@ -2338,7 +2439,7 @@ class ChallengeManager {
                 // إذا كان السؤال 8 لحرف التاء، نعرض الصفحة الخاصة
                 if (this.currentChallenge.id === 'taa-delete-segments') {
                     setTimeout(() => {
-                        this.showLetterRevealPage('ت', 'التاء', 'audio/rifakj.mp3');
+                        this.showLetterRevealPage('ت', 'التاء', 'audio/rita.mp3');
                     }, 1000);
                     return;
                 }

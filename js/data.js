@@ -222,7 +222,7 @@ const challengesData = {
             letter: 'ج',
             points: 10,
             exercises: [
-                { syllables: ['م', 'ج', 'ل', 'ة'], answer: 'مجلة', displayWord: 'مجلة' }
+                { syllables: ['ج', 'م', 'ة', 'ل'], answer: 'مجلة', displayWord: 'مجلة' }
             ]
         },
         {
@@ -233,7 +233,7 @@ const challengesData = {
             letter: 'ج',
             points: 10,
             exercises: [
-                { original: 'حِبال', colored: 'حِ', replacement: 'جِ', answer: 'جبال' },
+                { original: 'حبال', colored: 'ح', replacement: 'ج', answer: 'جبال' },
                 { original: 'نُسور', colored: 'نُ', replacement: 'جُ', answer: 'جسور' }
             ]
         },
@@ -314,10 +314,10 @@ const challengesData = {
             points: 10,
             question: 'أي كلمة دخيلة؟ 🎯',
             options: [
-                { id: 1, text: 'مَطَر', audio: 'مَطَر', correct: false, emoji: '🌧️' },
-                { id: 2, text: 'مَظَلَّة', audio: 'مَظَلَّة', correct: false, emoji: '☂️' },
-                { id: 3, text: 'مَرْكَب', audio: 'مَرْكَب', correct: false, emoji: '🚢' },
-                { id: 4, text: 'باب', audio: 'باب', correct: true, emoji: '🚪' }
+                { id: 1, text: 'سنجاب', audio: 'سنجاب', correct: true, emoji: '🐿️' },
+                { id: 2, text: 'مَطَر', audio: 'مَطَر', correct: false, emoji: '🌧️' },
+                { id: 3, text: 'مَظَلَّة', audio: 'مَظَلَّة', correct: false, emoji: '☂️' },
+                { id: 4, text: 'مَرْكَب', audio: 'مَرْكَب', correct: false, emoji: '🚢' }
             ]
         },
         {
@@ -343,7 +343,7 @@ const challengesData = {
             letter: 'م',
             points: 10,
             words: [
-                { word: 'مَطَر', position: 'أول', correct: true },
+                { word: 'عمر', position: 'وسط', correct: true },
                 { word: 'سَمَك', position: 'وسط', correct: true },
                 { word: 'كَلِم', position: 'آخر', correct: true }
             ]
@@ -356,7 +356,7 @@ const challengesData = {
             letter: 'م',
             points: 10,
             exercises: [
-                { syllables: ['م', 'ط', 'ر'], answer: 'مطر', displayWord: 'مطر' }
+                { syllables: ['ر', 'م', 'ط'], answer: 'مطر', displayWord: 'مطر' }
             ]
         },
         {
@@ -367,8 +367,8 @@ const challengesData = {
             letter: 'م',
             points: 10,
             exercises: [
-                { original: 'بِيت', colored: 'بِ', replacement: 'مِ', answer: 'مِيت' },
-                { original: 'نَصْر', colored: 'نَ', replacement: 'مَ', answer: 'مَصْر' }
+                { original: 'بال', colored: 'ب', replacement: 'م', answer: 'مال', displayOriginal: 'بال' },
+                { original: 'نَصْر', colored: 'نَ', replacement: 'مَ', answer: 'مَصْر', displayOriginal: 'نَصْر' }
             ]
         },
         {
@@ -529,7 +529,7 @@ const challengesData = {
             description: 'ما هو الحرف الذي تكرّر في نهاية الكلمات التالية؟',
             letter: 'ت',
             points: 10,
-            question: 'يَكتُمُ – يَفتَحُ – يَنتَظِرُ\nما الحرف المتكرر في النهاية؟',
+            question: 'يَكتُمُ – يَفتَحُ – يَنتَظِرُ\nما هو الحرف الذي تكرّر في الكلمات التالية؟',
             options: [
                 { id: 1, text: 'ت', audio: 'ت', correct: true },
                 { id: 2, text: 'ر', audio: 'ر', correct: false },
@@ -558,7 +558,7 @@ const challengesData = {
             letter: 'ت',
             points: 10,
             exercises: [
-                { syllables: ['ت', 'م', 'ر'], answer: 'تمر', displayWord: 'تمر' }
+                { syllables: ['م', 'ت', 'ر'], answer: 'تمر', displayWord: 'تمر' }
             ]
         },
         {
@@ -569,8 +569,8 @@ const challengesData = {
             letter: 'ت',
             points: 10,
             exercises: [
-                { original: 'بَيت', colored: 'بَ', replacement: 'ت', answer: 'تيت' },
-                { original: 'جَبل', colored: 'جَ', replacement: 'ت', answer: 'تَبل' }
+                { original: 'حوت', colored: 'ح', replacement: 'ت', answer: 'توت', displayOriginal: 'حوت' },
+                { original: 'باب', colored: 'ب', replacement: 'ت', answer: 'بات', displayOriginal: 'باب' }
             ]
         },
         {
