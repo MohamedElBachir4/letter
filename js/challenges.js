@@ -91,13 +91,46 @@ class ChallengeManager {
                 });
             }
             else if (challenge.id === 'jeem-delete-segments') {
-                audioManager.playVoiceFile('audio/q8j.mp3');
+                // تشغيل jafa.mp3 ثم kaja.mp3 بعد انتهائه
+                const jafaAudio = new Audio('audio/jafa.mp3');
+                jafaAudio.volume = 0.8;
+                jafaAudio.preload = 'auto';
+                
+                jafaAudio.addEventListener('ended', () => {
+                    audioManager.playVoiceFile('audio/kaja.mp3');
+                });
+                
+                jafaAudio.play().catch(error => {
+                    console.warn('⚠️ Error playing jafa.mp3:', error);
+                });
             }
             else if (challenge.id === 'taa-delete-segments') {
-                audioManager.playVoiceFile('audio/q8ta.mp3');
+                // تشغيل ti1.mp3 ثم maktot.mp3 بعد انتهائه
+                const ti1Audio = new Audio('audio/ti1.mp3');
+                ti1Audio.volume = 0.8;
+                ti1Audio.preload = 'auto';
+                
+                ti1Audio.addEventListener('ended', () => {
+                    audioManager.playVoiceFile('audio/maktot.mp3');
+                });
+                
+                ti1Audio.play().catch(error => {
+                    console.warn('⚠️ Error playing ti1.mp3:', error);
+                });
             }
             else if (challenge.id === 'meem-delete-segments') {
-                audioManager.playVoiceFile('audio/q8mim.mp3');
+                // تشغيل tars.mp3 ثم maktr.mp3 بعد انتهائه
+                const tarsAudio = new Audio('audio/tars.mp3');
+                tarsAudio.volume = 0.8;
+                tarsAudio.preload = 'auto';
+                
+                tarsAudio.addEventListener('ended', () => {
+                    audioManager.playVoiceFile('audio/maktr.mp3');
+                });
+                
+                tarsAudio.play().catch(error => {
+                    console.warn('⚠️ Error playing tars.mp3:', error);
+                });
             }
         }, 500);
         
@@ -2339,7 +2372,7 @@ class ChallengeManager {
                         
                         const segmentAudios = {
                             'ال': 'audio/al.mp3',
-                            'مَ': 'audio/ma.mp3',
+                            'م': 'audio/ma.mp3',
                             'ل': 'audio/lo.mp3'
                         };
                         
@@ -2356,9 +2389,8 @@ class ChallengeManager {
                         console.log('🔊 حذف المقطع (الميم):', segment);
                         
                         const segmentAudios = {
-                            'ال': 'audio/al.mp3',
-                            'طَ': 'audio/ta.mp3',
-                            'ر': 'audio/lo.mp3'
+                            'تر': 'audio/tar.mp3',
+                            'س': 'audio/soo.mp3'
                         };
                         
                         if (segmentAudios[segment]) {
@@ -2375,8 +2407,7 @@ class ChallengeManager {
                         
                         const segmentAudios = {
                             'ال': 'audio/al.mp3',
-                            'ي': 'audio/lo.mp3',
-                            'ن': 'audio/lo.mp3'
+                            'تو': 'audio/too.mp3'
                         };
                         
                         if (segmentAudios[segment]) {

@@ -245,7 +245,7 @@ const challengesData = {
             letter: 'ج',
             points: 10,
             exercises: [
-                { word: 'حزائر', delete: 'ح', answer: 'جزائر', displayOriginal: 'حزائر' }
+                { word: 'جزائر', delete: 'ج', answer: 'زائر', displayOriginal: 'جزائر' }
             ]
         },
         {
@@ -267,10 +267,10 @@ const challengesData = {
             description: 'اضغط على المقاطع لحذفها، واترك حرف الجيم فقط',
             letter: 'ج',
             points: 10,
-            word: 'الجَمَل',
-            allSegments: ['ال', 'جَ', 'مَ', 'ل'],
-            deletableSegments: ['ال', 'مَ', 'ل'],
-            protectedSegment: 'جَ',
+            word: 'يَلْعَبُ الجَمَلُ مَعَ الفَرَاشَةِ.',
+            allSegments: ['ال', 'ج', 'م', 'ل'],
+            deletableSegments: ['ال', 'م', 'ل'],
+            protectedSegment: 'ج',
             emoji: '🐪'
         }
     ],
@@ -379,7 +379,7 @@ const challengesData = {
             letter: 'م',
             points: 10,
             exercises: [
-                { word: 'سَمَك', delete: 'م', answer: 'سَك', displayOriginal: 'سَمَك' }
+                { word: 'مكتب', delete: 'م', answer: 'كتب', displayOriginal: 'مكتب' }
             ]
         },
         {
@@ -401,10 +401,10 @@ const challengesData = {
             description: 'اضغط على المقاطع لحذفها، واترك حرف الميم فقط',
             letter: 'م',
             points: 10,
-            word: 'المَطَر',
-            allSegments: ['ال', 'مَ', 'طَ', 'ر'],
-            deletableSegments: ['ال', 'طَ', 'ر'],
-            protectedSegment: 'مَ',
+            word: 'تَرْسُمُ النَّمْلَةُ شَمْسًا',
+            allSegments: ['تر', 'س', 'م'],
+            deletableSegments: ['تر', 'س'],
+            protectedSegment: 'م',
             emoji: '🌧️'
         }
     ],
@@ -581,7 +581,7 @@ const challengesData = {
             letter: 'ت',
             points: 10,
             exercises: [
-                { word: 'تَمْر', delete: 'ت', answer: 'مر', displayOriginal: 'تَمْر' }
+                { word: 'قاتل', delete: 'ت', answer: 'قال', displayOriginal: 'قاتل' }
             ]
         },
         {
@@ -603,11 +603,11 @@ const challengesData = {
             description: 'اضغط على المقاطع لحذفها، واترك حرف التاء فقط',
             letter: 'ت',
             points: 10,
-            word: 'التِّين',
-            allSegments: ['ال', 'تِ', 'ي', 'ن'],
-            deletableSegments: ['ال', 'ي', 'ن'],
-            protectedSegment: 'تِ',
-            emoji: '🍈'
+            word: 'يَأْكُلُ التَّنِينُ الحُوتَ.',
+            allSegments: ['ال', 'تو', 'ت'],
+            deletableSegments: ['ال', 'تو'],
+            protectedSegment: 'ت',
+            emoji: '🐉'
         }
     ],
 
