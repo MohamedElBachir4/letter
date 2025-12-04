@@ -299,11 +299,11 @@
             oscillator.stop(audioContext.currentTime + 0.08);
         };
 
-        // زر عرض المشروع (فتح PDF)
+        // زر عرض المشروع (فتح صفحة العرض)
         document.getElementById('listenBtn').addEventListener('click', () => {
             playClickSound();
-            // فتح ملف PDF في نافذة جديدة
-            window.open('project.pdf', '_blank');
+            // فتح صفحة عرض المشروع
+            window.location.href = 'presentation.html';
         });
 
         // زر بدء اللعبة

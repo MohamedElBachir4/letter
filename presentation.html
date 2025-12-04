@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض المشروع - الوعي الصوتي الخطي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 15%, #f093fb 30%, #4facfe 50%, #00f2fe 65%, #667eea 80%, #764ba2 100%);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* خلفية particles متحركة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            animation: float-bg 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes float-bg {
+            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-50px) scale(1.1) rotate(5deg); opacity: 0.8; }
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* تأثيرات particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: particle-float 15s infinite ease-in-out;
+        }
+        
+        @keyframes particle-float {
+            0%, 100% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* أنيميشن للعناصر - متقدم */
+        .toc-item {
+            opacity: 0;
+            transform: translateX(50px) scale(0.9);
+            animation: slideInRightAdvanced 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .toc-item:hover {
+            transform: translateX(-5px) scale(1.02);
+        }
+        
+        @keyframes slideInRightAdvanced {
+            0% {
+                opacity: 0;
+                transform: translateX(50px) scale(0.9) rotateY(-10deg);
+            }
+            60% {
+                transform: translateX(-5px) scale(1.05) rotateY(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotateY(0deg);
+            }
+        }
+        
+        /* تأخير متدرج للعناصر */
+        .toc-item:nth-child(1) { animation-delay: 0.1s; }
+        .toc-item:nth-child(2) { animation-delay: 0.2s; }
+        .toc-item:nth-child(3) { animation-delay: 0.3s; }
+        .toc-item:nth-child(4) { animation-delay: 0.4s; }
+        .toc-item:nth-child(5) { animation-delay: 0.5s; }
+        .toc-item:nth-child(6) { animation-delay: 0.6s; }
+        .toc-item:nth-child(7) { animation-delay: 0.7s; }
+        .toc-item:nth-child(8) { animation-delay: 0.8s; }
+        .toc-item:nth-child(9) { animation-delay: 0.9s; }
+        .toc-item:nth-child(10) { animation-delay: 1.0s; }
+        .toc-item:nth-child(11) { animation-delay: 1.1s; }
+        .toc-item:nth-child(12) { animation-delay: 1.2s; }
+        .toc-item:nth-child(13) { animation-delay: 1.3s; }
+        .toc-item:nth-child(14) { animation-delay: 1.4s; }
+        .toc-item:nth-child(15) { animation-delay: 1.5s; }
+        .toc-item:nth-child(16) { animation-delay: 1.6s; }
+        .toc-item:nth-child(17) { animation-delay: 1.7s; }
+        .toc-item:nth-child(18) { animation-delay: 1.8s; }
+        .toc-item:nth-child(19) { animation-delay: 1.9s; }
+        .toc-item:nth-child(20) { animation-delay: 2.0s; }
+        .toc-item:nth-child(21) { animation-delay: 2.1s; }
+        
+        /* تأثير التحويم - متقدم */
+        .toc-link {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .toc-link::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 0;
+        }
+        
+        .toc-link::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .toc-link:hover::before {
+            width: 100%;
+        }
+        
+        .toc-link:hover::after {
+            left: 100%;
+        }
+        
+        .toc-link:hover {
+            transform: translateX(-15px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4),
+                        0 5px 15px rgba(0,0,0,0.2),
+                        inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        
+        .toc-link:active {
+            transform: translateX(-12px) scale(1.01);
+        }
+        
+        /* بطاقة الفهرس - فخمة */
+        .toc-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 50%, rgba(248,250,252,0.98) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 30px 80px rgba(0,0,0,0.3),
+                0 10px 30px rgba(102, 126, 234, 0.2),
+                inset 0 1px 0 rgba(255,255,255,0.9),
+                inset 0 -1px 0 rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .toc-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate-glow 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toc-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 
+                0 40px 100px rgba(0,0,0,0.4),
+                0 15px 40px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+        
+        /* بطاقة المحتوى - فخمة */
+        .content-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.99) 0%, rgba(255,255,255,0.97) 50%, rgba(248,250,252,0.99) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 35px 90px rgba(0,0,0,0.3),
+                0 12px 35px rgba(102, 126, 234, 0.25),
+                inset 0 2px 0 rgba(255,255,255,0.95),
+                inset 0 -2px 0 rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.8s ease;
+        }
+        
+        .content-card:hover::before {
+            left: 100%;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 50px 120px rgba(0,0,0,0.4),
+                0 20px 50px rgba(102, 126, 234, 0.35),
+                inset 0 2px 0 rgba(255,255,255,0.95);
+        }
+        
+        /* زر العودة - فخم */
+        .back-btn {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        
+        .back-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.4),
+                0 10px 25px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+        
+        .back-btn:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        /* تأثير التوهج - متقدم */
+        .glow-effect {
+            text-shadow: 
+                0 0 10px rgba(102, 126, 234, 0.8),
+                0 0 20px rgba(102, 126, 234, 0.6),
+                0 0 30px rgba(102, 126, 234, 0.4),
+                0 0 40px rgba(102, 126, 234, 0.2);
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px rgba(102, 126, 234, 0.8),
+                    0 0 20px rgba(102, 126, 234, 0.6),
+                    0 0 30px rgba(102, 126, 234, 0.4),
+                    0 0 40px rgba(102, 126, 234, 0.2);
+            }
+            50% {
+                text-shadow: 
+                    0 0 20px rgba(102, 126, 234, 1),
+                    0 0 40px rgba(102, 126, 234, 0.8),
+                    0 0 60px rgba(102, 126, 234, 0.6),
+                    0 0 80px rgba(102, 126, 234, 0.4);
+            }
+        }
+        
+        /* عناصر زخرفية - متقدمة */
+        .decorative {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+            animation: float-advanced 8s ease-in-out infinite;
+            filter: blur(1px);
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        @keyframes float-advanced {
+            0%, 100% { 
+                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                opacity: 0.1;
+            }
+            25% {
+                transform: translateY(-40px) translateX(20px) rotate(15deg) scale(1.1);
+                opacity: 0.2;
+            }
+            50% { 
+                transform: translateY(-60px) translateX(-20px) rotate(-15deg) scale(1.2);
+                opacity: 0.15;
+            }
+            75% {
+                transform: translateY(-30px) translateX(10px) rotate(10deg) scale(1.05);
+                opacity: 0.18;
+            }
+        }
+        
+        .decorative:nth-child(1) { animation-delay: 0s; }
+        .decorative:nth-child(2) { animation-delay: 2s; }
+        .decorative:nth-child(3) { animation-delay: 4s; }
+        .decorative:nth-child(4) { animation-delay: 6s; }
+        
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .toc-item {
+                animation-duration: 0.4s;
+            }
+            
+            .toc-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* خط فاصل متحرك - متقدم */
+        .divider {
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(102, 126, 234, 0.3) 20%,
+                #667eea 50%,
+                rgba(102, 126, 234, 0.3) 80%,
+                transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer-advanced 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(255,255,255,0.8),
+                transparent);
+            animation: shimmer-move 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer-advanced {
+            0%, 100% { 
+                opacity: 0.6;
+                background-position: 0% 50%;
+            }
+            50% { 
+                opacity: 1;
+                background-position: 100% 50%;
+            }
+        }
+        
+        @keyframes shimmer-move {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* أنيميشن للعنوان - متقدم */
+        .main-title {
+            opacity: 0;
+            transform: translateY(-50px) scale(0.9);
+            animation: fadeInDownAdvanced 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        @keyframes fadeInDownAdvanced {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9) rotateX(-10deg);
+            }
+            60% {
+                transform: translateY(10px) scale(1.05) rotateX(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateX(0deg);
+            }
+        }
+        
+        /* أنيميشن للمحتوى - متقدم مع scroll reveal */
+        .content-section {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        @keyframes fadeInUpAdvanced {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95) rotateX(10deg);
+            }
+            60% {
+                transform: translateY(-5px) scale(1.02) rotateX(-2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotateX(0deg);
+            }
+        }
+        
+        /* تنسيق النصوص - محسّن */
+        .content-text {
+            line-height: 2.2;
+            text-align: justify;
+            font-size: 1.15rem;
+            color: #374151;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .content-text p {
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .content-text p:hover {
+            transform: translateX(-5px);
+            padding-right: 10px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+            animation: title-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes title-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.8));
+            }
+        }
+        
+        .subsection-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #4b5563;
+            position: relative;
+            padding-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .subsection-title::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 80%;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .subsection-title:hover {
+            padding-right: 1.5rem;
+            transform: translateX(-5px);
+        }
+        
+        .subsection-title:hover::before {
+            width: 6px;
+            height: 100%;
+        }
+        
+        /* تأثيرات إضافية */
+        .bg-gradient-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-gradient-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate-slow 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* تأثيرات hover للبطاقات الملونة */
+        .bg-blue-50, .bg-green-50, .bg-purple-50, .bg-pink-50, .bg-yellow-50, .bg-orange-50 {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bg-blue-50:hover, .bg-green-50:hover, .bg-purple-50:hover, 
+        .bg-pink-50:hover, .bg-yellow-50:hover, .bg-orange-50:hover {
+            transform: translateX(-10px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .subsection-title {
+                font-size: 1.25rem;
+            }
+            
+            .content-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- عناصر زخرفية -->
+    <div class="decorative text-9xl" style="top: 5%; right: 5%;">📚</div>
+    <div class="decorative text-9xl" style="top: 20%; left: 5%;">🎓</div>
+    <div class="decorative text-9xl" style="top: 60%; right: 10%;">✨</div>
+    <div class="decorative text-9xl" style="top: 80%; left: 10%;">🌟</div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="container mx-auto px-4 py-8 min-h-screen">
+        <!-- زر العودة -->
+        <div class="mb-6">
+            <button onclick="window.location.href='index.html'" class="back-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2">
+                <span>←</span>
+                <span>العودة للصفحة الرئيسية</span>
+            </button>
+        </div>
+        
+        <!-- العنوان الرئيسي -->
+        <div class="text-center mb-12 main-title">
+            <h1 class="text-5xl md:text-6xl font-black mb-4 glow-effect" style="color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                📖 عرض المشروع
+            </h1>
+            <p class="text-2xl md:text-3xl font-bold text-white opacity-90">
+                تطبيقات مهارات الوعي الصوتي الخطي
+            </p>
+        </div>
+        
+        <!-- قائمة العناوين -->
+        <div class="max-w-4xl mx-auto">
+            <div class="content-card rounded-3xl p-8 md:p-12">
+                <h2 class="text-4xl font-black mb-8 text-center text-purple-600">
+                    📑 الفهرس
+                </h2>
+                <div class="divider mb-8"></div>
+                
+                <nav class="space-y-3">
+                    <!-- الفصل 1 -->
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-purple-100 to-purple-50 p-4 rounded-xl font-bold text-purple-700 border-r-4 border-purple-500 text-xl">
+                            الفصل 1: مقدمة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            مقدمة: ماهي مهارات الوعي الصوتي الخطي في التعليم الابتدائي
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            الإشكالية
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            فرضيات الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            أهمية الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            حدود الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            المنهج
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            مجتمع الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-blue-100 to-blue-50 p-3 rounded-lg font-semibold text-blue-700 mr-6 border-r-2 border-blue-400">
+                            أدوات الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-green-100 to-green-50 p-3 rounded-lg font-semibold text-green-700 mr-6 border-r-2 border-green-400">
+                            طريقة الوعي الصوتي الخطي
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-green-100 to-green-50 p-3 rounded-lg font-semibold text-green-700 mr-8 border-r-2 border-green-400">
+                            تعريف طريقة الوعي الصوتي الخطي
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-green-100 to-green-50 p-3 rounded-lg font-semibold text-green-700 mr-8 border-r-2 border-green-400">
+                            أهمية الوعي الصوتي الخطي
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-green-100 to-green-50 p-3 rounded-lg font-semibold text-green-700 mr-8 border-r-2 border-green-400">
+                            مستويات الوعي الصوتي الخطي
+                        </div>
+                    </div>
+                    
+                    <!-- الفصل 2 -->
+                    <div class="toc-item mt-6">
+                        <div class="bg-gradient-to-r from-purple-100 to-purple-50 p-4 rounded-xl font-bold text-purple-700 border-r-4 border-purple-500 text-xl">
+                            الفصل 2: تطبيقات مهارات الوعي الصوتي الخطي في مدرسة الإمام عبد الحميد بن باديس
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-pink-100 to-pink-50 p-3 rounded-lg font-semibold text-pink-700 mr-6 border-r-2 border-pink-400">
+                            تطبيقات اللعبة التفاعلية لمهارات الوعي الصوتي الخطي
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-pink-100 to-pink-50 p-3 rounded-lg font-semibold text-pink-700 mr-6 border-r-2 border-pink-400">
+                            شرح اللعبة التفاعلية
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-pink-100 to-pink-50 p-3 rounded-lg font-semibold text-pink-700 mr-6 border-r-2 border-pink-400">
+                            تطبيق الدراسة
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-pink-100 to-pink-50 p-3 rounded-lg font-semibold text-pink-700 mr-6 border-r-2 border-pink-400">
+                            عرض النتائج
+                        </div>
+                    </div>
+                    
+                    <div class="toc-item">
+                        <div class="bg-gradient-to-r from-pink-100 to-pink-50 p-3 rounded-lg font-semibold text-pink-700 mr-6 border-r-2 border-pink-400">
+                            الخاتمة
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- المحتوى التفصيلي -->
+            <div class="mt-12 space-y-8">
+                
+                <!-- مشكلة الدراسة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-purple-600 mb-6">مشكلة الدراسة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-4">
+                        <p>تُعدّ القراءة من أهم المهارات الأساسية التي تسعى العملية التعليمية إلى ترسيخها لدى الطفل في المراحل الأولى من التعليم، لما لها من دور محوري في تنمية قدراته المعرفية وتكوين شخصيته الفكرية والتواصلية. فالقراءة ليست مجرد نشاط لغوي فحسب، بل هي وسيلة لاكتساب الخبرات، وتنمية التفكير، وتبادل الأفكار، وفهم العالم المحيط. لذلك تُعدّ العناية بتعليم القراءة في السنوات الأولى ضرورة أساسية لأي نظام تربوي.</p>
+                        
+                        <p>وتكمن أهمية القراءة في كونها أساساً يبنى عليه التعلم في مختلف المواد الدراسية، إضافة إلى دورها في إثراء الرصيد اللغوي وتعزيز التواصل الاجتماعي لدى المتعلمين من خلال احتكاكهم المباشر بالنصوص المقروءة وتفاعلهم مع محتواها. ومن جهة أخرى، فإن امتلاك مهارات القراءة الصحيحة يُمكّن المتعلم من فهم النصوص المكتوبة ونطقها بشكل سليم، مما يسمح للمعلم بتشخيص صعوبات النطق والقراءة والعمل على علاجها ضمن خطة تربوية واضحة.</p>
+                        
+                        <p>ورغم تعدد طرق تعليم القراءة، من بينها الطريقة التحليلية، التركيبية، وطرق الاستماع، فإن الاتجاهات الحديثة في تعليم القراءة في المرحلة الابتدائية تؤكد على ضرورة اعتماد طريقة الوعي الصوتي الخطي بوصفها أساساً مهماً لاكتساب مهارات القراءة. حيث يرى بلباب (2009) أن الوعي الصوتي يقوم على معرفة أصوات الحروف والقدرة على اللعب بها لتكوين كلمات وجمل. كما يشير محمد (2016) إلى أنّه يرتبط بالقدرة على تحليل مكوّنات الكلمة وتتبعها وتمييز مقاطعها الصوتية.</p>
+                        
+                        <p>كما أشارت دراسة طوبركو وعرقلا (2019) إلى أنّ الوعي الصوتي له تأثير كبير وفعّال في اكتساب مهارات القراءة عند الطفل، إذ أثبتت نتائجها أنّ نجاح الطفل عند التحاقه بالفصل الأول يرتبط بدرجة كبيرة بامتلاكه مهارات التمييز بين أصوات الكلمات وتكوين الجمل، مما يسمح للتلميذ بتطوير مهاراته القرائية عبر فهم الوحدات الصوتية بشكل سليم. وفي السياق نفسه، أشارت دراسة بلاعج (2022) إلى أنّ الوعي الصوتي يمثل أسلوباً بيداغوجياً إيجابياً وفعالاً في تدريس نشاط القراءة لتلاميذ السنة الأولى ابتدائي، غير أنّ فعالية هذه الطريقة تظل مرتبطة بالظروف المحيطة بالتطبيق وطبيعة الممارسات الصفية، رغم أهميتها من وجهة نظر الأساتذة.</p>
+                        
+                        <p>وبناءً على ما تقدّم، يمكن القول إن القراءة والمهارات اللغوية المرتبطة بها تُعد مجالاً واسعاً للبحث، لا سيما في جانب الوعي الصوتي. ومن هنا تنطلق فكرة هذا البحث الذي يهدف إلى إبراز أهمية طريقة الوعي الصوتي الخطي في تطوير مهارات القراءة لدى تلاميذ السنة الأولى والثانية ابتدائي. إذ يُنظر إلى القراءة بوصفها مطلباً تعليمياً أساسياً لا يمكن الاستغناء عنه عند اكتساب باقي الأنشطة التعليمية.</p>
+                        
+                        <p>وتتكون عيّنة الدراسة من تلاميذ المرحلة الابتدائية الذين يزاولون دراستهم في مدرسة الإمام عبد الحميد بن باديس، وينتمون إلى الفئة العمرية الممتدة من 5 إلى 11 سنة، حيث تمثّل هذه الفئة مراحل الطفولة المبكرة والمتوسطة والمتأخرة. وقد تمّ حصر مجتمع الدراسة في تلاميذ السنة الأولى والثانية ابتدائي بنفس المؤسسة، باعتبارهم الفئة المستهدفة من تطبيق المنهج القائم على مهارات الوعي الصوتي الخطي.</p>
+                    </div>
+                </div>
+                
+                <!-- حدود الدراسة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-blue-600 mb-6">حدود الدراسة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-3">
+                        <div class="bg-blue-50 p-4 rounded-xl border-r-4 border-blue-500">
+                            <p><strong>الحدود البشرية:</strong> تلاميذ السنة الأولى والثانية ابتدائي.</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-500">
+                            <p><strong>الحدود الموضوعية:</strong> مهارات الوعي الصوتي الخطي.</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-xl border-r-4 border-purple-500">
+                            <p><strong>الحدود المكانية:</strong> مدرسة الإمام عبد الحميد بن باديس.</p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-xl border-r-4 border-pink-500">
+                            <p><strong>الحدود الزمنية:</strong> السنة الدراسية 2025– 2026.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- المنهج -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-blue-600 mb-6">المنهج</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text">
+                        <p>تتناول هذه الدراسة موضوعًا مهمًا يتعلق بالبرامج التعليمية للأطفال في مراحل التعليم الابتدائي، وتهدف إلى فهم كيفية تأثير هذه البرامج على قدراتهم المعرفية وتنمية مهاراتهم. ركزت الدراسة على تحليل المواد التعليمية والأنشطة المدرسية التي تم تطبيقها منذ عام 1988، مع الأخذ بعين الاعتبار المناهج التعليمية وأساليب التدريس المستخدمة. كما تم جمع بيانات من الطلاب والمعلمين لتقييم نتائج البرامج ومقارنتها مع الأهداف المحددة، مع حساب الفروق بين الأداء الفعلي والمتوقع، من أجل الوصول إلى نتائج دقيقة وموثوقة.</p>
+                    </div>
+                </div>
+                
+                <!-- مجتمع الدراسة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-blue-600 mb-6">مجتمع الدراسة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text">
+                        <p>استندت الدراسة على مجموعة من الطلاب في الصفوف الأولى والثانية الابتدائي، وتم اختيارهم بعناية لضمان تمثيل عادل للبيئة التعليمية المختلفة. كما شملت الدراسة المعلمين والمعلمات لمتابعة أساليب التعليم وتطبيق المناهج الدراسية، مع توثيق كل البيانات والنتائج بطريقة منظمة لضمان إمكانية تحليلها بدقة. تم جمع البيانات من 23 مدرسة، وتم تطبيق أدوات قياس مختلفة لتقييم مستوى الطلاب.</p>
+                    </div>
+                </div>
+                
+                <!-- أدوات الدراسة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-blue-600 mb-6">أدوات الدراسة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text">
+                        <p>استخدمت الدراسة مجموعة من الأدوات لجمع البيانات وتحليلها، بما في ذلك استبيانات للطلاب والمعلمين، وملاحظات ميدانية داخل الصفوف، واختبارات تقييمية لقياس أداء الطلاب. كما تم استخدام جداول إحصائية لتسهيل تحليل النتائج والتأكد من دقتها، مما ساعد الباحثين على الوصول إلى استنتاجات واضحة حول فعالية البرامج التعليمية.</p>
+                    </div>
+                </div>
+                
+                <!-- طريقة الوعي الصوتي -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-green-600 mb-6">طريقة الوعي الصوتي</h2>
+                    <div class="divider mb-6"></div>
+                    
+                    <div class="content-text space-y-6">
+                        <div>
+                            <h3 class="subsection-title text-green-700">1. تعريف الطريقة</h3>
+                            <p>تعرف لغوياً بأنها مسلك أو مذهب يسير وفقه الإنسان في حياته، وتعرف اصطلاحاً بأنها جميع أوجه النشاط الذي يقوم به المدرس بغية مساعدة الطلبة على اكتساب الخبرة والمعلومات (سام، 2002، ص. 79).</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="subsection-title text-green-700">2. تعريف الوعي الصوتي</h3>
+                            <p>تعددت تعاريف الوعي الصوتي بتعدد وجهات نظر العلماء والباحثين فنجد مباركي وآخرون (2018) يعرفون الوعي الصوتي بأنه قدرة الفرد على تمييز مختلف مكونات الكلام والوعي بالأجزاء في أبعاد مختلفة والتعامل بوحدات فونولوجية، فهو ليس فطري أو عفوي، إنما يظهر مع تعلم القراءة وينمو في شكل تفاعلي معها.</p>
+                            
+                            <p>يعرفه مهديوي (2020) بأنه الوعي بنظام اللغة الصوتي المستخدم في اللغة، ووعي بالبيئة الصوتية الموجودة فهي كذلك القدرة على ملاحظة الأصوات اللغوية في هذه الكلمات، وكيفية اتحادها وتجميعها في الكلمات.</p>
+                            
+                            <p>يعرفه قاوي وحفصي (2020) بأنه امتلاك الطفل مجموعة من المهارات كالقدرة على تحديد أصوات الكلمات المنطوقة، والقدرة على التمييز بين هذه الأصوات وتقسيم الكلمات المنطوقة إلى أصوات منفردة، إضافة إلى تجميعها لتكوين كلمات، وتحليل هذه الكلمات إلى مقاطع صوتية، كما يمكن من تقسيم الكلمة إلى فونيمات أي أن الوعي الصوتي من أهم المهارات التي تمكن الطفل من التعلم والاكتساب خاصة في التمييز بين الأصوات والتحليل والتقطيع...إلخ</p>
+                            
+                            <p>لقد اتفقت جميع التعريفات السابقة بأن الوعي الصوتي عملية ذهنية تكمن في قدرة التلميذ على التمييز بين مختلف مكونات الكلام وإدراك الأجزاء بأبعاد مختلفة والتعامل مع الوحدات الصوتية.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="subsection-title text-green-700">3. تعريف طريقة الوعي الصوتي</h3>
+                            <p>لقد اختلفت تعاريف طريقة الوعي الصوتي فنجد جديدي وزبيدي (2021) الذي عرف طريقة الوعي الصوتي بأنه القدرة على تتبع ومعالجة وتداول وتحليل مكونات الكلمات المنطوقة مثل المقاطع والحروف الساكنة والمتحركة والفونيمات بعيدا عن وضع ما تشير إليه الكلمات.</p>
+                            
+                            <p>يعرفه جعلاب (2022) بأنه منهجية تعليمية تم اعتمادها في تدريس نشاط القراءة في السنة الأولى من التعليم الابتدائي في المدرسة الجزائرية تقوم أساسا على إدراك العلاقة بين الأصوات والرموز المكتوبة، وترتكز على مهارات الوعي الصوتي كمهارات التمييز والتجزيء المقطعي والعزل والتصنيف والتعويض من أجل فهم العلاقة بين المنطوق والمكتوب ومن ثم القدرة على التركيب والدمج لتأليف كلمات وجمل جديدة.</p>
+                            
+                            <p>انطلاقا مما سبق يعرف جعلاب (2022) طريقة الوعي الصوتي إجرائيا بأنه عبارة عن عملية عقلية قوامها الإدراك والفهم للرموز اللغوية انطلاقا من الشكل الصوتي للكلمة المنطوقة، والذي يمكن الفرد من إدراك أن الجمل عبارة عن مقاطع، والمقاطع عبارة عن أصوات منفردة، مع تمكينه من الربط بين هذه المكونات لتكوين لغة سليمة والتلاعب بها، واستعمالها في كلمات منطوقة وتمكينه من القراءة.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="subsection-title text-green-700">4. أهمية الوعي الصوتي</h3>
+                            <p>عند التحليل القرائي دائما ما نلجأ إلى الوعي الصوتي نظرا لأهميته الأساسية في ذلك، فالخبرة بنشاطات الوعي الصوتي لها أثر بارز في القراءة والتجزئة الكلامية عند النطق بها، فهناك علاقة سببية بين القدرة القرائية والوعي الصوتي فهو ركن رئيسي للنمو القرائي، وبالتالي الأساس الذي تبنى عليه مهارات القراءة.</p>
+                            
+                            <p>فبدون الوعي الصوتي يظل اكتساب المتعلمين للوعي بالوحدات الصوتية محدود بدرجة كبيرة، كما يعتبر أن بعض جوانب الوعي بأصوات الكلام يتطور بصورة مستقلة عن التعليم القرائي، وله أثر على القدرة القرائية، فالوعي الصوتي مظهر من مظاهر النضج للقدرات الذهنية للأطفال، فتكمن أهمية الوعي الصوتي في أن تطور القراءة والكتابة يعتمد على مهارات لغوية وذهنية المتمثلة في الوعي الصوتي أي معرفة الحروف وتركيب الأصوات مع القدرة على التعرف السريع على الكلمات المكتوبة وتتألف اللغة المحكية من مجموعة من الأصوات، هذه الأصوات تؤلف مقاطع لتصبح كلمات وبالتالي نستطيع بهذه الكلمات تركيب جمل بالإضافة نجد أن الوعي الصوتي هو القدرة على فهم أن الكلمة المحكية هي مجموعة من الأصوات وهي القدرة على الاستماع والتعرف والتلاعب بالأصوات، وللوعي الصوتي أهمية بالغة في القراءة والكتابة وتعتبر من الأسس لتعلم اللغة المكتوبة فيمر الطفل بعدة مراحل لذلك عليه أن يدرك أن الجمل تتألف من كلمات وأنه يستطيع تفكيك الكلمات إلى مقاطع ومن ثم إلى أصوات، وأي خلل على هذا المستوى يؤدي إلى صعوبات في قراءة الكلمات البسيطة (مباركي وآخرون، 2018، ص. 7).</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="subsection-title text-green-700">5. مستوى الوعي المركب</h3>
+                            <p>مهام هذا المستوى تحتاج إلى القيام بأكثر من عملية معرفية في الذاكرة العاملة بالوقت نفسه. وبالتالي يشكل أداؤها عبئا على هذه الذاكرة، مثال: المزاوجة الصوتية بين كلمات تشترك في إحدى الفونيمات الصوتية (كان يا مكان) (قلم ـ ألم). أو نطق كلمة بعد حذف أحد أصواتها أو تبديل صوت بصوت آخر ونطق الكلمة أو إضافة صوت على كلمة ونطقها. أو عكس الفونيمات في الكلمة ونطقها، أو تمييز التغيير الذي يحصل لمعنى الكلمة عند التلاعب بها (الأبيض، 2022، ص. 33).</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="subsection-title text-green-700">6. مهارات الوعي الصوتي</h3>
+                            <p>يتضمن الوعي الصوتي العديد من المهارات إلا أننا تطرقنا إلى مهارات الوعي الصوتي التي يعمل بها في القراءة لمستوى الأولى ابتدائي وقد ذكرها عبد القادر (2019) كالتالي:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة رصد المقطع:</strong> تمييز المقاطع والتلاعب بها في كلمة.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة رصد القافية:</strong> معرفة الكلمات التي لها نفس القافية وتحديدها وإنتاجها.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة العزل:</strong> التعرف على المقاطع الصوتية المكونة للكلمة بعزلها.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة الدمج:</strong> الاستماع إلى سلسلة من المقاطع الصوتية والجمع بينها لتكوين كلمة.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة التقطيع:</strong> تجزيء الكلمة إلى وحدات أو قطع صوتية (صوامت ومصوتات).</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة الحذف:</strong> التعرف على الكلمة المتبقية بعد إزالة مقطع صوتي منها.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة الإضافة:</strong> هي عملية عكسية لمهارة الحذف وتتم بإضافة مقطع صوتي إلى كلمة للحصول على كلمة أخرى.</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-xl border-r-4 border-green-400">
+                                    <p><strong>مهارة التعويض:</strong> تعويض قطعة صوتية لتشكيل كلمة أخرى.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الفصل 2 -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section mt-12">
+                    <h2 class="section-title text-purple-600 mb-6">الفصل 2: تطبيقات مهارات الوعي الصوتي الخطي لدى تلاميذ مدرسة الإمام عبد الحميد بن باديس</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text">
+                        <p>يتناول هذا الفصل التطبيق العملي للعبة التفاعلية في مدرسة الإمام عبد الحميد بن باديس، مع عرض النتائج والتحليلات.</p>
+                    </div>
+                </div>
+                
+                <!-- تطبيقات اللعبة التفاعلية -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-pink-600 mb-6">تطبيقات اللعبة التفاعلية لمهارات الوعي الصوتي الخطي بالذكاء الاصطناعي</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text">
+                        <p>تم تطوير لعبة تفاعلية متقدمة تعتمد على تقنيات الذكاء الاصطناعي لتعليم مهارات الوعي الصوتي الخطي. هذه اللعبة تجمع بين التعليم والترفيه، مما يجعل عملية التعلم أكثر فعالية وجاذبية للتلاميذ.</p>
+                        <p>تستخدم اللعبة الذكاء الاصطناعي لتكييف المحتوى التعليمي مع مستوى كل تلميذ، وتقديم ملاحظات فورية، وتتبع التقدم المحرز. كما توفر تجربة تعليمية شخصية تتناسب مع احتياجات كل طفل.</p>
+                    </div>
+                </div>
+                
+                <!-- شرح اللعبة التفاعلية -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-pink-600 mb-6">شرح اللعبة التفاعلية وتطبيق الحروف ب ت م ج</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-4">
+                        <p>اللعبة التفاعلية عبارة عن منصة تعليمية شاملة تتضمن تطبيقاً عملياً للحروف العربية الأساسية: <strong>الباء (ب)</strong>، <strong>التاء (ت)</strong>، <strong>الميم (م)</strong>، و<strong>الجيم (ج)</strong>.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-pink-50 p-5 rounded-xl border-r-4 border-pink-400">
+                                <h3 class="font-bold text-pink-700 mb-3 text-xl">حرف الباء (ب)</h3>
+                                <p>يتضمن قصة مصورة تفاعلية مع أصوات مسجلة، و8 تحديات متنوعة تساعد التلميذ على التعرف على الحرف وربطه بصوته واستخدامه في كلمات.</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-5 rounded-xl border-r-4 border-blue-400">
+                                <h3 class="font-bold text-blue-700 mb-3 text-xl">حرف التاء (ت)</h3>
+                                <p>قصة التينين والتمساح مع 8 تحديات تفاعلية تركز على تمييز صوت الحرف وكتابته واستخدامه في سياقات مختلفة.</p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-5 rounded-xl border-r-4 border-green-400">
+                                <h3 class="font-bold text-green-700 mb-3 text-xl">حرف الميم (م)</h3>
+                                <p>قصة النملة والمعزة مع أنشطة تفاعلية تساعد على إتقان الحرف من خلال القصص والألعاب التعليمية.</p>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-5 rounded-xl border-r-4 border-purple-400">
+                                <h3 class="font-bold text-purple-700 mb-3 text-xl">حرف الجيم (ج)</h3>
+                                <p>قصة الجمل والفراشة مع تحديات متنوعة تركز على تطوير مهارات الوعي الصوتي الخطي من خلال التفاعل واللعب.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-5 rounded-xl border-r-4 border-yellow-400 mt-6">
+                            <h3 class="font-bold text-orange-700 mb-3 text-xl">مميزات اللعبة:</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>قصص مصورة تفاعلية لكل حرف</li>
+                                <li>تحديات متنوعة (اختيار الصورة، ربط الكلمات، الظلال، الرسم)</li>
+                                <li>نظام نقاط ومكافآت يحفز التلاميذ</li>
+                                <li>تعليقات صوتية واضحة باللغة العربية</li>
+                                <li>واجهة جذابة ملونة مناسبة للأطفال</li>
+                                <li>تتبع تلقائي للتقدم المحرز</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تطبيق الدراسة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-pink-600 mb-6">تطبيق الدراسة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-4">
+                        <p>تم تطبيق هذه الدراسة خلال الفترة الزمنية من شهر أكتوبر 2025 على تلاميذ السنة الأولى ابتدائي مع اختيارنا للعينة بالطريقة القصدية.</p>
+                        
+                        <div class="bg-blue-50 p-5 rounded-xl border-r-4 border-blue-400">
+                            <h3 class="font-bold text-blue-700 mb-3">تفاصيل التطبيق:</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>الفترة الزمنية:</strong> شهر أكتوبر 2025</li>
+                                <li><strong>الفئة المستهدفة:</strong> تلاميذ السنة الأولى ابتدائي</li>
+                                <li><strong>طريقة اختيار العينة:</strong> الطريقة القصدية</li>
+                                <li><strong>المكان:</strong> مدرسة الإمام عبد الحميد بن باديس</li>
+                            </ul>
+                        </div>
+                        
+                        <p>تم تقسيم التلاميذ إلى مجموعتين: مجموعة تجريبية استخدمت اللعبة التفاعلية، ومجموعة ضابطة استخدمت الطرق التقليدية. وتم قياس مستوى المهارات قبل وبعد التطبيق لمقارنة النتائج.</p>
+                    </div>
+                </div>
+                
+                <!-- عرض النتائج -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-pink-600 mb-6">عرض النتائج</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-4">
+                        <p>قبل عرض النتائج نذكر بالفرضية البحثية التي تنص على فاعلية اللعبة التفاعلية لمهارات الوعي الصوتي الخطي، فكانت النتائج مذهلة وبطريقة حماسية لدى التلاميذ وذلك لاستعمالهم للذكاء الاصطناعي ومواكبة التطور بطريقة شيقة وممتعة مع شد انتباههم للصور والقصص والألوان والتحسين الملحوظ في التعبير الشفوي والكتابي والإملاء والقراءة المميزة وذلك بهدف جعل التلميذ مفكراً لا مكرراً مع تنمية مهارات التفكير الإبداعي للمتعلمين من خلال اللعبة التفاعلية لمهارات الوعي الصوتي الخطي.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-green-50 p-5 rounded-xl border-r-4 border-green-400">
+                                <h3 class="font-bold text-green-700 mb-3 text-xl">النتائج الإيجابية:</h3>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>تحسن واضح في مهارات القراءة</li>
+                                    <li>تحسين التعبير الشفوي والكتابي</li>
+                                    <li>تحسن في الإملاء</li>
+                                    <li>زيادة الحماس والتفاعل لدى التلاميذ</li>
+                                    <li>تنمية مهارات التفكير الإبداعي</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-5 rounded-xl border-r-4 border-purple-400">
+                                <h3 class="font-bold text-purple-700 mb-3 text-xl">العوامل المؤثرة:</h3>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>استخدام الذكاء الاصطناعي</li>
+                                    <li>المواكبة التكنولوجية</li>
+                                    <li>الطريقة الشيقة والممتعة</li>
+                                    <li>الصور والقصص والألوان الجذابة</li>
+                                    <li>التفاعل الإيجابي مع المحتوى</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-5 rounded-xl border-r-4 border-pink-400 mt-6">
+                            <h3 class="font-bold text-pink-700 mb-3 text-xl">الهدف المحقق:</h3>
+                            <p class="text-lg">تم تحقيق الهدف الرئيسي وهو جعل التلميذ <strong>مفكراً لا مكرراً</strong>، حيث ساهمت اللعبة التفاعلية في تنمية مهارات التفكير الإبداعي لدى المتعلمين من خلال تطبيق مهارات الوعي الصوتي الخطي بطريقة تفاعلية وجذابة.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الخاتمة -->
+                <div class="content-card rounded-3xl p-8 md:p-12 content-section">
+                    <h2 class="section-title text-pink-600 mb-6">الخلاصة</h2>
+                    <div class="divider mb-6"></div>
+                    <div class="content-text space-y-4">
+                        <p>توصلنا في هذه الدراسة إلى أن هناك تنوع في الطرق والاستراتيجيات المعتمدة في تدريس القراءة، إلا أن طريقة الوعي الصوتي تبقى من أهم هذه الطرق وأكثرها فعالية، وهذا ما أكدته دراستنا التي تناولت موضوعاً في غاية الأهمية بالنسبة للعملية التعليمية حيث تم الكشف عن فاعلية طريقة الوعي الصوتي في القراءة لدى تلاميذ السنة الأولى والثانية ابتدائي، وهذا لما لها من دور كبير في إكساب الطفل القراءة، فهم يحتاج إلى الأصوات في الكلمات حتى يتمكن من الربط بين الأصوات والحروف وهذا يؤكد على دور مهارات الوعي الصوتي في القراءة كمهارة التقطيع والحذف والإضافة ورصد القافية وغيرها، والتي تمكن التلميذ من التحكم في أصوات الحروف التي تشكل الكلمات وبالتالي فإن عدم الاتصال بين الرمز والصوت لا يحدث القراءة لذلك ظهرت فاعلية طريقة الوعي الصوتي لدى التلاميذ لأنها عملية ذهنية واعية لا تأخذ وقتاً كثيراً ولا جهداً كبيراً وهذا ما استخلصناه بعد خوضنا لهذه الدراسة التي كانت نتائجها تثبت وجود فروق ذات دلالة إحصائية لفاعلية الوعي الصوتي في القراءة لدى تلاميذ السنة الأولى والثانية ابتدائي بغرداية.</p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border-r-4 border-blue-400 mt-6">
+                            <h3 class="font-bold text-blue-700 mb-4 text-xl">التوصيات:</h3>
+                            <ul class="list-disc list-inside space-y-3 text-lg">
+                                <li>اعتماد طريقة الوعي الصوتي في تدريس نشاط القراءة للتربية التحضيرية</li>
+                                <li>تطبيق هذه الطريقة في رياض الأطفال</li>
+                                <li>القيام بدورات تدريبية لطريقة الوعي الصوتي لفائدة معلمي السنة الأولى والثانية ابتدائي ورياض الأطفال وذلك بما يتماشى مع المرحلة العمرية</li>
+                                <li>إدراج أنشطة خاصة بمهارات الوعي الصوتي في كتب السنة الأولى والثانية ابتدائي</li>
+                                <li>إعداد دراسات موسعة عن طريقة الوعي الصوتي</li>
+                                <li>اكتشاف طرق أخرى تساهم في تحسين القراءة لدى التلاميذ</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-6 rounded-xl mt-6 text-center">
+                            <p class="text-2xl font-bold text-purple-700">
+                                🎓 شكراً لاهتمامكم بمشروع تطبيقات مهارات الوعي الصوتي الخطي 🎓
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+    
+    <script>
+        // إنشاء particles متحركة
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 2;
+                const startX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = 10 + Math.random() * 10;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + '%';
+                particle.style.bottom = '-10px';
+                particle.style.animationDelay = delay + 's';
+                particle.style.animationDuration = duration + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Scroll Reveal Animation
+        function initScrollReveal() {
+            const sections = document.querySelectorAll('.content-section');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        entry.target.style.animation = 'fadeInUpAdvanced 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+        
+        // Parallax Effect للعناصر الزخرفية
+        function initParallax() {
+            const decoratives = document.querySelectorAll('.decorative');
+            
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                
+                decoratives.forEach((decorative, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    const yPos = -(scrolled * speed);
+                    decorative.style.transform = `translateY(${yPos}px) translateX(0) rotate(0deg)`;
+                });
+            });
+        }
+        
+        // Smooth Scroll للروابط
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // تأثيرات hover متقدمة للبطاقات
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+        });
+        
+        // تأثيرات hover للبطاقات الملونة
+        document.querySelectorAll('.bg-blue-50, .bg-green-50, .bg-purple-50, .bg-pink-50, .bg-yellow-50, .bg-orange-50').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+        });
+        
+        // تأثيرات النص عند التمرير
+        document.querySelectorAll('.content-text p').forEach(paragraph => {
+            paragraph.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+        
+        // تهيئة عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initScrollReveal();
+            initParallax();
+            
+            // إضافة تأثير fade-in للعناصر عند التحميل
+            const tocItems = document.querySelectorAll('.toc-item');
+            tocItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                }, index * 100);
+            });
+        });
+        
+        // تأثيرات إضافية عند التمرير
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // تأثير parallax للخلفية
+            const body = document.body;
+            const scrolled = scrollTop / 3;
+            body.style.backgroundPosition = `0% ${50 + scrolled * 0.1}%`;
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // تأثيرات تفاعلية للعناوين
+        document.querySelectorAll('.section-title').forEach(title => {
+            title.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s ease';
+            });
+        });
+        
+        // تأثيرات للفقرات عند الظهور
+        const textObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.content-text p').forEach(p => {
+            p.style.opacity = '0';
+            p.style.transform = 'translateX(20px)';
+            p.style.transition = 'all 0.6s ease';
+            textObserver.observe(p);
+        });
+    </script>
+</body>
+</html>
