@@ -105,17 +105,17 @@ class ChallengeManager {
                 });
             }
             else if (challenge.id === 'taa-delete-segments') {
-                // تشغيل ti1.mp3 ثم maktot.mp3 بعد انتهائه
-                const ti1Audio = new Audio('audio/ti1.mp3');
-                ti1Audio.volume = 0.8;
-                ti1Audio.preload = 'auto';
+                // تشغيل tnho8.mp3 ثم ElevenLabs بعد انتهائه
+                const tnho8Audio = new Audio('audio/tnho8.mp3');
+                tnho8Audio.volume = 0.8;
+                tnho8Audio.preload = 'auto';
                 
-                ti1Audio.addEventListener('ended', () => {
-                    audioManager.playVoiceFile('audio/maktot.mp3');
+                tnho8Audio.addEventListener('ended', () => {
+                    audioManager.playVoiceFile('audio/ElevenLabs_2026-02-01T19_45_42_Mazen Lawand_pvc_sp100_s50_sb75_se0_b_m2.mp3');
                 });
                 
-                ti1Audio.play().catch(error => {
-                    console.warn('⚠️ Error playing ti1.mp3:', error);
+                tnho8Audio.play().catch(error => {
+                    console.warn('⚠️ Error playing tnho8.mp3:', error);
                 });
             }
             else if (challenge.id === 'meem-delete-segments') {
@@ -2407,7 +2407,7 @@ class ChallengeManager {
                         
                         const segmentAudios = {
                             'ال': 'audio/al.mp3',
-                            'تو': 'audio/too.mp3'
+                            'حو': 'audio/ho.mp3'
                         };
                         
                         if (segmentAudios[segment]) {

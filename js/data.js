@@ -604,8 +604,8 @@ const challengesData = {
             letter: 'ت',
             points: 10,
             word: 'يَأْكُلُ التَّنِينُ الحُوتَ.',
-            allSegments: ['ال', 'تو', 'ت'],
-            deletableSegments: ['ال', 'تو'],
+            allSegments: ['ال', 'حو', 'ت'],
+            deletableSegments: ['ال', 'حو'],
             protectedSegment: 'ت',
             emoji: '🐉'
         }
